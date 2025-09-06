@@ -15,9 +15,23 @@
     Tambah Rule
 </button>
 
-
     </div>
-
+<!-- Collapse Info Card -->
+<div class="max-w-6xl mx-auto mb-4">
+  <button onclick="toggleCollapse()" class="w-full flex justify-between items-center bg-blue-50 border-l-4 border-blue-400 p-4 rounded hover:bg-blue-100 focus:outline-none">
+    <span class="font-semibold text-blue-800">Tipe Auto-Reply (klik untuk info)</span>
+    <svg id="collapseIcon" class="w-5 h-5 text-blue-700 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+  <div id="collapseContent" class="hidden bg-blue-100 border-l-4 border-blue-400 p-4 mt-2 rounded text-sm text-blue-700 space-y-1">
+    <ul class="list-disc ml-5">
+      <li><strong>Exact:</strong> Keyword harus sama persis dengan pesan yang masuk.</li>
+      <li><strong>Contains:</strong> Keyword akan dicocokkan jika ada sebagian teks yang sama.</li>
+      <li><strong>Regex:</strong> Keyword menggunakan pola Regex untuk pencocokan fleksibel.</li>
+    </ul>
+  </div>
+</div>
     <!-- Tabel Auto-Reply -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <table class="min-w-full divide-y divide-gray-200">
@@ -136,4 +150,12 @@ document.getElementById('form-rule').addEventListener('submit', function(e){
     .catch(err => console.error(err));
 });
 
+</script>
+<script>
+function toggleCollapse() {
+  const content = document.getElementById('collapseContent');
+  const icon = document.getElementById('collapseIcon');
+  content.classList.toggle('hidden');
+  icon.classList.toggle('rotate-180'); // ikon panah berubah arah
+}
 </script>

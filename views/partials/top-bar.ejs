@@ -25,34 +25,36 @@
   <h1 class="text-white font-semibold text-lg"><%= title %></h1>
 
   <!-- Right: Profile Menu -->
-  <div class="relative">
-    <button id="profileBtn" class="flex items-center gap-2 focus:outline-none">
-      <div class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center">
-        <i class="fa-solid fa-user text-white"></i>
-      </div>
-<span class="hidden md:block text-white font-medium"><%= user ? user.name : '' %></span>
-
-      <i class="fa-solid fa-chevron-down text-white text-xs"></i>
-    </button>
-
-    <!-- Dropdown -->
-    <div id="profileMenu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg overflow-hidden animate-fade">
-      <!-- Nama user -->
-      <div class="px-4 py-3 text-sm text-gray-700 border-b font-medium">
-  <%= user ? user.name : '' %>
-</div>
-      <!-- Edit Profile -->
-      <a href="/profile/edit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition">
-        <i class="fa-solid fa-user-pen mr-2"></i> Edit Profile
-      </a>
-      <!-- Logout -->
-      <form action="/logout" method="POST">
-        <button type="submit" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </button>
-      </form>
+<div class="relative z-50"> <!-- ✅ z-index tinggi -->
+  <button id="profileBtn" class="flex items-center gap-2 focus:outline-none">
+    <div class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center">
+      <i class="fa-solid fa-user text-white"></i>
     </div>
+    <span class="hidden md:block text-white font-medium"><%= user ? user.name : '' %></span>
+    <i class="fa-solid fa-chevron-down text-white text-xs"></i>
+  </button>
+
+  <!-- Dropdown -->
+  <div id="profileMenu"
+       class="hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg overflow-hidden animate-fade z-50"> <!-- ✅ z-index -->
+    <!-- Nama user -->
+    <div class="px-4 py-3 text-sm text-gray-700 border-b font-medium">
+      <%= user ? user.name : '' %>
+    </div>
+    <!-- Edit Profile -->
+    <a href="/profile/edit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition">
+      <i class="fa-solid fa-user-pen mr-2"></i> Edit Profile
+    </a>
+    <!-- Logout -->
+    <form action="/logout" method="POST">
+      <button type="submit"
+              class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </form>
   </div>
+</div>
+
 </header>
 
 <style>
