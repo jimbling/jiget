@@ -1,11 +1,29 @@
- <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white flex-shrink-0 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-40">
-      <div class="p-6 text-2xl font-bold border-b border-gray-700">
-        JGateway
-      </div>
-      <nav class="flex-1 mt-6">
-        <a href="/dashboard" class="block px-6 py-3 hover:bg-gray-700 rounded">Dashboard</a>
-        <a href="/devices" class="block px-6 py-3 hover:bg-gray-700 rounded">Perangkat</a>
-        <a href="/auto-reply" class="block px-6 py-3 hover:bg-gray-700 rounded">Pesan Otomatis</a>
-        <a href="/messages" class="block px-6 py-3 hover:bg-gray-700 rounded">Riwayat Pesan</a>
-      </nav>
-    </aside>
+<aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-gray-100 flex-shrink-0 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-40 shadow-xl">
+  <div class="p-6 text-2xl font-bold border-b border-gray-700 flex items-center gap-2">
+    <svg class="w-8 h-8 fill-current" viewBox="0 0 5715.87 6596.22" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <path d="M3048.21 6589.89c684.88,58.43 1322.8,-304.86 1697.44,-606.88 1174.59,-946.82 952.81,-2287.86 952.81,-3693.86 0,-722.17 42.52,-1583.19 -5.37,-2288.28 -752.49,-19.5 -1263.85,292.51 -1703.14,611.63l-293.64 286.71c-855.4,926.9 -653.22,2193.03 -653.22,3406.96 0,709.17 -47.22,1596.48 5.12,2283.71z"/>
+        <path d="M26.06 3371.66c-67.28,320.21 5.74,1072.01 105.3,1366.26 65.44,193.48 129.76,343.34 220.76,512.93 385.58,718.52 1369.44,1419.32 2309.69,1339.08 32.41,-425.57 10.14,-985.59 -112.44,-1364.27 -58.19,-179.72 -135.98,-360.34 -225.32,-511.51l-304.46 -428.13c-380.41,-464.91 -1075.47,-886.94 -1993.53,-914.34z"/>
+      </g>
+    </svg>
+    Jiget
+  </div>
+
+  <nav class="flex-1 mt-4 space-y-1">
+    <a href="/dashboard" class="flex items-center gap-3 px-6 py-3 rounded-md transition-all duration-200 hover:bg-gray-800 hover:text-green-400 <%= currentPath === '/dashboard' ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' : '' %>">
+      <i class="fa-solid fa-chart-line w-5 text-center"></i> Dashboard
+    </a>
+
+    <a href="/devices" class="flex items-center gap-3 px-6 py-3 rounded-md transition-all duration-200 hover:bg-gray-800 hover:text-green-400 <%= currentPath.startsWith('/devices') ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' : '' %>">
+      <i class="fa-solid fa-plug w-5 text-center"></i> Perangkat
+    </a>
+
+    <a href="/auto-reply" class="flex items-center gap-3 px-6 py-3 rounded-md transition-all duration-200 hover:bg-gray-800 hover:text-green-400 <%= currentPath.startsWith('/auto-reply') ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' : '' %>">
+      <i class="fa-solid fa-robot w-5 text-center"></i> Pesan Otomatis
+    </a>
+
+    <a href="/messages" class="flex items-center gap-3 px-6 py-3 rounded-md transition-all duration-200 hover:bg-gray-800 hover:text-green-400 <%= currentPath.startsWith('/messages') ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' : '' %>">
+      <i class="fa-solid fa-message w-5 text-center"></i> Riwayat Pesan
+    </a>
+  </nav>
+</aside>

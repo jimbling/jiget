@@ -23,7 +23,15 @@ app.set('layout', 'layout');
 
 // Middleware proteksi
 const authRequired = require('./middlewares/auth');
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path; // tersedia di semua view
+  next();
+});
 
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null; 
+  next();
+});
 // Routes
 app.use(require('./routes/auth')); // auth tidak perlu proteksi
 app.use('/', authRequired, require('./routes/dashboard'));

@@ -1,50 +1,83 @@
-<header class="flex items-center justify-between bg-white shadow px-6 py-4">
-  <!-- Tombol Toggle Sidebar (Mobile) -->
-  <button class="md:hidden text-gray-700" onclick="toggleSidebar()">
-    <!-- Icon Hamburger -->
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+<header class="flex items-center justify-between bg-gradient-to-r from-indigo-500 to-blue-600 px-4 md:px-6 py-3 shadow-lg">
+  <!-- Left: Logo + Toggle Sidebar -->
+  <div class="flex items-center gap-3">
+  <!-- Sidebar Toggle (Mobile) -->
+  <button class="md:hidden text-white focus:outline-none" onclick="toggleSidebar()">
+    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
     </svg>
   </button>
 
-  <!-- Judul Halaman -->
-  <h1 class="text-xl font-semibold"><%= title %></h1>
+  <!-- Logo / Branding -->
+  <a href="/" class="flex items-center gap-2 text-white font-bold text-lg tracking-wide">
+    <svg class="w-8 h-8 fill-current" viewBox="0 0 5715.87 6596.22" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <path d="M3048.21 6589.89c684.88,58.43 1322.8,-304.86 1697.44,-606.88 1174.59,-946.82 952.81,-2287.86 952.81,-3693.86 0,-722.17 42.52,-1583.19 -5.37,-2288.28 -752.49,-19.5 -1263.85,292.51 -1703.14,611.63l-293.64 286.71c-855.4,926.9 -653.22,2193.03 -653.22,3406.96 0,709.17 -47.22,1596.48 5.12,2283.71z"/>
+        <path d="M26.06 3371.66c-67.28,320.21 5.74,1072.01 105.3,1366.26 65.44,193.48 129.76,343.34 220.76,512.93 385.58,718.52 1369.44,1419.32 2309.69,1339.08 32.41,-425.57 10.14,-985.59 -112.44,-1364.27 -58.19,-179.72 -135.98,-360.34 -225.32,-511.51l-304.46 -428.13c-380.41,-464.91 -1075.47,-886.94 -1993.53,-914.34z"/>
+      </g>
+    </svg>
+    <span class="hidden sm:block">Whatsapp Gateway Unofficial</span>
+  </a>
+</div>
 
-  <!-- Menu Profil -->
+
+  <!-- Center: Page Title -->
+  <h1 class="text-white font-semibold text-lg"><%= title %></h1>
+
+  <!-- Right: Profile Menu -->
   <div class="relative">
     <button id="profileBtn" class="flex items-center gap-2 focus:outline-none">
-      <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-        <i class="fa-solid fa-user text-gray-600"></i>
+      <div class="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center">
+        <i class="fa-solid fa-user text-white"></i>
       </div>
-      <i class="fa-solid fa-chevron-down text-gray-500 text-sm"></i>
+<span class="hidden md:block text-white font-medium"><%= user ? user.name : '' %></span>
+
+      <i class="fa-solid fa-chevron-down text-white text-xs"></i>
     </button>
 
-    <!-- Dropdown Menu -->
-    <div id="profileMenu" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg">
-      <div class="px-4 py-2 text-sm text-gray-700 border-b">
-        <%= typeof user !== 'undefined' ? user.name : 'Guest' %>
-      </div>
+    <!-- Dropdown -->
+    <div id="profileMenu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg overflow-hidden animate-fade">
+      <!-- Nama user -->
+      <div class="px-4 py-3 text-sm text-gray-700 border-b font-medium">
+  <%= user ? user.name : '' %>
+</div>
+      <!-- Edit Profile -->
+      <a href="/profile/edit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition">
+        <i class="fa-solid fa-user-pen mr-2"></i> Edit Profile
+      </a>
+      <!-- Logout -->
       <form action="/logout" method="POST">
-        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-          <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+        <button type="submit" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
         </button>
       </form>
     </div>
   </div>
 </header>
 
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade {
+  animation: fadeIn 0.15s ease-out;
+}
+</style>
+
 <script>
-  const profileBtn = document.getElementById('profileBtn');
-  const profileMenu = document.getElementById('profileMenu');
+const profileBtn = document.getElementById('profileBtn');
+const profileMenu = document.getElementById('profileMenu');
 
-  profileBtn.addEventListener('click', () => {
-    profileMenu.classList.toggle('hidden');
-  });
+profileBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  profileMenu.classList.toggle('hidden');
+});
 
-  // Klik di luar dropdown untuk menutup menu
-  document.addEventListener('click', (e) => {
-    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-      profileMenu.classList.add('hidden');
-    }
-  });
+// Klik di luar → tutup
+document.addEventListener('click', (e) => {
+  if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+    profileMenu.classList.add('hidden');
+  }
+});
 </script>

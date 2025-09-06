@@ -1,1 +1,11 @@
+# Node modules
 node_modules/
+
+# Baileys auth session
+baileys_auth_info/
+
+# Env files
+.env
+
+# Build / cache
+public/css/output.css
