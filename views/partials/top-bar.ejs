@@ -1,0 +1,50 @@
+<header class="flex items-center justify-between bg-white shadow px-6 py-4">
+  <!-- Tombol Toggle Sidebar (Mobile) -->
+  <button class="md:hidden text-gray-700" onclick="toggleSidebar()">
+    <!-- Icon Hamburger -->
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </button>
+
+  <!-- Judul Halaman -->
+  <h1 class="text-xl font-semibold"><%= title %></h1>
+
+  <!-- Menu Profil -->
+  <div class="relative">
+    <button id="profileBtn" class="flex items-center gap-2 focus:outline-none">
+      <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+        <i class="fa-solid fa-user text-gray-600"></i>
+      </div>
+      <i class="fa-solid fa-chevron-down text-gray-500 text-sm"></i>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div id="profileMenu" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg">
+      <div class="px-4 py-2 text-sm text-gray-700 border-b">
+        <%= typeof user !== 'undefined' ? user.name : 'Guest' %>
+      </div>
+      <form action="/logout" method="POST">
+        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+          <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<script>
+  const profileBtn = document.getElementById('profileBtn');
+  const profileMenu = document.getElementById('profileMenu');
+
+  profileBtn.addEventListener('click', () => {
+    profileMenu.classList.toggle('hidden');
+  });
+
+  // Klik di luar dropdown untuk menutup menu
+  document.addEventListener('click', (e) => {
+    if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+      profileMenu.classList.add('hidden');
+    }
+  });
+</script>

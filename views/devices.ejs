@@ -1,0 +1,276 @@
+<title><%= title %></title>
+
+<body class="min-h-screen bg-gray-50">
+    <div class="max-w-6xl">
+        
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-whatsapp-500">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-500 text-sm font-medium">Total Perangkat</h3>
+                    <div class="bg-whatsapp-100 text-whatsapp-600 p-2 rounded-full">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <p class="text-2xl font-bold text-gray-800 mt-3">1</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-green-500">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-500 text-sm font-medium">Terhubung</h3>
+                    <div class="bg-green-100 text-green-600 p-2 rounded-full">
+                        <i class="fas fa-link"></i>
+                    </div>
+                </div>
+                <p class="text-2xl font-bold text-gray-800 mt-3">1</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-500">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-500 text-sm font-medium">Status Akun</h3>
+                    <div class="bg-blue-100 text-blue-600 p-2 rounded-full">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                </div>
+                <p class="text-2xl font-bold text-gray-800 mt-3">Aktif</p>
+            </div>
+        </div>
+
+        <!-- Device Card -->
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden device-card">
+            <div class="p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="mr-4 bg-whatsapp-100 text-whatsapp-600 p-3 rounded-full">
+                            <i class="fas fa-mobile-alt text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-800"><%= device.name %></h2>
+                            <div class="flex items-center mt-1">
+                                <span class="flex items-center text-sm font-medium <%= device.isConnected ? 'text-green-600' : 'text-red-600' %>">
+                                    <span class="flex h-2 w-2 relative">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full <%= device.isConnected ? 'bg-green-400' : 'bg-red-400' %> opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 <%= device.isConnected ? 'bg-green-500' : 'bg-red-500' %>"></span>
+                                    </span>
+                                    <span class="ml-2"><%= device.isConnected ? 'Terkoneksi' : 'Terputus' %></span>
+                                </span>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <% if (device.isConnected) { %>
+                    <button onclick="disconnectDevice()" class="mt-4 md:mt-0 flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
+                        <i class="fas fa-unlink mr-2"></i> Putuskan
+                    </button>
+                    <% } %>
+                </div>
+                
+                <!-- Token Section -->
+               <% if (device.token) { %>
+                <div class="mt-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Token Autentikasi</label>
+                    <div class="flex items-center">
+                        <input type="text" id="token-input" 
+                            class="flex-1 border border-gray-300 rounded-l-lg py-2 px-3 text-sm focus:outline-none" 
+                            value="<%= device.token %>" readonly>
+                        <button onclick="copyToken()" class="btn btn-primary rounded-r-lg px-3 py-2 flex items-center justify-center">
+                            <!-- SVG Copy Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                                <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Gunakan token ini untuk autentikasi di perangkat lain</p>
+                </div>
+                <% } %>
+
+
+            </div>
+            
+            <!-- QR Section -->
+            <% if (!device.isConnected) { %>
+            <div class="border-t border-gray-200 bg-gray-50 p-6">
+                <h3 class="text-lg font-medium text-gray-800 mb-4">Hubungkan Perangkat Baru</h3>
+                <div class="flex flex-col md:flex-row items-start gap-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                        <div id="qr-container" class="w-48 h-48 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="qr-loading mx-auto mb-3"></div>
+                                <p class="text-sm text-gray-600">Memuat QR code...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-700 mb-3">Cara menghubungkan:</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-sm text-gray-600">
+                            <li>Buka WhatsApp di ponsel Anda</li>
+                            <li>Ketuk <span class="font-medium">Setelan</span> > <span class="font-medium">Perangkat tertaut</span> > <span class="font-medium">Link perangkat</span></li>
+                            <li>Arahkan ponsel Anda ke QR code ini untuk memindai</li>
+                        </ol>
+                        
+                        <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-blue-700">
+                                        Pastikan ponsel Anda memiliki koneksi internet yang stabil selama proses penghubungan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        
+        <!-- Empty State -->
+        <% if (!device) { %>
+        <div class="bg-white rounded-2xl shadow-sm p-8 text-center">
+            <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-mobile-alt text-3xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-800 mb-2">Tidak ada perangkat</h3>
+            <p class="text-gray-600 mb-6">Anda belum menambahkan perangkat WhatsApp apapun</p>
+            <button class="inline-flex items-center justify-center px-5 py-3 bg-whatsapp-500 text-white rounded-lg hover:bg-whatsapp-600 transition-colors">
+                <i class="fas fa-plus mr-2"></i> Tambah Perangkat Pertama
+            </button>
+        </div>
+        <% } %>
+    </div>
+
+    <% if (device && !device.isConnected) { %>
+    <script>
+        const qrContainer = document.querySelector('#qr-container');
+        let retryCount = 0;
+        const maxRetries = 30; // 30 detik timeout
+
+        const qrInterval = setInterval(async () => {
+            if (retryCount >= maxRetries) {
+                clearInterval(qrInterval);
+                qrContainer.innerHTML = `
+                    <div class="text-center text-gray-600">
+                        <i class="fas fa-exclamation-triangle text-2xl text-yellow-500 mb-2"></i>
+                        <p>Timeout. Silakan refresh halaman untuk mencoba lagi.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const res = await fetch(`/device/<%= device.id %>/qr`);
+                const data = await res.json();
+
+                if (data.connected) {
+                    qrContainer.innerHTML = `
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-check text-2xl text-green-600"></i>
+                            </div>
+                            <p class="text-green-600 font-medium">Berhasil terhubung!</p>
+                            <p class="text-sm text-gray-600 mt-1">Mengalihkan...</p>
+                        </div>
+                    `;
+                    clearInterval(qrInterval);
+                    
+                    // Redirect setelah 2 detik
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } else if (data.qr) {
+                    qrContainer.innerHTML = `<img class="w-full h-full" src="${data.qr}" alt="QR Code WhatsApp" />`;
+                }
+                
+                retryCount++;
+            } catch (error) {
+                console.error('Error fetching QR:', error);
+                retryCount++;
+            }
+        }, 1000);
+    </script>
+    <% } %>
+
+    <script>
+        function copyToken() {
+    const tokenInput = document.getElementById('token-input');
+
+    // Pilih teks di input
+    tokenInput.select();
+    tokenInput.setSelectionRange(0, 99999); // Untuk mobile
+
+    // Gunakan Clipboard API modern
+    navigator.clipboard.writeText(tokenInput.value)
+        .then(() => {
+            showNotification('Token berhasil disalin!', 'green');
+        })
+        .catch(() => {
+            alert('Gagal menyalin token!');
+        });
+}
+
+// Fungsi untuk menampilkan notifikasi kecil
+function showNotification(message, color = 'green') {
+    const notification = document.createElement('div');
+    notification.className = `fixed bottom-4 right-4 bg-${color}-100 text-${color}-700 px-4 py-3 rounded-lg shadow-md flex items-center`;
+    notification.innerHTML = `
+        <i class="fas fa-check-circle mr-2"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(notification);
+
+    // Hilangkan setelah 3 detik
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+
+        async function disconnectDevice() {
+            if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
+
+            try {
+                // Show loading state
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+                button.disabled = true;
+                
+                const res = await fetch(`/device/<%= device.id %>/disconnect`, { method: 'POST' });
+                const data = await res.json();
+
+                if (data.success) {
+                    // Show success notification
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed bottom-4 right-4 bg-green-100 text-green-700 px-4 py-3 rounded-lg shadow-md flex items-center';
+                    notification.innerHTML = `
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>${data.message}</span>
+                    `;
+                    document.body.appendChild(notification);
+                    
+                    // Remove notification after 3 seconds and reload
+                    setTimeout(() => {
+                        notification.remove();
+                        location.reload();
+                    }, 3000);
+                } else {
+                    alert(data.message);
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Terjadi kesalahan saat memutus perangkat');
+                
+                // Reset button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+    </script>

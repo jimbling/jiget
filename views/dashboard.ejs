@@ -1,0 +1,25 @@
+<% title = "Dashboard" %>
+
+<!-- Example: dashboard cards container -->
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="bg-white rounded-xl shadow p-6 flex flex-col justify-between">
+    <h2 class="text-lg font-semibold text-gray-700">Perangkat Terhubung</h2>
+    <p class="text-3xl font-bold mt-4 <%= connectedDevices > 0 ? 'text-green-600' : 'text-red-600' %>">
+      <%= connectedDevices %>
+    </p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-6 flex flex-col justify-between">
+    <h2 class="text-lg font-semibold text-gray-700">Pesan Terkirim</h2>
+    <p class="text-3xl font-bold mt-4 text-blue-600">
+      <%= messagesSent %>
+    </p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-6 flex flex-col justify-between">
+    <h2 class="text-lg font-semibold text-gray-700">Pesan Diterima</h2>
+    <p class="text-3xl font-bold mt-4 text-purple-600">
+      <%= messagesReceived %>
+    </p>
+  </div>
+</div>

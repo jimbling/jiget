@@ -1,0 +1,77 @@
+<% title = "Riwayat Pesan WA" %>
+
+<div class="space-y-4">
+
+  <!-- Header & Action -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <h1 class="text-2xl font-bold text-gray-800">Riwayat Pesan WhatsApp</h1>
+    <form action="/messages/delete-all" method="POST" onsubmit="return confirm('Yakin ingin menghapus semua pesan?');">
+      <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition">
+        Hapus Semua
+      </button>
+    </form>
+  </div>
+
+  <!-- Table Card -->
+  <div class="overflow-x-auto bg-white rounded-xl shadow-lg p-4">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">#</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nomor</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Pesan</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Tipe</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Status</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Dikirim Pada</th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% if (messages && messages.length > 0) { %>
+          <% messages.forEach((msg, index) => { %>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-4 py-2 text-sm text-gray-700"><%= (currentPage - 1) * 20 + index + 1 %></td>
+             <td class="px-4 py-2 text-sm text-gray-700">
+  <%= msg.number.replace(/@s\.whatsapp\.net$/, '') %>
+</td>
+              <td class="px-4 py-2 text-sm text-gray-700">
+                <span title="<%= msg.message %>">
+                  <%= msg.message.length > 60 ? msg.message.substring(0, 60) + '...' : msg.message %>
+                </span>
+              </td>
+              <td class="px-4 py-2 text-sm capitalize text-gray-600"><%= msg.type %></td>
+              <td class="px-4 py-2">
+                <span class="px-2 py-1 text-xs font-semibold rounded-full <%= msg.status === 'sent' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                  <%= msg.status %>
+                </span>
+              </td>
+              <td class="px-4 py-2 text-sm text-gray-500"><%= new Date(msg.created_at).toLocaleString() %></td>
+              <td class="px-4 py-2">
+                <form action="/messages/<%= msg.id %>/delete" method="POST" onsubmit="return confirm('Yakin ingin menghapus pesan ini?');">
+                  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-sm transition">
+                    Hapus
+                  </button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="7" class="px-4 py-6 text-center text-gray-400">Belum ada pesan</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center mt-6 space-x-2 flex-wrap">
+    <% for(let i = 1; i <= totalPages; i++) { %>
+      <a href="/messages?page=<%= i %>" class="px-4 py-2 rounded-lg border transition 
+        <%= i === currentPage ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100' %>">
+        <%= i %>
+      </a>
+    <% } %>
+  </div>
+
+</div>

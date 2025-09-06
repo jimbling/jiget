@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papapapapapap..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .device-card {
+            transition: all 0.3s ease;
+        }
+        .device-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .qr-loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(37, 211, 102, 0.3);
+            border-radius: 50%;
+            border-top-color: #25D366;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .token-field {
+            transition: all 0.3s ease;
+        }
+        .token-field:focus {
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.3);
+        }
+    </style>
+    
+    
+</head>
+<body class="flex h-screen bg-gray-100 font-sans">
+
+  <!-- Sidebar & Overlay -->
+  <div>
+    <!-- Overlay untuk mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30" onclick="toggleSidebar()"></div>
+<%- include('partials/sidebar') %>
+   
+  </div>
+
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col overflow-hidden ml-0 md:ml-64 transition-all duration-300">
+    <!-- Topbar -->
+    <%- include('partials/top-bar') %>
+
+    <!-- Page content -->
+    <main class="flex-1 overflow-auto p-6">
+      <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white p-4 text-center text-gray-500 border-t border-gray-200">
+      &copy; 2025 WA Gateway
+    </footer>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+  </script>
+
+</body>
+
+</html>
