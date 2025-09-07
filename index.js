@@ -54,7 +54,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// ===== ROUTE WA GATEWAY (tanpa authRequired) =====
+app.use('/api/wa', require('./routes/wa')); // bebas login, cukup pakai token Bearer
+
+// ===== ROUTE BIASA / DASHBOARD (pakai authRequired) =====
 app.use(require('./routes/auth')); // auth tidak perlu proteksi
 app.use('/', authRequired, require('./routes/dashboard'));
 app.use('/', authRequired, require('./routes/messages'));

@@ -65,13 +65,53 @@
   </div>
 
   <!-- Pagination -->
-  <div class="flex justify-center mt-6 space-x-2 flex-wrap">
-    <% for(let i = 1; i <= totalPages; i++) { %>
-      <a href="/messages?page=<%= i %>" class="px-4 py-2 rounded-lg border transition 
-        <%= i === currentPage ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100' %>">
-        <%= i %>
-      </a>
+<div class="flex justify-center mt-6 space-x-2 flex-wrap items-center">
+
+  <!-- Tombol Prev -->
+  <% if (currentPage > 1) { %>
+    <a href="/messages?page=<%= currentPage - 1 %>" 
+       class="px-4 py-2 rounded-lg border bg-white text-gray-700 hover:bg-gray-100 transition">Prev</a>
+  <% } %>
+
+  <% 
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+  %>
+
+  <!-- Tombol halaman awal + … -->
+  <% if (startPage > 1) { %>
+    <a href="/messages?page=1" 
+       class="px-4 py-2 rounded-lg border bg-white text-gray-700 hover:bg-gray-100 transition">1</a>
+    <% if (startPage > 2) { %>
+      <span class="px-2 text-gray-500">…</span>
     <% } %>
-  </div>
+  <% } %>
+
+  <!-- Angka halaman di sekitar currentPage -->
+  <% for (let i = startPage; i <= endPage; i++) { %>
+    <a href="/messages?page=<%= i %>" 
+       class="px-4 py-2 rounded-lg border transition <%= i === currentPage ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100' %>">
+       <%= i %>
+    </a>
+  <% } %>
+
+  <!-- … + tombol halaman terakhir -->
+  <% if (endPage < totalPages) { %>
+    <% if (endPage < totalPages - 1) { %>
+      <span class="px-2 text-gray-500">…</span>
+    <% } %>
+    <a href="/messages?page=<%= totalPages %>" 
+       class="px-4 py-2 rounded-lg border bg-white text-gray-700 hover:bg-gray-100 transition"><%= totalPages %></a>
+  <% } %>
+
+  <!-- Tombol Next -->
+  <% if (currentPage < totalPages) { %>
+    <a href="/messages?page=<%= currentPage + 1 %>" 
+       class="px-4 py-2 rounded-lg border bg-white text-gray-700 hover:bg-gray-100 transition">Next</a>
+  <% } %>
+
+</div>
+
+
 
 </div>
