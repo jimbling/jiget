@@ -5,11 +5,11 @@
   <!-- Header & Action -->
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <h1 class="text-2xl font-bold text-gray-800">Riwayat Pesan WhatsApp</h1>
-    <form action="/messages/delete-all" method="POST" onsubmit="return confirm('Yakin ingin menghapus semua pesan?');">
-      <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition">
-        Hapus Semua
-      </button>
-    </form>
+    <form action="/messages/delete-all" method="POST" class="delete-all-form">
+  <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow transition">
+    Hapus Semua
+  </button>
+</form>
   </div>
 
   <!-- Table Card -->
@@ -47,11 +47,12 @@
               </td>
               <td class="px-4 py-2 text-sm text-gray-500"><%= new Date(msg.created_at).toLocaleString() %></td>
               <td class="px-4 py-2">
-                <form action="/messages/<%= msg.id %>/delete" method="POST" onsubmit="return confirm('Yakin ingin menghapus pesan ini?');">
-                  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-sm transition">
-                    Hapus
-                  </button>
-                </form>
+                <form action="/messages/<%= msg.id %>/delete" method="POST" class="delete-form">
+  <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-sm transition">
+    Hapus
+  </button>
+</form>
+
               </td>
             </tr>
           <% }); %>

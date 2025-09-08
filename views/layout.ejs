@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="/css/output.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papapapapapap..." crossorigin="anonymous" referrerpolicy="no-referrer" />
  <link rel="icon" href="/img/jiget.ico" type="image/x-icon">
+ <!-- Load SweetAlert2 lokal -->
+<script src="/js/sweetalert2.all.min.js"></script>
+
+<!-- Load script custom untuk hapus pesan -->
+<script src="/js/messages.js" defer></script>
   <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
@@ -47,7 +52,8 @@
   <!-- Sidebar & Overlay -->
   <div>
     <!-- Overlay untuk mobile -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30" onclick="toggleSidebar()"></div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30"></div>
+
 <%- include('partials/sidebar') %>
    
   </div>
@@ -66,14 +72,7 @@
     <%- include('partials/footer') %>
   </div>
 
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
-      sidebar.classList.toggle('-translate-x-full');
-      overlay.classList.toggle('hidden');
-    }
-  </script>
+
 
 </body>
 

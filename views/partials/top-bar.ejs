@@ -2,7 +2,7 @@
   <!-- Left: Logo + Toggle Sidebar -->
   <div class="flex items-center gap-3">
   <!-- Sidebar Toggle (Mobile) -->
-  <button class="md:hidden text-white focus:outline-none" onclick="toggleSidebar()">
+  <button class="md:hidden text-white focus:outline-none" data-toggle-sidebar>
     <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
     </svg>
@@ -67,19 +67,4 @@
 }
 </style>
 
-<script>
-const profileBtn = document.getElementById('profileBtn');
-const profileMenu = document.getElementById('profileMenu');
-
-profileBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  profileMenu.classList.toggle('hidden');
-});
-
-// Klik di luar → tutup
-document.addEventListener('click', (e) => {
-  if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
-    profileMenu.classList.add('hidden');
-  }
-});
-</script>
+<script src="/js/top-bar.js"></script>
