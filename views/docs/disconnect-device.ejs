@@ -1,0 +1,31 @@
+ <!-- Disconnect Device -->
+    <section class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">3. Disconnect Device</h2>
+
+      <p class="mb-2">Endpoint untuk memutus koneksi WhatsApp.</p>
+
+      <div class="mb-2">
+        <span class="font-semibold">Method:</span> <code>POST</code> <br>
+        <span class="font-semibold">URL:</span> <code>/wa/device/:id/disconnect</code>
+      </div>
+
+      <div class="mb-2">
+        <span class="font-semibold">Response sukses:</span>
+        <pre class="bg-gray-100 p-3 rounded overflow-x-auto">
+{
+  "success": true,
+  "message": "Device berhasil diputus"
+}
+        </pre>
+      </div>
+
+      <div>
+        <span class="font-semibold">Response gagal:</span>
+        <pre class="bg-gray-100 p-3 rounded overflow-x-auto">
+{
+  "success": false,
+  "message": "Gagal memutus device"
+}
+        </pre>
+      </div>
+    </section>

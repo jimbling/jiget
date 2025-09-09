@@ -28,6 +28,9 @@ app.use(session({
 
 // 🕒 Auto logout middleware
 app.use((req, res, next) => {
+  // skip docs publik
+    if (req.path.startsWith('/docs')) return next();
+
     if (req.session) {
         if (!req.session.lastActivity) req.session.lastActivity = Date.now();
 
@@ -43,15 +46,21 @@ app.use((req, res, next) => {
     next();
 });
 
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(expressLayouts);
+
+app.use('/docs', require('./routes/docs'));
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.set('layout', 'layout');
 
+app.use(expressLayouts);
 // ✅ Auth Middleware
 const authRequired = require('./middlewares/auth');
 
@@ -61,7 +70,7 @@ app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
 });
-
+app.set('trust proxy', 1);
 // Rate Limit API WA
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -76,6 +85,7 @@ app.use('/', authRequired, require('./routes/dashboard'));
 app.use('/', authRequired, require('./routes/messages'));
 app.use('/auto-reply', authRequired, require('./routes/autoReply'));
 app.use('/', authRequired, require('./routes/profile'));
+app.use('/', authRequired, require('./routes/wa'));
 
 // Error Handler
 app.use((err, req, res, next) => {

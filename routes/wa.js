@@ -9,7 +9,20 @@ const db = require('../db');
 
 
 // === CONFIG MULTER UNTUK TERIMA FILE ===
-const upload = multer({ dest: 'uploads/' });
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.pdf', '.docx', '.zip', '.rar'];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+const upload = multer({
+  dest: 'uploads/',
+  limits: { fileSize: MAX_FILE_SIZE },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (ALLOWED_EXTENSIONS.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Ekstensi file tidak diizinkan'));
+    }
+  }
+});
 
 // ==================== ROUTE: KIRIM TEKS ====================
 router.post('/send', async (req, res) => {
@@ -149,5 +162,64 @@ router.post('/device/:id/disconnect', async (req, res) => {
         res.json({ success: false, message: 'Gagal memutus device' });
     }
 });
+
+// ===================== HALAMAN KIRIM TEKS & MEDIA ====================
+
+router.get('/send-text', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT token 
+      FROM wa_tokens 
+      WHERE is_active = 1 
+      ORDER BY id DESC 
+      LIMIT 1
+    `);
+
+    if (!rows.length) return res.status(500).send('Token WA belum tersedia');
+
+    const token = rows[0].token;
+    res.render('send-text', { token }); // <-- pastikan ada { token }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+// Route halaman kirim media
+router.get('/send-media', async (req, res) => {
+  try {
+    // Ambil token aktif dari database
+    const [rows] = await db.query(`
+      SELECT token 
+      FROM wa_tokens 
+      WHERE is_active = 1 
+      ORDER BY id DESC 
+      LIMIT 1
+    `);
+
+    if (!rows.length) return res.status(500).send('Token WA belum tersedia');
+
+    const token = rows[0].token;
+
+    // Definisikan batasan file
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'pdf', 'docx','zip','rar'];
+    const maxFileSizeMB = 10; // 10 MB
+
+    // Render EJS dengan token dan info batasan file
+    res.render('send-media', {
+      token,
+      allowedExtensions,
+      maxFileSizeMB
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+
 
 module.exports = router;

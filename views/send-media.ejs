@@ -1,0 +1,32 @@
+<body data-token="<%= token %>">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Kirim Pesan Media</h1>
+
+    <form id="mediaForm" class="space-y-4" enctype="multipart/form-data">
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Nomor WhatsApp</label>
+        <input type="text" id="number" placeholder="6281234567890" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Caption (opsional)</label>
+        <input type="text" id="caption" placeholder="Tulis caption..." class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Pilih File</label>
+        <input type="file" id="file" class="w-full">
+      </div>
+
+      <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">Kirim Media</button>
+    </form>
+
+     <!-- Info batasan file -->
+    <p class="text-sm text-gray-500 mt-1">
+      Maksimal <%= maxFileSizeMB %> MB. Hanya menerima: <%= allowedExtensions.join(', ') %>.
+    </p>
+    <div id="response" class="mt-4"></div>
+  </div>
+
+  <script src="/js/send-media.js"></script>
+</body>

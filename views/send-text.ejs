@@ -1,0 +1,27 @@
+
+<body data-token="<%= token %>">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Kirim Pesan Teks</h1>
+
+    <form id="textForm" class="space-y-4">
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Nomor WhatsApp</label>
+        <input type="text" id="number" placeholder="6281234567890" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Pesan</label>
+        <textarea id="message" rows="4" placeholder="Tulis pesan..." class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+      </div>
+
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Kirim Pesan</button>
+    </form>
+
+    <div id="response" class="mt-4"></div>
+  </div>
+
+  <!-- Load JS eksternal -->
+
+<script src="/js/send-text.js"></script>
+
+

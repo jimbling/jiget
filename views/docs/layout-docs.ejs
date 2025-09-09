@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/output.css">
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-gray-900">Dokumentasi API WhatsApp</h1>
+      <span class="text-sm text-gray-500">versi 1.0</span>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-6 flex flex-col lg:flex-row gap-6">
+
+    <!-- Sidebar / TOC -->
+    <nav class="hidden lg:block lg:w-1/4 bg-white rounded-xl shadow p-6 sticky top-24 h-fit">
+      <h2 class="text-lg font-semibold mb-4">Daftar Isi</h2>
+      <ul class="space-y-2 text-gray-700">
+        <li><a href="/docs/pendahuluan" class="hover:text-blue-600">Pendahuluan</a></li>
+        <li><a href="/docs/send-text" class="hover:text-blue-600">Kirim Teks</a></li>
+        <li><a href="/docs/send-media" class="hover:text-blue-600">Kirim Media</a></li>
+        <li><a href="/docs/disconnect-device" class="hover:text-blue-600">Disconnect Device</a></li>
+        <li><a href="/docs/tips" class="hover:text-blue-600">Tips & Catatan</a></li>
+      </ul>
+    </nav>
+
+    <!-- Konten utama -->
+    <div class="flex-1 space-y-8">
+      <%- body %> <!-- Konten docs spesifik -->
+    </div>
+
+  </main>
+
+  <footer class="bg-white shadow-inner mt-12">
+    <div class="max-w-6xl mx-auto px-6 py-4 text-center text-gray-500 text-sm">
+      &copy; 2025 WhatsApp API Documentation. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>

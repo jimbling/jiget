@@ -2,8 +2,8 @@
 
 <div class="max-w-6xl mx-auto">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-semibold text-gray-800">Atur Pesan Otomatis</h1>
-      <button onclick="openModal()" class="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+        <h1 class="text-2xl font-semibold text-gray-800">Atur Balasan Pesan Otomatis</h1>
+      <button id="btnTambahRule" class="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-copy-plus">
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
         <path stroke="none" d="M0 0h24v24H0z"/>
@@ -15,15 +15,16 @@
     Tambah Rule
 </button>
 
+
     </div>
 <!-- Collapse Info Card -->
 <div class="max-w-6xl mx-auto mb-4">
-  <button onclick="toggleCollapse()" class="w-full flex justify-between items-center bg-blue-50 border-l-4 border-blue-400 p-4 rounded hover:bg-blue-100 focus:outline-none">
+ <button id="collapseButton" class="w-full flex justify-between items-center bg-blue-50 border-l-4 border-blue-400 p-4 rounded hover:bg-blue-100 focus:outline-none">
     <span class="font-semibold text-blue-800">Tipe Auto-Reply (klik untuk info)</span>
     <svg id="collapseIcon" class="w-5 h-5 text-blue-700 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
     </svg>
-  </button>
+</button>
   <div id="collapseContent" class="hidden bg-blue-100 border-l-4 border-blue-400 p-4 mt-2 rounded text-sm text-blue-700 space-y-1">
     <ul class="list-disc ml-5">
       <li><strong>Exact:</strong> Keyword harus sama persis dengan pesan yang masuk.</li>
@@ -58,9 +59,10 @@
                         <% } %>
                     </td>
                     <td class="px-6 py-4 text-right text-sm space-x-2">
-                        <button onclick="editRule(<%= reply.id %>)" class="text-blue-600 hover:text-blue-800">Edit</button>
-                        <button onclick="deleteRule(<%= reply.id %>)" class="text-red-600 hover:text-red-800">Hapus</button>
-                    </td>
+    <button class="btnEditRule text-blue-600 hover:text-blue-800" data-id="<%= reply.id %>">Edit</button>
+    <button class="btnDeleteRule text-red-600 hover:text-red-800" data-id="<%= reply.id %>">Hapus</button>
+</td>
+
                 </tr>
                 <% }) %>
             </tbody>
@@ -91,71 +93,12 @@
                 <textarea name="reply_text" id="rule-reply" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-whatsapp-500" rows="3"></textarea>
             </div>
             <div class="flex justify-end space-x-2">
-                <button type="button" onclick="closeModal()" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">Batal</button>
+                <button id="btnCloseModal" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">Batal</button>
                 <button type="submit" class="px-4 py-2 rounded bg-green-500 text-white hover:bg-whatsapp-600">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
-<script>
-function openModal() {
-    document.getElementById('modal').classList.remove('hidden');
-    document.getElementById('modal-title').innerText = 'Tambah Auto-Reply';
-    document.getElementById('form-rule').reset();
-    document.getElementById('rule-id').value = '';
-}
-
-function closeModal() {
-    document.getElementById('modal').classList.add('hidden');
-}
-
-function editRule(id) {
-    const rule = <%- JSON.stringify(autoReplies) %>.find(r => r.id === id);
-    if (!rule) return;
-    document.getElementById('modal').classList.remove('hidden');
-    document.getElementById('modal-title').innerText = 'Edit Auto-Reply';
-    document.getElementById('rule-id').value = rule.id;
-    document.getElementById('rule-keyword').value = rule.keyword;
-    document.getElementById('rule-type').value = rule.type;
-    document.getElementById('rule-reply').value = rule.reply_text;
-}
-
-// TODO: Ganti dengan fetch ke route backend untuk delete
-function deleteRule(id) {
-    if (!confirm('Yakin ingin menghapus rule ini?')) return;
-    fetch(`/auto-replies/${id}`, { method: 'DELETE' })
-        .then(res => location.reload())
-        .catch(err => console.error(err));
-}
-
-// Handle form submit
-document.getElementById('form-rule').addEventListener('submit', function(e){
-    e.preventDefault();
-    const id = document.getElementById('rule-id').value;
-    const payload = {
-        keyword: document.getElementById('rule-keyword').value,
-        type: document.getElementById('rule-type').value,
-        reply_text: document.getElementById('rule-reply').value
-    };
-    const url = id ? `/auto-reply/${id}` : '/auto-reply';
-    const method = id ? 'PUT' : 'POST';
-
-    fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    })
-    .then(res => location.reload())
-    .catch(err => console.error(err));
-});
-
-</script>
-<script>
-function toggleCollapse() {
-  const content = document.getElementById('collapseContent');
-  const icon = document.getElementById('collapseIcon');
-  content.classList.toggle('hidden');
-  icon.classList.toggle('rotate-180'); // ikon panah berubah arah
-}
-</script>
+<div id="auto-replies" data-json='<%- JSON.stringify(autoReplies) %>'></div>
+<script src="/js/auto-reply.js"></script>

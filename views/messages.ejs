@@ -35,9 +35,18 @@
   <%= msg.number.replace(/@s\.whatsapp\.net$/, '') %>
 </td>
               <td class="px-4 py-2 text-sm text-gray-700">
-                <span title="<%= msg.message %>">
-                  <%= msg.message.length > 60 ? msg.message.substring(0, 60) + '...' : msg.message %>
-                </span>
+                <% if (msg.media_url) { %>
+                  <div class="flex flex-col gap-1">
+                    <span><%= msg.message %></span>
+                    <a href="/uploads/<%= msg.media_url %>" target="_blank" class="text-blue-600 hover:underline text-sm">
+                      📎 Lihat Media
+                    </a>
+                  </div>
+                <% } else { %>
+                  <span title="<%= msg.message %>">
+                    <%= msg.message.length > 60 ? msg.message.substring(0, 60) + '...' : msg.message %>
+                  </span>
+                <% } %>
               </td>
               <td class="px-4 py-2 text-sm capitalize text-gray-600"><%= msg.type %></td>
               <td class="px-4 py-2">

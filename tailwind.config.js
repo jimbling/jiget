@@ -1,11 +1,22 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
+  purge: ['./resources/**/*.blade.php', './resources/**/*.js'],
+  darkMode: false,
   theme: {
-    extend: {},
+    extend: {
+      rotate: {
+        '180': '180deg',
+      },
+      maxHeight: {
+        '0': '0',
+        '96': '24rem', // untuk slide-down menu
+      },
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      rotate: ['hover', 'focus'],
+      maxHeight: ['responsive', 'hover'],
+    },
   },
   plugins: [],
 }

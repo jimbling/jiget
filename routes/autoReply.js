@@ -30,9 +30,11 @@ router.put('/:id', async (req, res) => {
 // Hapus Auto-Reply
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
+    console.log('Hapus ID:', id);
     await db.query('DELETE FROM auto_replies WHERE id=?', [id]);
     res.json({ success: true });
 });
+
 
 // Toggle aktif/nonaktif
 router.post('/:id/toggle', async (req, res) => {

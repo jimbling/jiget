@@ -1,0 +1,82 @@
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-gray-900">Dokumentasi API WhatsApp</h1>
+      <span class="text-sm text-gray-500">versi 1.0</span>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-6 flex flex-col lg:flex-row gap-6">
+
+    <!-- Sidebar / Table of Contents -->
+    <nav class="hidden lg:block lg:w-1/4 bg-white rounded-xl shadow p-6 sticky top-24 h-fit">
+      <h2 class="text-lg font-semibold mb-4">Daftar Isi</h2>
+      <ul class="space-y-2 text-gray-700">
+        <li><a href="#pendahuluan" class="hover:text-blue-600">Pendahuluan</a></li>
+        <li><a href="#send-text" class="hover:text-blue-600">Kirim Teks</a></li>
+        <li><a href="#send-media" class="hover:text-blue-600">Kirim Media</a></li>
+        <li><a href="#disconnect-device" class="hover:text-blue-600">Disconnect Device</a></li>
+        <li><a href="#tips" class="hover:text-blue-600">Tips & Catatan</a></li>
+      </ul>
+    </nav>
+
+    <!-- Konten -->
+    <div class="flex-1 space-y-8">
+
+      <!-- Pendahuluan -->
+      <section id="pendahuluan" class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-semibold mb-2">Pendahuluan</h2>
+        <p class="text-gray-700">API ini memungkinkan Anda mengirim pesan teks, mengirim file/media, dan mengelola koneksi WhatsApp melalui token yang valid. Semua endpoint memerlukan <code class="bg-gray-100 px-1 rounded">Authorization: Bearer &lt;token&gt;</code>.</p>
+      </section>
+
+      <!-- Kirim Teks -->
+      <section id="send-text" class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">1. Kirim Pesan Teks</h2>
+        <p class="mb-2">Endpoint untuk mengirim teks ke nomor WhatsApp tertentu.</p>
+        <div class="mb-2">
+          <span class="font-semibold">Method:</span> <code>POST</code> <br>
+          <span class="font-semibold">URL:</span> <code>/wa/send</code>
+        </div>
+        <div class="mb-4">
+          <span class="font-semibold">Body (JSON):</span>
+          <pre class="bg-gray-100 p-3 rounded overflow-x-auto">
+{
+  "number": "6281234567890",
+  "message": "Halo, ini pesan dari API!"
+}
+          </pre>
+        </div>
+      </section>
+
+      <!-- Kirim Media -->
+      <section id="send-media" class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">2. Kirim Media / File</h2>
+        <p class="mb-2">Endpoint ini memungkinkan Anda mengirim file/media ke nomor WhatsApp.</p>
+        <div class="mb-2">
+          <span class="font-semibold">Method:</span> <code>POST</code> <br>
+          <span class="font-semibold">URL:</span> <code>/wa/send-media</code>
+        </div>
+      </section>
+
+      <!-- Disconnect Device -->
+      <section id="disconnect-device" class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">3. Disconnect Device</h2>
+        <p class="mb-2">Endpoint untuk memutus koneksi WhatsApp.</p>
+      </section>
+
+      <!-- Tips & Catatan -->
+      <section id="tips" class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-semibold mb-2">Tips & Catatan</h2>
+        <ul class="list-disc list-inside text-gray-700 space-y-1">
+          <li>Gunakan token aktif yang didapat dari halaman <code>/wa/send-text</code> atau <code>/wa/send-media</code>.</li>
+          <li>Pastikan WhatsApp client sudah terhubung sebelum mengirim pesan.</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+

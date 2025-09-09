@@ -1,0 +1,41 @@
+ <!-- Kirim Media -->
+    <section class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">2. Kirim Media / File</h2>
+
+      <p class="mb-2">Endpoint ini memungkinkan Anda mengirim file/media ke nomor WhatsApp.</p>
+
+      <div class="mb-2">
+        <span class="font-semibold">Method:</span> <code>POST</code> <br>
+        <span class="font-semibold">URL:</span> <code>/wa/send-media</code>
+      </div>
+
+      <div class="mb-4">
+        <span class="font-semibold">Form Data:</span>
+        <ul class="list-disc list-inside text-gray-700">
+          <li><code>number</code>: nomor tujuan (contoh: 6281234567890)</li>
+          <li><code>caption</code>: opsional, teks pendamping file</li>
+          <li><code>file</code>: file yang diupload (jpg, png, mp4, pdf, docx, zip, rar) max 10 MB</li>
+        </ul>
+      </div>
+
+      <div class="mb-2">
+        <span class="font-semibold">Response sukses:</span>
+        <pre class="bg-gray-100 p-3 rounded overflow-x-auto">
+{
+  "success": true,
+  "number": "6281234567890",
+  "caption": "Ini file PDF",
+  "media_url": "abc123.pdf"
+}
+        </pre>
+      </div>
+
+      <div>
+        <span class="font-semibold">Response gagal:</span>
+        <pre class="bg-gray-100 p-3 rounded overflow-x-auto">
+{
+  "error": "Ekstensi file tidak diizinkan"
+}
+        </pre>
+      </div>
+    </section>
