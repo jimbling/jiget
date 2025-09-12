@@ -16,22 +16,73 @@
       <i class="fa-solid fa-plug w-5 text-center"></i> Perangkat
     </a>
 
-    <!-- Dropdown Kirim Pesan -->
-    <div class="relative">
-      <button class="flex items-center justify-between w-full px-6 py-3 rounded-md dropdown-btn transition-all duration-200 hover:bg-gray-800 hover:text-green-400 <%= currentPath.startsWith('/modules') || currentPath.startsWith('/auto-reply') ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' : '' %>">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-paper-plane w-5 text-center"></i>
-          <span>Kirim Pesan</span>
-        </div>
-        <i class="fa-solid fa-chevron-down transition-transform duration-200 <%= currentPath.startsWith('/modules') || currentPath.startsWith('/auto-reply') ? 'rotate-180' : '' %>"></i>
-      </button>
-
-      <div class="ml-6 mt-1 space-y-1 dropdown-menu hidden">
-        <a href="/send-text" class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 <%= currentPath === '/modules/create' ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">Pesan Teks</a>
-        <a href="/send-media" class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 <%= currentPath === '/modules/media' ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">Pesan Media</a>
-        <a href="/auto-reply" class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 <%= currentPath.startsWith('/auto-reply') ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">Balas Otomatis</a>
-      </div>
+<!-- Dropdown Kontak -->
+<div class="relative">
+  <button 
+    class="flex items-center justify-between w-full px-6 py-3 rounded-md dropdown-btn transition-all duration-200 
+    hover:bg-gray-800 hover:text-green-400 
+    <%= (currentPath.startsWith('/contacts') || currentPath.startsWith('/groups')) 
+        ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' 
+        : '' %>">
+    <div class="flex items-center gap-3">
+      <i class="fa-solid fa-address-book w-5 text-center"></i>
+      <span>Kontak</span>
     </div>
+    <i class="fa-solid fa-chevron-down transition-transform duration-200 
+       <%= currentPath.startsWith('/contacts') || currentPath.startsWith('/groups') ? 'rotate-180' : '' %>">
+    </i>
+  </button>
+
+  <div class="ml-6 mt-1 space-y-1 dropdown-menu <%= (currentPath.startsWith('/contacts') || currentPath.startsWith('/groups')) ? '' : 'hidden' %>">
+    <a href="/contacts" class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 <%= currentPath === '/contacts' ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
+      Daftar Kontak
+    </a>
+    <a href="/groups" class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 <%= currentPath === '/groups' ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
+      Daftar Group
+    </a>
+  </div>
+</div>
+
+
+   
+
+   <!-- Dropdown Kirim Pesan -->
+<div class="relative">
+  <button 
+    class="flex items-center justify-between w-full px-6 py-3 rounded-md dropdown-btn transition-all duration-200 
+    hover:bg-gray-800 hover:text-green-400 
+    <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply')) 
+        ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' 
+        : '' %>">
+    <div class="flex items-center gap-3">
+      <i class="fa-solid fa-paper-plane w-5 text-center"></i>
+      <span>Kirim Pesan</span>
+    </div>
+    <i class="fa-solid fa-chevron-down transition-transform duration-200 
+       <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply')) 
+           ? 'rotate-180' 
+           : '' %>"></i>
+  </button>
+
+  <div class="ml-6 mt-1 space-y-1 dropdown-menu <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply')) ? '' : 'hidden' %>">
+    <a href="/send-text" 
+       class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 
+       <%= currentPath === '/send-text' ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
+       Pesan Teks
+    </a>
+    <a href="/send-media" 
+       class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 
+       <%= currentPath === '/send-media' ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
+       Pesan Media
+    </a>
+    <a href="/auto-reply" 
+       class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 
+       <%= currentPath.startsWith('/auto-reply') ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
+       Balas Otomatis
+    </a>
+  </div>
+</div>
+
 
     <!-- Riwayat Pesan -->
     <a href="/messages" class="flex items-center gap-3 px-6 py-3 rounded-md transition-all duration-200 hover:bg-gray-800 hover:text-green-400 <%= currentPath.startsWith('/messages') ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' : '' %>">

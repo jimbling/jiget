@@ -64,86 +64,100 @@ router.post('/send', async (req, res) => {
 
 // ==================== ROUTE: KIRIM MEDIA ====================
 router.post('/send-media', upload.single('file'), async (req, res) => {
-    console.log("📥 /send-media dipanggil");
-    try {
-        const authHeader = req.headers['authorization'];
-        console.log("🔑 Authorization Header:", authHeader);
+  console.log("📥 /send-media dipanggil");
 
-        if (!authHeader) return res.status(401).json({ error: 'Unauthorized, token required' });
+  try {
+    const authHeader = req.headers['authorization'];
+    console.log("🔑 Authorization Header:", authHeader);
 
-        const token = authHeader.replace('Bearer ', '');
-        const valid = await validateToken(token);
-        console.log("✅ Token valid?", valid);
+    if (!authHeader) return res.status(401).json({ error: 'Unauthorized, token required' });
 
-        if (!valid) return res.status(401).json({ error: 'Unauthorized, invalid token' });
+    const token = authHeader.replace('Bearer ', '');
+    const valid = await validateToken(token);
+    console.log("✅ Token valid?", valid);
 
-        console.log("📦 req.body:", req.body);
-        console.log("📂 req.file:", req.file);
+    if (!valid) return res.status(401).json({ error: 'Unauthorized, invalid token' });
 
-        const { number, caption } = req.body;
-        if (!number || !req.file) {
-            console.log("❌ number atau file tidak ada");
-            return res.status(400).json({ error: 'number & file required' });
-        }
+    console.log("📦 req.body:", req.body);
+    console.log("📂 req.file:", req.file);
 
-        const sock = getSock();
-        const isConnected = getStatus();
-        console.log("📡 isConnected:", isConnected);
-
-        if (!sock || !isConnected) return res.status(503).json({ error: 'WhatsApp client not ready' });
-
-        // Ambil ekstensi asli file (contoh: .jpg, .png)
-        const ext = path.extname(req.file.originalname);
-        const newFilename = req.file.filename + ext;
-
-        // Pindahkan file ke folder publik dengan ekstensi
-        const oldPath = path.join(__dirname, '..', req.file.path);
-        const publicUploads = path.join(__dirname, '..', 'public', 'uploads');
-
-        if (!fs.existsSync(publicUploads)) {
-            fs.mkdirSync(publicUploads, { recursive: true });
-        }
-
-        const newPath = path.join(publicUploads, newFilename);
-        fs.renameSync(oldPath, newPath);
-        console.log("📦 File dipindahkan ke:", newPath);
-
-        // Kirim media ke WA
-        const fileBuffer = fs.readFileSync(newPath);
-        console.log("📄 File berhasil dibaca, size:", fileBuffer.length);
-
-        console.log("📤 Mengirim ke:", number);
-        await sock.sendMessage(`${number}@s.whatsapp.net`, {
-            image: fileBuffer,
-            caption: caption || ''
-        });
-
-        // Simpan log ke database dengan nama file yang sudah ada ekstensi
-        const mediaUrl = `${newFilename}`;
-
-        await db.query(
-            'INSERT INTO wa_messages (number, message, media_url, type, is_media, status) VALUES (?, ?, ?, ?, ?, ?)',
-            [
-                number,
-                caption || '(media tanpa caption)',
-                mediaUrl,
-                'outbound',
-                1,
-                'sent'
-            ]
-        );
-
-        res.json({
-            success: true,
-            number,
-            caption,
-            media_url: mediaUrl
-        });
-
-    } catch (err) {
-        console.error("❌ ERROR SEND-MEDIA:", err);
-        res.status(500).json({ error: err.message });
+    const { number, caption } = req.body;
+    if (!number || !req.file) {
+      console.log("❌ number atau file tidak ada");
+      return res.status(400).json({ error: 'number & file required' });
     }
+
+    const sock = getSock();
+    const isConnected = getStatus();
+    console.log("📡 isConnected:", isConnected);
+
+    if (!sock || !isConnected)
+      return res.status(503).json({ error: 'WhatsApp client not ready' });
+
+    // Ambil ekstensi asli file
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const newFilename = req.file.filename + ext;
+
+    // Pindahkan file ke folder publik
+    const oldPath = path.join(__dirname, '..', req.file.path);
+    const publicUploads = path.join(__dirname, '..', 'public', 'uploads');
+    if (!fs.existsSync(publicUploads)) fs.mkdirSync(publicUploads, { recursive: true });
+
+    const newPath = path.join(publicUploads, newFilename);
+    fs.renameSync(oldPath, newPath);
+    console.log("📦 File dipindahkan ke:", newPath);
+
+    const fileBuffer = fs.readFileSync(newPath);
+    console.log("📄 File berhasil dibaca, size:", fileBuffer.length);
+
+    // Tentukan tipe media berdasarkan ekstensi
+    let messageOptions = { caption: caption || '' };
+    let mediaType = 'document'; // default
+
+    if (['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext)) {
+      messageOptions.image = fileBuffer;
+      mediaType = 'image';
+    } else if (['.mp4', '.mov'].includes(ext)) {
+      messageOptions.video = fileBuffer;
+      mediaType = 'video';
+    } else {
+      messageOptions.document = fileBuffer;
+      messageOptions.fileName = req.file.originalname;
+      messageOptions.mimetype = req.file.mimetype;
+      mediaType = 'document';
+    }
+
+    console.log(`📤 Mengirim ${mediaType} ke:`, number);
+    await sock.sendMessage(`${number}@s.whatsapp.net`, messageOptions);
+
+    // Simpan log ke database
+    const mediaUrl = `${newFilename}`;
+    await db.query(
+  'INSERT INTO wa_messages (number, message, media_url, type, media_type, is_media, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+  [
+    number,
+    caption || '(media tanpa caption)',
+    mediaUrl,
+    'outbound',        
+    'document',        
+    1,
+    'sent'
+  ]
+);
+
+
+    res.json({
+      success: true,
+      number,
+      caption,
+      media_url: mediaUrl,
+      type: mediaType
+    });
+
+  } catch (err) {
+    console.error("❌ ERROR SEND-MEDIA:", err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 

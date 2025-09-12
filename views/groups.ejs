@@ -1,0 +1,89 @@
+<h1 class="text-3xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+   Pengelolaan Grup Kontak
+</h1>
+
+<!-- Card Form -->
+<div class="bg-white shadow-md rounded-xl p-6 mb-6 border border-gray-200">
+  <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+    <i class="fa-solid fa-plus-circle text-blue-600"></i> Tambah / Edit Grup
+  </h2>
+
+  <form id="groupForm" action="/groups/save" method="POST" class="space-y-4">
+    <input type="hidden" name="group_id" id="group_id">
+
+    <div>
+      <label class="block font-medium mb-1 text-gray-700">Nama Grup</label>
+      <input type="text" name="name" id="group_name" required
+             class="border border-gray-300 rounded-lg w-full px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block font-medium mb-1 text-gray-700">Tambahkan Anggota</label>
+      <select name="contact_ids[]" id="contactSelect" multiple
+              class="border border-gray-300 rounded-lg w-full px-3 py-2 h-32 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <% contacts.forEach(c => { %>
+          <option value="<%= c.id %>"><%= c.name %></option>
+        <% }) %>
+      </select>
+      <p class="text-sm text-gray-500 mt-1">Gunakan <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> untuk memilih lebih dari satu.</p>
+    </div>
+
+    <button type="submit"
+            class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 transition">
+      <i class="fa-solid fa-save mr-2"></i> Simpan Grup
+    </button>
+  </form>
+</div>
+
+<!-- Card Daftar Grup -->
+<div class="bg-white shadow-md rounded-xl border border-gray-200 overflow-hidden">
+  <div class="px-6 py-4 border-b bg-gray-50 flex justify-between items-center">
+    <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+      <i class="fa-solid fa-list"></i> Daftar Grup
+    </h2>
+  </div>
+
+  <!-- Responsive Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-left text-sm">
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="px-4 py-3 font-semibold">Nama Grup</th>
+          <th class="px-4 py-3 font-semibold">Anggota</th>
+          <th class="px-4 py-3 text-center font-semibold">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="groupsTableBody" class="divide-y divide-gray-200">
+        <% groups.forEach(group => { %>
+          <tr data-id="<%= group.id %>" class="hover:bg-gray-50 transition">
+            <td class="px-4 py-3 font-medium text-gray-800"><%= group.name %></td>
+            <td class="px-4 py-3 group-members space-x-1 flex flex-wrap gap-1">
+              <% if (groupMembers[group.id]) { %>
+                <% groupMembers[group.id].forEach(m => { %>
+                  <span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">
+                    <%= m.name %>
+                  </span>
+                <% }) %>
+              <% } else { %>
+                <span class="text-gray-400 italic">Tidak ada anggota</span>
+              <% } %>
+            </td>
+            <td class="px-4 py-3 text-center space-x-2">
+              <button class="editGroupBtn text-blue-600 hover:text-blue-800 transition"
+                      data-id="<%= group.id %>"
+                      data-name="<%= group.name %>"
+                      data-members="<%= groupMembers[group.id] ? groupMembers[group.id].map(m=>m.id).join(',') : '' %>">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button class="deleteGroupBtn text-red-600 hover:text-red-800 transition">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="/js/groups.js"></script>

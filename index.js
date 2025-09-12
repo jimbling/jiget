@@ -35,7 +35,7 @@ app.use((req, res, next) => {
         if (!req.session.lastActivity) req.session.lastActivity = Date.now();
 
         const now = Date.now();
-        const maxIdle = 15 * 60 * 1000;
+        const maxIdle = 30 * 60 * 1000;
 
         if (now - req.session.lastActivity > maxIdle) {
             req.session.destroy(() => res.redirect('/login?expired=1'));
@@ -52,6 +52,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(expressLayouts);
 
+// Route tanpa Autentikasi Login, bisa di akses Publik
 app.use('/docs', require('./routes/docs'));
 
 app.set('view engine', 'ejs');
@@ -86,6 +87,10 @@ app.use('/', authRequired, require('./routes/messages'));
 app.use('/auto-reply', authRequired, require('./routes/autoReply'));
 app.use('/', authRequired, require('./routes/profile'));
 app.use('/', authRequired, require('./routes/wa'));
+app.use('/', authRequired, require('./routes/contacts'));
+app.use('/groups', authRequired, require('./routes/groups'));
+
+
 
 // Error Handler
 app.use((err, req, res, next) => {

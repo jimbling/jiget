@@ -1,0 +1,21 @@
+<% title = contact.id ? "Edit Kontak" : "Tambah Kontak" %>
+
+<div class="max-w-lg mx-auto">
+  <h1 class="text-2xl font-semibold mb-4"><%= title %></h1>
+
+  <form method="POST" action="<%= contact.id ? '/contacts/' + contact.id : '/contacts' %>">
+    <div class="mb-3">
+      <label>Nama</label>
+      <input type="text" name="name" value="<%= contact.name || '' %>" class="border px-2 py-1 w-full">
+    </div>
+    <div class="mb-3">
+      <label>Nomor WA</label>
+      <input type="text" name="phone_number" value="<%= contact.phone_number || '' %>" class="border px-2 py-1 w-full" required>
+    </div>
+
+    <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded">
+      Simpan
+    </button>
+    <a href="/contacts" class="ml-3 text-gray-600">Batal</a>
+  </form>
+</div>

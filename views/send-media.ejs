@@ -1,31 +1,62 @@
+<% title = "Send Media" %>
 <body data-token="<%= token %>">
-  <div class="bg-white p-8 rounded-lg shadow-md w-full">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">Kirim Pesan Media</h1>
+  <div class=" mx-auto bg-white p-8 rounded-2xl shadow-lg ">
+    <div class="flex items-center gap-3 mb-6">
+     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-file-info"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 2l.117 .007a1 1 0 0 1 .876 .876l.007 .117v4l.005 .15a2 2 0 0 0 1.838 1.844l.157 .006h4l.117 .007a1 1 0 0 1 .876 .876l.007 .117v9a3 3 0 0 1 -2.824 2.995l-.176 .005h-10a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-14a3 3 0 0 1 2.824 -2.995l.176 -.005zm0 12h-1a1 1 0 0 0 0 2v3a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1l-.007 -.117a1 1 0 0 0 -.876 -.876l-.117 -.007v-3a1 1 0 0 0 -1 -1m.01 -3h-.01a1 1 0 0 0 -.117 1.993l.127 .007a1 1 0 0 0 0 -2" /><path d="M19 7h-4l-.001 -4.001z" /></svg>
+      <h1 class="text-2xl font-bold text-gray-800">Kirim Pesan Media</h1>
+    </div>
 
-    <form id="mediaForm" class="space-y-4" enctype="multipart/form-data">
+    <form id="mediaForm" class="space-y-5" enctype="multipart/form-data">
+      <!-- Nomor -->
       <div>
-        <label class="block text-gray-700 font-medium mb-1">Nomor WhatsApp</label>
-        <input type="text" id="number" placeholder="6281234567890" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <label class="block text-gray-700 font-semibold mb-1">Nomor WhatsApp</label>
+        <div class="flex items-center border rounded-lg px-3 focus-within:ring-2 focus-within:ring-green-400">
+          <span class="text-gray-400">+ </span>
+          <input type="text" name="number" id="number" placeholder="6281234567890"
+            class="w-full px-2 py-2 outline-none">
+        </div>
       </div>
 
+      <!-- Caption -->
       <div>
-        <label class="block text-gray-700 font-medium mb-1">Caption (opsional)</label>
-        <input type="text" id="caption" placeholder="Tulis caption..." class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <label class="block text-gray-700 font-semibold mb-1">Caption (Opsional)</label>
+        <input type="text"  name="caption" id="caption" placeholder="Tulis caption..."
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400">
       </div>
 
+      <!-- File Upload -->
       <div>
-        <label class="block text-gray-700 font-medium mb-1">Pilih File</label>
-        <input type="file" id="file" class="w-full">
+        <label class="block text-gray-700 font-semibold mb-1">Pilih File</label>
+        <div id="dropZone"
+          class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-green-400 transition">
+          <p class="text-gray-500">Drag & drop file atau klik untuk memilih</p>
+          <input type="file" name="file" id="file" class="hidden">
+        </div>
+        <div id="preview" class="mt-3 hidden"></div>
       </div>
 
-      <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition">Kirim Media</button>
+      <!-- Progress -->
+      <div class="hidden" id="progressWrapper">
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div id="progressBar" class="bg-green-500 h-2 rounded-full w-0"></div>
+        </div>
+        <p class="text-xs text-gray-500 mt-1" id="progressText">Mengupload...</p>
+      </div>
+
+      <!-- Button -->
+      <button type="submit"
+        class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition flex items-center justify-center gap-2">
+        <span id="btnText">Kirim Media</span>
+        <svg id="btnSpinner" class="w-5 h-5 animate-spin hidden" viewBox="0 0 24 24" fill="none">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+          <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+      </button>
     </form>
 
-     <!-- Info batasan file -->
-    <p class="text-sm text-gray-500 mt-1">
+    <p class="text-xs text-gray-500 mt-3">
       Maksimal <%= maxFileSizeMB %> MB. Hanya menerima: <%= allowedExtensions.join(', ') %>.
     </p>
-    <div id="response" class="mt-4"></div>
   </div>
 
   <script src="/js/send-media.js"></script>
