@@ -3,8 +3,8 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const router = express.Router();
-const { getSock, getStatus } = require('../whatsapp/whatsapp');
-const { validateToken } = require('../whatsapp/token');
+const { getSock, getStatus } = require('../controller/whatsapp');
+const { validateToken } = require('../controller/token');
 const db = require('../db');
 
 

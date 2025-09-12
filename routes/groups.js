@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const groupController = require('../whatsapp/group');
+const groupController = require('../controller/group');
 
 router.get('/', groupController.index);
 router.post('/save', groupController.saveGroup); // Tambah/update grup + anggota

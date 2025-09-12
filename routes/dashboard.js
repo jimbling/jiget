@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');         // <<< tambahkan
 const path = require('path');     // <<< tambahkan
 const db = require('../db');
-const { getStatus, getLastQR, getSock, initWhatsApp } = require('../whatsapp/whatsapp');
+const { getStatus, getLastQR, getSock, initWhatsApp } = require('../controller/whatsapp');
 
 // ===================
 // Dashboard stats

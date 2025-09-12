@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const contactController = require('../whatsapp/contacts');
+const contactController = require('../controller/contacts');
 
 router.get('/contacts', contactController.index);
 router.get('/contacts/create', contactController.create);

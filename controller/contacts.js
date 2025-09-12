@@ -1,10 +1,41 @@
 const { Contact } = require('../models');
 
 module.exports = {
-  index: async (req, res) => {
+index: async (req, res) => {
     try {
-      const contacts = await Contact.findAll({ order: [['created_at', 'DESC']] });
-      res.render('contacts/index', { title: 'Daftar Kontak', contacts });
+      const page = parseInt(req.query.page) || 1;
+      const limit = 10; // jumlah data per halaman
+      const offset = (page - 1) * limit;
+
+      // Ambil data sekaligus total count
+      const { count, rows } = await Contact.findAndCountAll({
+        order: [['created_at', 'DESC']],
+        limit,
+        offset
+      });
+
+      const totalPages = Math.ceil(count / limit);
+
+      // Jika request via AJAX (fetch), kirim JSON
+      if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') {
+        return res.json({
+          success: true,
+          contacts: rows,
+          pagination: {
+            currentPage: page,
+            totalPages
+          }
+        });
+      }
+
+      // Render halaman biasa
+      res.render('contacts/index', {
+        title: 'Daftar Kontak',
+        contacts: rows,
+        currentPage: page,
+        totalPages
+      });
+
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');

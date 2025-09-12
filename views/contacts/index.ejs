@@ -27,7 +27,7 @@
           form="bulk-delete-form"
           class="flex items-center bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
           id="btnHapusTerpilih"
-          disabled
+         
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -39,6 +39,7 @@
       
     </div>
   </div>
+
 
   <!-- Contacts Table -->
   <form id="bulk-delete-form" method="POST" action="/contacts/bulk-delete">
@@ -105,11 +106,64 @@
             <% }) %>
           </tbody>
         </table>
+        
       </div>
+      
       
       
     </div>
   </form>
+
+  
+
+  <!-- Pagination Modern -->
+<% if (totalPages > 1) { %>
+  <div id="paginationContainer" class="flex justify-center mt-6 space-x-2">
+    <!-- Tombol First & Prev -->
+    <% if (currentPage > 1) { %>
+      <a href="?page=1" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+        «
+      </a>
+      <a href="?page=<%= currentPage - 1 %>" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+        ‹
+      </a>
+    <% } %>
+
+    <!-- Page Window -->
+    <% 
+      const windowSize = 3;
+      const startPage = Math.max(1, currentPage - windowSize);
+      const endPage = Math.min(totalPages, currentPage + windowSize);
+    %>
+
+    <% if (startPage > 1) { %>
+      <span class="px-3 py-2 text-gray-500">...</span>
+    <% } %>
+
+    <% for (let i = startPage; i <= endPage; i++) { %>
+      <a href="?page=<%= i %>"
+         class="px-4 py-2 border rounded-lg transition 
+                <%= i === currentPage ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-700 hover:bg-gray-100' %>">
+        <%= i %>
+      </a>
+    <% } %>
+
+    <% if (endPage < totalPages) { %>
+      <span class="px-3 py-2 text-gray-500">...</span>
+    <% } %>
+
+    <!-- Tombol Next & Last -->
+    <% if (currentPage < totalPages) { %>
+      <a href="?page=<%= currentPage + 1 %>" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+        ›
+      </a>
+      <a href="?page=<%= totalPages %>" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+        »
+      </a>
+    <% } %>
+  </div>
+<% } %>
+
 </div>
 
 <!-- Modal Tambah Kontak -->
@@ -151,7 +205,7 @@
     <div class="p-6 border-b border-gray-100">
       <h2 class="text-xl font-semibold text-gray-900">Edit Kontak</h2>
     </div>
-    <form id="formEdit" method="POST" class="p-6 space-y-5">
+    <form id="formEdit" method="POST" class="p-6 space-y-2">
       <input type="hidden" name="id" id="edit_id">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama</label>
