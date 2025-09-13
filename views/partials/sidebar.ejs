@@ -51,7 +51,7 @@
   <button 
     class="flex items-center justify-between w-full px-6 py-3 rounded-md dropdown-btn transition-all duration-200 
     hover:bg-gray-800 hover:text-green-400 
-    <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply')) 
+    <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply') || currentPath.startsWith('/broadcast')) 
         ? 'bg-gray-800 text-green-400 font-semibold border-l-4 border-green-500' 
         : '' %>">
     <div class="flex items-center gap-3">
@@ -59,12 +59,12 @@
       <span>Kirim Pesan</span>
     </div>
     <i class="fa-solid fa-chevron-down transition-transform duration-200 
-       <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply')) 
+       <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply') || currentPath.startsWith('/broadcast')) 
            ? 'rotate-180' 
            : '' %>"></i>
   </button>
 
-  <div class="ml-6 mt-1 space-y-1 dropdown-menu <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/auto-reply')) ? '' : 'hidden' %>">
+  <div class="ml-6 mt-1 space-y-1 dropdown-menu <%= (currentPath.startsWith('/send-text') || currentPath.startsWith('/send-media') || currentPath.startsWith('/broadcast') || currentPath.startsWith('/auto-reply')) ? '' : 'hidden' %>">
     <a href="/send-text" 
        class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 
        <%= currentPath === '/send-text' ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
@@ -80,8 +80,14 @@
        <%= currentPath.startsWith('/auto-reply') ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
        Balas Otomatis
     </a>
+    <a href="/broadcast" 
+       class="block px-4 py-2 rounded-md hover:bg-gray-800 hover:text-green-400 
+       <%= currentPath.startsWith('/broadcast') ? 'bg-gray-800 text-green-400 font-semibold' : '' %>">
+      Broadcasts
+    </a>
   </div>
 </div>
+
 
 
     <!-- Riwayat Pesan -->

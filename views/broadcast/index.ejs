@@ -1,0 +1,140 @@
+<div class="max-w-6xl mx-auto px-4 py-6">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">📢 Broadcast</h1>
+
+    <!-- Tombol Actions -->
+    <div class="flex flex-wrap gap-3">
+      <!-- Buat Broadcast -->
+      <a href="/broadcast/create"
+         class="inline-flex items-center bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
+        + Buat Broadcast
+      </a>
+
+      <!-- Jalankan Pending -->
+      <form action="/broadcast/run" method="POST" class="inline-block">
+        <button type="submit"
+          class="inline-flex items-center bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow hover:bg-green-700 transition">
+          🚀 Jalankan Pending
+        </button>
+      </form>
+
+      <!-- Hapus Semua -->
+      <button 
+        id="btn-delete-all" 
+        class="inline-flex items-center bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-lg shadow hover:bg-red-700 transition">
+        <i class="fa-solid fa-trash"></i>
+        Hapus Semua
+      </button>
+    </div>
+  </div>
+
+
+
+  <!-- Table Card -->
+  <div class="bg-white shadow-sm rounded-2xl overflow-x-auto">
+    <table class="w-full min-w-[600px]">
+      <thead>
+        <tr class="bg-gray-50 text-left text-sm font-semibold text-gray-600">
+          <th class="px-4 py-3">Judul</th>
+          <th class="px-4 py-3">Target</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3 text-center">Jalankan</th>
+          <th class="px-4 py-3 text-center">Detail</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <% broadcasts.forEach(b => { %>
+          <tr class="hover:bg-gray-50 transition">
+            <td class="px-4 py-3 font-medium text-gray-900"><%= b.title %></td>
+            <td class="px-4 py-3 capitalize text-gray-700"><%= b.target_type %></td>
+            <td class="px-4 py-3">
+              <% if (b.status === 'draft') { %>
+                <span class="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">Draft</span>
+              <% } else if (b.status === 'pending') { %>
+                <span class="bg-yellow-200 text-yellow-900 px-2 py-1 rounded-full text-xs font-medium">Pending</span>
+              <% } else { %>
+                <span class="bg-green-200 text-green-900 px-2 py-1 rounded-full text-xs font-medium">Selesai</span>
+              <% } %>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <% if (b.status === 'draft') { %>
+                <form method="POST" action="/broadcast/<%= b.id %>/run" class="inline">
+                  <button class="bg-green-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow hover:bg-green-700 transition"
+                    onclick="return confirm('Jalankan broadcast ini?')">
+                    Jalankan
+                  </button>
+                </form>
+              <% } else { %>
+                <span class="text-gray-400 text-xs italic">-</span>
+              <% } %>
+            </td>
+            <td class="px-4 py-3 text-center">
+              <% if (b.status !== 'draft') { %>
+                <button type="button"
+                  data-id="<%= b.id %>"
+                  class="btn-detail bg-blue-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow hover:bg-blue-700 transition">
+                  Lihat Detail
+                </button>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <% if (broadcasts.length === 0) { %>
+      <div class="p-6 text-center text-gray-500 text-sm">
+        Belum ada broadcast. <a href="/broadcast/create" class="text-blue-600 hover:underline">Buat sekarang</a>.
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Pagination -->
+  <% if (totalPages && totalPages > 1) { %>
+    <div class="flex justify-center mt-6 space-x-2 text-sm">
+      <% if (currentPage > 1) { %>
+        <a href="?page=<%= currentPage - 1 %>" class="px-3 py-1 bg-gray-100 rounded hover:bg-gray-200">Prev</a>
+      <% } %>
+
+      <% 
+      let startPage = Math.max(currentPage - 2, 1);
+      let endPage = Math.min(currentPage + 2, totalPages);
+      if (startPage > 1) { %>
+        <span class="px-3 py-1">...</span>
+      <% } %>
+
+      <% for (let p = startPage; p <= endPage; p++) { %>
+        <a href="?page=<%= p %>" class="<%= p === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200' %> px-3 py-1 rounded">
+          <%= p %>
+        </a>
+      <% } %>
+
+      <% if (endPage < totalPages) { %>
+        <span class="px-3 py-1">...</span>
+      <% } %>
+
+      <% if (currentPage < totalPages) { %>
+        <a href="?page=<%= currentPage + 1 %>" class="px-3 py-1 bg-gray-100 rounded hover:bg-gray-200">Next</a>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<!-- Modal Detail -->
+<div id="detailModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+  <div class="bg-white rounded-2xl shadow-lg max-w-lg w-full mx-4 p-6 relative">
+    <button id="modalCloseBtn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">✕</button>
+    <h2 class="text-xl font-semibold mb-4">Detail Broadcast</h2>
+
+    <div id="detailContent" class="space-y-2 text-sm text-gray-700">
+      <p class="text-gray-500">Memuat data...</p>
+    </div>
+
+    <div class="mt-4 text-right">
+      <button id="modalCloseBtnBottom" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/broadcast-detail.js" defer></script>

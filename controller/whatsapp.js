@@ -119,8 +119,25 @@ async function initWhatsApp() {
     }
 }
 
+async function sendMessage(to, message) {
+    try {
+        if (!sock) throw new Error('Socket WhatsApp belum siap');
+        if (!isConnected) throw new Error('Belum terhubung ke WhatsApp');
+
+        const jid = to.includes('@s.whatsapp.net') ? to : to.replace(/\D/g, '') + '@s.whatsapp.net';
+        await sock.sendMessage(jid, { text: message });
+
+        console.log(`✅ Pesan terkirim ke ${to}`);
+        return { success: true };
+    } catch (err) {
+        console.error(`❌ Gagal kirim ke ${to}:`, err.message);
+        return { success: false, error: err.message };
+    }
+}
+
+
 function getSock() { return sock; }
 function getStatus() { return isConnected; }
 function getLastQR() { return lastQR; }
 
-module.exports = { initWhatsApp, getSock, getStatus, getLastQR };
+module.exports = { initWhatsApp, getSock, getStatus, getLastQR, sendMessage };

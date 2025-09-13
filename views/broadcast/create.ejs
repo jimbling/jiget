@@ -1,0 +1,88 @@
+<div class=" mx-auto p-6">
+  <div class="bg-white shadow rounded-2xl p-6">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+      <i class="fa-solid fa-bullhorn text-blue-600"></i>
+      Buat Pesan Broadcast
+    </h1>
+
+    <form method="POST" action="/broadcast" class="space-y-5">
+      <!-- Judul -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Judul</label>
+        <input 
+          type="text" 
+          name="title" 
+          class="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Masukkan judul broadcast">
+      </div>
+
+      <!-- Pesan -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Pesan</label>
+        <textarea 
+          name="message" 
+          rows="4"
+          class="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+          placeholder="Tulis pesan yang akan dikirim..."></textarea>
+      </div>
+
+      <!-- Target Type -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Target</label>
+        <select 
+          name="target_type" 
+          id="target_type"
+          class="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <option value="group">Group</option>
+          <option value="contact">Kontak</option>
+        </select>
+      </div>
+
+      <!-- Group List -->
+      <div id="group-list">
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Group</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <% groups.forEach(g => { %>
+            <label class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+              <input type="checkbox" name="target_ids[]" value="<%= g.id %>" class="w-4 h-4 text-blue-600 rounded">
+              <span class="text-gray-800"><%= g.name %></span>
+            </label>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Contact List -->
+      <div id="contact-list" class="hidden">
+  <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Kontak</label>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-64 overflow-y-auto border rounded-lg p-2">
+    <% contacts.forEach(c => { %>
+      <label class="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer">
+        <input type="checkbox" name="target_ids[]" value="<%= c.id %>" class="w-4 h-4 text-blue-600 rounded">
+        <span class="text-gray-800"><%= c.name %> (<%= c.phone_number %>)</span>
+      </label>
+    <% }) %>
+  </div>
+</div>
+
+
+      <!-- Tombol -->
+      <div class="flex justify-end">
+        <a href="/broadcast" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 mr-2">
+          Batal
+        </a>
+        <button 
+          type="submit" 
+          class="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+          <i class="fa-solid fa-paper-plane"></i>
+          Kirim Broadcast
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+  <div id="progress-bar" class="bg-blue-600 h-2 rounded-full" style="width:0%"></div>
+</div>
+</div>
+
+<script src="/js/broadcast-form.js" defer></script>

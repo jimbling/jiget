@@ -10,6 +10,11 @@ const { initWhatsApp } = require('./controller/whatsapp');
 
 const app = express();
 
+const multer = require('multer');
+const upload = multer();
+
+app.use(upload.none());
+
 // 🔒 Security & Performance
 app.use(helmet());
 app.use(compression());
@@ -89,7 +94,7 @@ app.use('/', authRequired, require('./routes/profile'));
 app.use('/', authRequired, require('./routes/wa'));
 app.use('/', authRequired, require('./routes/contacts'));
 app.use('/groups', authRequired, require('./routes/groups'));
-
+app.use('/broadcast', authRequired, require('./routes/broadcast'));
 
 
 // Error Handler
@@ -104,6 +109,15 @@ app.listen(PORT, () => console.log(`🚀 API Gateway berjalan di http://localhos
 
 // WhatsApp Init
 initWhatsApp();
+
+
+// Graceful Shutdown
+process.on('SIGINT', async () => {
+  console.log('\n🛑 Shutting down...');
+  const { disconnectSock } = require('./whatsapp/whatsapp');
+  await disconnectSock();
+  process.exit(0);
+});
 
 // Graceful Shutdown
 process.on('SIGINT', async () => {
