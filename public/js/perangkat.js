@@ -3,9 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const deviceId = document.body.dataset.deviceId;
     const isConnected = document.body.dataset.isConnected === "true";
 
+    // ===== QR Refresh =====
     if (qrContainer && !isConnected) {
         let retryCount = 0;
-        const maxRetries = 30; // 30 detik timeout
+        const maxRetries = 30;
 
         const qrInterval = setInterval(async () => {
             if (retryCount >= maxRetries) {
@@ -47,29 +48,41 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1000);
     }
 
-    // Copy token
-    window.copyToken = function () {
-        const tokenInput = document.getElementById('token-input');
-        tokenInput.select();
-        tokenInput.setSelectionRange(0, 99999);
+    // ===== Copy Token =====
+    const copyBtn = document.getElementById('copy-token-btn');
+    const tokenInput = document.getElementById('token-input');
+    if (copyBtn && tokenInput) {
+        copyBtn.addEventListener('click', () => {
+            tokenInput.select();
+            tokenInput.setSelectionRange(0, 99999);
 
-        navigator.clipboard.writeText(tokenInput.value)
-            .then(() => showNotification('Token berhasil disalin!', 'green'))
-            .catch(() => alert('Gagal menyalin token!'));
+            navigator.clipboard.writeText(tokenInput.value)
+                .then(() => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Token berhasil disalin!',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                })
+                .catch(() => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Gagal menyalin token!',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                });
+        });
     }
 
-    function showNotification(message, color = 'green') {
-        const notification = document.createElement('div');
-        notification.className = `fixed bottom-4 right-4 bg-${color}-100 text-${color}-700 px-4 py-3 rounded-lg shadow-md flex items-center`;
-        notification.innerHTML = `
-            <i class="fas fa-check-circle mr-2"></i>
-            <span>${message}</span>
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
-    }
-
-    // Disconnect
+    // ===== Disconnect Device =====
     window.disconnectDevice = async function (event) {
         if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
 
@@ -83,16 +96,40 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await res.json();
 
             if (data.success) {
-                showNotification(data.message, 'green');
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
                 setTimeout(() => location.reload(), 3000);
             } else {
-                alert(data.message);
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
                 button.innerHTML = originalText;
                 button.disabled = false;
             }
         } catch (err) {
             console.error(err);
-            alert('Terjadi kesalahan saat memutus perangkat');
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Terjadi kesalahan saat memutus perangkat',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
             button.innerHTML = originalText;
             button.disabled = false;
         }
