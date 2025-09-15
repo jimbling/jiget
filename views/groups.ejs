@@ -1,3 +1,5 @@
+<% title = "Daftar Group" %>
+
 <h1 class="text-3xl font-bold mb-6 text-gray-800 flex items-center gap-2">
    Pengelolaan Grup Kontak
 </h1>
@@ -44,16 +46,17 @@
   </div>
 
   <!-- Responsive Table -->
-  <div class="overflow-x-auto">
-    <table class="min-w-full text-left text-sm">
-      <thead class="bg-gray-100 text-gray-700">
-        <tr>
-          <th class="px-4 py-3 font-semibold">Nama Grup</th>
-          <th class="px-4 py-3 font-semibold">Anggota</th>
-          <th class="px-4 py-3 text-center font-semibold">Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="groupsTableBody" class="divide-y divide-gray-200">
+<div class="overflow-x-auto">
+  <table class="min-w-full text-left text-sm">
+    <thead class="bg-gray-100 text-gray-700">
+      <tr>
+        <th class="px-4 py-3 font-semibold">Nama Grup</th>
+        <th class="px-4 py-3 font-semibold">Anggota</th>
+        <th class="px-4 py-3 text-center font-semibold">Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="groupsTableBody" class="divide-y divide-gray-200">
+      <% if (groups.length > 0) { %>
         <% groups.forEach(group => { %>
           <tr data-id="<%= group.id %>" class="hover:bg-gray-50 transition">
             <td class="px-4 py-3 font-medium text-gray-800"><%= group.name %></td>
@@ -81,9 +84,17 @@
             </td>
           </tr>
         <% }) %>
-      </tbody>
-    </table>
-  </div>
+      <% } else { %>
+        <tr>
+          <td colspan="3" class="px-4 py-6 text-center text-gray-400 italic">
+            Belum ada grup yang dibuat.
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
 </div>
 
 <script src="/js/groups.js"></script>

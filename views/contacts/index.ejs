@@ -1,44 +1,104 @@
 <% title = "Daftar Kontak" %>
 
 <div class="max-w-6xl mx-auto px-4">
-  <!-- Header Section -->
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-    <div>
-      <h1 class="text-3xl font-bold text-gray-900">Daftar Kontak</h1>
-      <p class="text-gray-600 mt-2">Kelola informasi kontak Anda dengan mudah</p>
-    </div>
-    <button 
-      id="btnTambah" 
-      class="mt-4 md:mt-0 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-      </svg>
-      Tambah Kontak
-    </button>
+
+   <!-- Header + Actions -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+  <!-- Judul dan deskripsi -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900">Daftar Kontak</h1>
+    <p class="text-gray-600 mt-1">Kelola informasi kontak Anda dengan mudah</p>
   </div>
 
-  <!-- Bulk Actions & Search -->
-  <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div class="flex items-center">
-        <button 
-          type="submit"
-          form="bulk-delete-form"
-          class="flex items-center bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-          id="btnHapusTerpilih"
-         
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
-          Hapus Terpilih
-        </button>
-      </div>
-      
-      
+  <!-- Tombol aksi -->
+  <div class="flex flex-wrap items-center gap-3">
+    <!-- Tambah Kontak -->
+    <button 
+      id="btnTambah"
+      class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 md:py-2.5 md:px-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" 
+           class="h-5 w-5 md:h-5 md:w-5" 
+           fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M5 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0M3 21v-2a4 4 0 0 1 4-4h4c.96 0 1.84.34 2.53.9M16 3.13a4 4 0 0 1 0 7.75M16 19h6M19 16v6"/>
+      </svg>
+      <span>Tambah</span>
+    </button>
+
+    <!-- Import Kontak -->
+    <button 
+      id="btnOpenImportModal"
+      class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 md:py-2.5 md:px-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" 
+           class="h-5 w-5 md:h-5 md:w-5"
+           fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5l5-5M12 4v12"/>
+      </svg>
+      <span>Import</span>
+    </button>
+  </div>
+</div>
+
+
+  <!-- ============== MODAL IMPORT KONTAK ============== -->
+  <div id="importModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative">
+      <!-- Tombol Close -->
+      <button id="btnCloseModalImport" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+        ✕
+      </button>
+
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Import Kontak</h2>
+      <p class="text-sm text-gray-600 mb-4">Pilih file Excel yang berisi daftar kontak Anda. Anda juga dapat mengunduh template terlebih dahulu.</p>
+
+      <!-- Download Template -->
+      <a href="/contacts/template"
+        class="inline-flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-lg mb-4 w-full">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-cloud-down"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 18.004h-5.343c-2.572 -.004 -4.657 -2.011 -4.657 -4.487c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.38 0 2.573 .813 3.13 1.99" /><path d="M19 16v6" /><path d="M22 19l-3 3l-3 -3" /></svg> Unduh Template
+      </a>
+
+      <!-- Area Upload -->
+      <label for="fileImport" 
+        class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+       <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-type-xls"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M4 15l4 6" /><path d="M4 21l4 -6" /><path d="M17 20.25c0 .414 .336 .75 .75 .75h1.25a1 1 0 0 0 1 -1v-1a1 1 0 0 0 -1 -1h-1a1 1 0 0 1 -1 -1v-1a1 1 0 0 1 1 -1h1.25a.75 .75 0 0 1 .75 .75" /><path d="M11 15v6h3" /></svg>
+        <span class="text-gray-700 font-medium">Klik untuk pilih file</span>
+        <span class="text-gray-400 text-xs">.xls / .xlsx (maks 5MB)</span>
+        <input type="file" id="fileImport" name="file" hidden>
+      </label>
+
+      <p id="fileNamePreview" class="text-sm text-gray-700 mt-3 hidden"></p>
+
+      <!-- Tombol Kirim -->
+      <button 
+        id="btnSubmitImport"
+        class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled
+      >
+        🚀 Import Sekarang
+      </button>
     </div>
   </div>
+
+  <!-- Bulk Actions -->
+  <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <button 
+        type="submit"
+        form="bulk-delete-form"
+        id="btnHapusTerpilih"
+        class="flex items-center bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg shadow-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+        Hapus Terpilih
+      </button>
+    </div>
+  </div>
+
 
 
   <!-- Contacts Table -->
@@ -234,3 +294,4 @@
 </div>
 
 <script src="/js/contacts.js"></script>
+<script src="/js/contacts-import.js"></script>

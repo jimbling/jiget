@@ -22,7 +22,7 @@ exports.index = async (req, res) => {
 // Controller saveGroup
 exports.saveGroup = async (req, res) => {
   try {
-    console.log('📩 saveGroup req.body:', req.body); // Debug log
+    console.log('📩 saveGroup req.body:', req.body); 
 
     const { group_id, name, contact_ids } = req.body;
     if (!name) {
@@ -79,7 +79,7 @@ exports.saveGroup = async (req, res) => {
 
 
 
-// ✅ Hapus grup (JSON response)
+// Hapus grup (JSON response)
 exports.destroy = async (req, res) => {
   try {
     const { id } = req.params;
@@ -92,7 +92,7 @@ exports.destroy = async (req, res) => {
   }
 };
 
-// ✅ Hapus member dari grup (JSON response)
+// Hapus member dari grup (JSON response)
 exports.removeMember = async (req, res) => {
   try {
     const { id } = req.params; // group_id

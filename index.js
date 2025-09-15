@@ -10,10 +10,10 @@ const { initWhatsApp } = require('./controller/whatsapp');
 
 const app = express();
 
-const multer = require('multer');
-const upload = multer();
+// const multer = require('multer');
+// const upload = multer();
 
-app.use(upload.none());
+// app.use(upload.none());
 
 // 🔒 Security & Performance
 app.use(helmet());
@@ -114,15 +114,8 @@ initWhatsApp();
 // Graceful Shutdown
 process.on('SIGINT', async () => {
   console.log('\n🛑 Shutting down...');
-  const { disconnectSock } = require('./whatsapp/whatsapp');
+  const { disconnectSock } = require('./controller/whatsapp');
   await disconnectSock();
   process.exit(0);
 });
 
-// Graceful Shutdown
-process.on('SIGINT', async () => {
-  console.log('\n🛑 Shutting down...');
-  const { disconnectSock } = require('./whatsapp/whatsapp');
-  await disconnectSock();
-  process.exit(0);
-});

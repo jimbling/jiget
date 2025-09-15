@@ -1,3 +1,5 @@
+const XLSX = require('xlsx');
+const fs = require('fs');
 const { Contact } = require('../models');
 
 module.exports = {
@@ -94,3 +96,49 @@ index: async (req, res) => {
     }
   }
 };
+
+
+module.exports.import = async (req, res) => {
+  try {
+    if (!req.file) {
+      console.error('❌ Tidak ada file dikirim!');
+      return res.status(400).json({ success: false, message: 'File tidak ditemukan' });
+    }
+
+    console.log(`📂 Membaca file: ${req.file.path}`);
+
+    const workbook = XLSX.readFile(req.file.path);
+    const sheetName = workbook.SheetNames[0];
+    console.log('📑 Sheet ditemukan:', sheetName);
+
+    const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+    console.log(`📊 Jumlah baris terbaca: ${sheet.length}`);
+
+    let contacts = [];
+    for (let row of sheet) {
+      console.log('➡️ Row:', row);
+      if (!row.Nama || !row.Nomor) {
+        console.warn('⚠️ Baris dilewati karena tidak ada Nama/Nomor:', row);
+        continue;
+      }
+      contacts.push({
+        name: row.Nama,
+        phone_number: String(row.Nomor).replace(/\D/g, '')
+      });
+    }
+
+    console.log(`✅ Total kontak yang akan disimpan: ${contacts.length}`);
+
+    await Contact.bulkCreate(contacts);
+    fs.unlinkSync(req.file.path);
+
+    return res.json({ success: true, count: contacts.length });
+
+  } catch (err) {
+    console.error('💥 ERROR saat import:', err);
+    return res.status(500).json({ success: false, message: 'Gagal import kontak', error: err.message });
+  }
+};
+
+
+
