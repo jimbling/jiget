@@ -42,6 +42,12 @@
         .token-field:focus {
             box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.3);
         }
+        #importModal {
+  background-color: rgba(0, 0, 0, 0.6); /* <- lebih gelap, bisa ubah 0.7 untuk lebih pekat */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  transition: opacity 0.3s ease;
+}
     </style>
     
 

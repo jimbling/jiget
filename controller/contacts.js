@@ -32,7 +32,7 @@ index: async (req, res) => {
 
       // Render halaman biasa
       res.render('contacts/index', {
-        title: 'Daftar Kontak',
+        title: 'Daftar Kontak | Jiget',
         contacts: rows,
         currentPage: page,
         totalPages

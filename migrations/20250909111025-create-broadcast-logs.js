@@ -5,8 +5,8 @@ module.exports = {
     await queryInterface.createTable('broadcast_logs', {
       id: {
         type: Sequelize.BIGINT,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
         allowNull: false,
       },
       broadcast_id: {
@@ -14,35 +14,39 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'broadcasts',
-          key: 'id'
+          key: 'id',
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       contact_id: {
         type: Sequelize.BIGINT,
         allowNull: false,
         references: {
           model: 'contacts',
-          key: 'id'
+          key: 'id',
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       status: {
         type: Sequelize.ENUM('sent', 'delivered', 'read', 'failed'),
         allowNull: false,
-        defaultValue: 'sent'
+        defaultValue: 'sent',
+      },
+      error_message: {
+        type: Sequelize.TEXT,
+        allowNull: true,
       },
       sent_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW'),
-      }
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
     });
   },
 
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('broadcast_logs');
   }
 };

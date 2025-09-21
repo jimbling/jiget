@@ -42,7 +42,7 @@ router.post('/send', async (req, res) => {
     try {
         await sock.sendMessage(`${number}@s.whatsapp.net`, { text: message });
 
-        // ✅ log ke database (teks biasa → is_media = 0)
+       
         await db.query(
             'INSERT INTO wa_messages (number, message, type, status, is_media) VALUES (?, ?, ?, ?, ?)',
             [number, message, 'outbound', 'sent', 0]
@@ -50,7 +50,7 @@ router.post('/send', async (req, res) => {
 
         res.json({ success: true, number, message });
     } catch (err) {
-        // ❌ kalau gagal, tetap log ke DB + response error
+       
         await db.query(
             'INSERT INTO wa_messages (number, message, type, status, response, is_media) VALUES (?, ?, ?, ?, ?, ?)',
             [number, message, 'outbound', 'failed', err.message, 0]

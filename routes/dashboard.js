@@ -48,7 +48,7 @@ router.get('/devices', async (req, res) => {
     const token = tokenRows.length ? tokenRows[0].token : null;
 
   res.render('devices', {
-    title: 'Perangkat',      
+    title: 'Perangkat | Jiget',      
     device: {
         id: sock.user?.id || 'main',
         name: sock.user?.name || 'WhatsApp Device',

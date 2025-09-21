@@ -1,7 +1,6 @@
-
-
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('importModal');
+  const modalContent = modal.querySelector('div'); // ambil box putih
   const btnOpenModal = document.getElementById('btnOpenImportModal');
   const btnCloseModal = document.getElementById('btnCloseModalImport');
   const fileInput = document.getElementById('fileImport');
@@ -9,20 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSubmitImport = document.getElementById('btnSubmitImport');
   let selectedFile = null;
 
-  // Open modal
-  btnOpenModal.addEventListener('click', () => {
+  function openModal() {
     modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  });
+    setTimeout(() => {
+      modal.classList.add('flex');
+      modalContent.classList.remove('scale-95', 'opacity-0');
+      modalContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
+  }
 
-  // Close modal
-  btnCloseModal.addEventListener('click', () => {
-    modal.classList.remove('flex');
-    modal.classList.add('hidden');
-    resetModal();
-  });
+  function closeModal() {
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+      resetModal();
+    }, 200);
+  }
 
-  // File chosen
+  btnOpenModal.addEventListener('click', openModal);
+  btnCloseModal.addEventListener('click', closeModal);
+
   fileInput.addEventListener('change', (e) => {
     selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -35,10 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Submit Import
   btnSubmitImport.addEventListener('click', async () => {
     if (!selectedFile) return;
-
     Swal.fire({
       title: 'Mengupload...',
       text: 'Mohon tunggu sementara file sedang diproses',
@@ -49,14 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
-
       const res = await fetch('/contacts/import', { method: 'POST', body: formData });
       const contentType = res.headers.get('content-type') || '';
       if (!contentType.includes('application/json')) {
         Swal.fire('Gagal!', 'Server mengembalikan respon tidak valid.', 'error');
         return;
       }
-
       const data = await res.json();
       if (data.success) {
         Swal.fire({

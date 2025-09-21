@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/login', (req, res) => {
     res.render('login', { 
         layout: 'layout_guest', 
-        title: 'Login'
+        title: 'Login | Jiget'
     });
 });
 

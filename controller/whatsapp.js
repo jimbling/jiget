@@ -102,7 +102,7 @@ async function initWhatsApp() {
                 console.error('❌ Gagal cek auto-reply:', err.message);
             }
 
-            // Contoh hardcoded reply (bisa dihapus)
+            
             if (text.toLowerCase() === 'ping') {
                 try {
                     await sock.sendMessage(sender, { text: 'Pong! 🏓' });

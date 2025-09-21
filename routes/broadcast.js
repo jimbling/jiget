@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
   );
 
   res.render('broadcast/index', { 
-    title: 'Broadcast', 
+    title: 'Broadcast | Jiget', 
     broadcasts,
     currentPage: page,
     totalPages
@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
 router.get('/create', async (req, res) => {
   const [groups] = await db.execute('SELECT * FROM contact_groups');
   const [contacts] = await db.execute('SELECT * FROM contacts');
-  res.render('broadcast/create', { title: 'Buat Broadcast', groups, contacts });
+  res.render('broadcast/create', { title: 'Buat Broadcast | Jiget', groups, contacts });
 });
 
 // ================== Simpan & jalankan broadcast baru ==================

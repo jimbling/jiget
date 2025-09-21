@@ -5,8 +5,8 @@ module.exports = {
     await queryInterface.createTable('contact_group_members', {
       id: {
         type: Sequelize.BIGINT,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
         allowNull: false,
       },
       contact_id: {
@@ -14,37 +14,30 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'contacts',
-          key: 'id'
+          key: 'id',
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       group_id: {
         type: Sequelize.BIGINT,
         allowNull: false,
         references: {
           model: 'contact_groups',
-          key: 'id'
+          key: 'id',
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       added_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW'),
-      }
-    });
-
-    // unique constraint supaya 1 contact tidak double di grup yang sama
-    await queryInterface.addConstraint('contact_group_members', {
-      fields: ['contact_id', 'group_id'],
-      type: 'unique',
-      name: 'unique_contact_group'
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
     });
   },
 
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('contact_group_members');
   }
 };

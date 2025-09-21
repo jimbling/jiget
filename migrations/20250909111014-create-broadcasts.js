@@ -5,8 +5,8 @@ module.exports = {
     await queryInterface.createTable('broadcasts', {
       id: {
         type: Sequelize.BIGINT,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
         allowNull: false,
       },
       title: {
@@ -20,30 +20,29 @@ module.exports = {
       status: {
         type: Sequelize.ENUM('pending', 'in_progress', 'done', 'failed'),
         allowNull: false,
-        defaultValue: 'pending'
+        defaultValue: 'pending',
       },
       target_type: {
-        type: Sequelize.ENUM('all', 'group', 'custom_list'),
+        type: Sequelize.ENUM('all', 'group', 'contact', 'custom_list'),
         allowNull: false,
-        defaultValue: 'all'
       },
       target_ids: {
         type: Sequelize.JSON,
-        allowNull: true, // simpan array id grup/kontak
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       executed_at: {
         type: Sequelize.DATE,
         allowNull: true,
-      }
+      },
     });
   },
 
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('broadcasts');
   }
 };

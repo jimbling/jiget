@@ -12,7 +12,7 @@ router.get('/profile/edit', async (req, res) => {
     if (!user) return res.redirect('/login');
 
     res.render('edit_profile', { 
-      title: 'Edit Profile', 
+      title: 'Edit Profile | Jiget', 
       user,
       success: req.query.success || null,
       error: req.query.error || null

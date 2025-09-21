@@ -20,7 +20,7 @@ router.get('/messages', async (req, res) => {
         );
 
         res.render('messages', {
-            title: 'Riwayat Pesan',
+            title: 'Riwayat Pesan | Jiget',
             messages: rows,
             currentPage: page,
             totalPages
