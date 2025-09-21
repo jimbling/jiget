@@ -13,12 +13,20 @@ const app = express();
 // const multer = require('multer');
 // const upload = multer();
 
-// app.use(upload.none());
-
 // 🔒 Security & Performance
-app.use(helmet({
-  hsts: false
-}));
+app.use(
+  helmet({
+    hsts: false, // ✅ matikan HSTS di dev
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+      
+        "upgrade-insecure-requests": null,
+      },
+    },
+  })
+);
 
 app.use(compression());
 app.use(morgan('dev'));
