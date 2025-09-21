@@ -16,7 +16,9 @@ const app = express();
 // app.use(upload.none());
 
 // 🔒 Security & Performance
-app.use(helmet());
+app.use(helmet({
+  hsts: process.env.NODE_ENV === 'production'  // aktifkan hanya di production
+}));
 app.use(compression());
 app.use(morgan('dev'));
 
