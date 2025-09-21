@@ -36,10 +36,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 15 * 60 * 1000
-    }
+   cookie: {
+  secure: process.env.NODE_ENV === 'production' && process.env.FORCE_HTTPS === 'true',
+  maxAge: 15 * 60 * 1000
+}
+
 }));
 
 // 🕒 Auto logout middleware
