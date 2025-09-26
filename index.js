@@ -11,25 +11,37 @@ const { initWhatsApp } = require('./controller/whatsapp');
 const app = express();
 
 /* ================================
-   ✅ Redis Store (Fix untuk connect-redis v9)
+   🛠️ Redis + Fallback MemoryStore
 ================================== */
-const { RedisStore } = require('connect-redis');
-const { createClient } = require('redis');
-
-const redisClient = createClient({
-  socket: { host: '127.0.0.1', port: 6379 }
-});
-
-redisClient.on('error', (err) => console.error('❌ Redis Client Error:', err));
-
-(async () => {
+let sessionStore;
+if (process.env.USE_REDIS === 'true') {
   try {
-    await redisClient.connect();
-    console.log('✅ Redis Client Connected');
+    const { RedisStore } = require('connect-redis');
+    const { createClient } = require('redis');
+
+    const redisClient = createClient({ socket: { host: '127.0.0.1', port: 6379 } });
+
+    redisClient.on('error', (err) => console.error('❌ Redis Client Error:', err));
+
+    (async () => {
+      try {
+        await redisClient.connect();
+        console.log('✅ Redis Client Connected');
+      } catch (err) {
+        console.error('❌ Gagal konek Redis, fallback ke MemoryStore:', err);
+      }
+    })();
+
+    sessionStore = new RedisStore({ client: redisClient });
   } catch (err) {
-    console.error('❌ Gagal konek Redis:', err);
+    console.error('⚠️ Redis tidak tersedia, fallback ke MemoryStore:', err);
   }
-})();
+}
+
+if (!sessionStore) {
+  // fallback ke MemoryStore
+  console.log('⚠️ Menggunakan MemoryStore (session hilang saat restart)');
+}
 
 /* ================================
    🔒 Security & Performance
@@ -51,18 +63,16 @@ app.use(compression());
 app.use(morgan('dev'));
 
 /* ================================
-   🔑 Session pakai Redis
+   🔑 Session
 ================================== */
 app.use(
   session({
-    store: new RedisStore({ client: redisClient }),
+    store: sessionStore,
     secret: process.env.SESSION_SECRET || 'keyboard cat',
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure:
-        process.env.NODE_ENV === 'production' &&
-        process.env.FORCE_HTTPS === 'true',
+      secure: process.env.NODE_ENV === 'production' && process.env.FORCE_HTTPS === 'true',
       maxAge: 15 * 60 * 1000,
     },
   })
@@ -116,10 +126,8 @@ app.set('trust proxy', 1);
 /* ================================
    🌐 Routes
 ================================== */
-// Route tanpa login (public)
 app.use('/docs', require('./routes/docs'));
 
-// API limiter
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 30,
@@ -127,7 +135,6 @@ const apiLimiter = rateLimit({
 });
 app.use('/api/wa', apiLimiter, require('./routes/wa'));
 
-// Route dengan login
 app.use(require('./routes/auth'));
 app.use('/', authRequired, require('./routes/dashboard'));
 app.use('/', authRequired, require('./routes/messages'));
