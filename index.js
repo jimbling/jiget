@@ -10,12 +10,30 @@ const { initWhatsApp } = require('./controller/whatsapp');
 
 const app = express();
 
-// ✅ Tambahan: Redis Store
-const RedisStore = require('connect-redis').default;
-const Redis = require('ioredis');
-const redisClient = new Redis({ host: '127.0.0.1', port: 6379 });
+/* ================================
+   ✅ Redis Store (Fix untuk connect-redis v9)
+================================== */
+const { RedisStore } = require('connect-redis');
+const { createClient } = require('redis');
 
-// 🔒 Security & Performance
+const redisClient = createClient({
+  socket: { host: '127.0.0.1', port: 6379 }
+});
+
+redisClient.on('error', (err) => console.error('❌ Redis Client Error:', err));
+
+(async () => {
+  try {
+    await redisClient.connect();
+    console.log('✅ Redis Client Connected');
+  } catch (err) {
+    console.error('❌ Gagal konek Redis:', err);
+  }
+})();
+
+/* ================================
+   🔒 Security & Performance
+================================== */
 app.use(
   helmet({
     hsts: false,
@@ -23,7 +41,7 @@ app.use(
       useDefaults: true,
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "upgrade-insecure-requests": null,
+        'upgrade-insecure-requests': null,
       },
     },
   })
@@ -32,19 +50,27 @@ app.use(
 app.use(compression());
 app.use(morgan('dev'));
 
-// 🔑 Session  ✅ Ganti MemoryStore -> RedisStore
-app.use(session({
-  store: new RedisStore({ client: redisClient }),
-  secret: process.env.SESSION_SECRET || 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production' && process.env.FORCE_HTTPS === 'true',
-    maxAge: 15 * 60 * 1000
-  }
-}));
+/* ================================
+   🔑 Session pakai Redis
+================================== */
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.SESSION_SECRET || 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure:
+        process.env.NODE_ENV === 'production' &&
+        process.env.FORCE_HTTPS === 'true',
+      maxAge: 15 * 60 * 1000,
+    },
+  })
+);
 
-// 🕒 Auto logout middleware
+/* ================================
+   🕒 Auto Logout Middleware
+================================== */
 app.use((req, res, next) => {
   if (req.path.startsWith('/docs')) return next();
 
@@ -63,20 +89,18 @@ app.use((req, res, next) => {
   next();
 });
 
+/* ================================
+   🏗️ Middleware & View Engine
+================================== */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(expressLayouts);
-
-// Route tanpa Autentikasi Login, bisa di akses Publik
-app.use('/docs', require('./routes/docs'));
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.set('layout', 'layout');
-
-app.use(expressLayouts);
 
 // ✅ Auth Middleware
 const authRequired = require('./middlewares/auth');
@@ -89,15 +113,21 @@ app.use((req, res, next) => {
 });
 app.set('trust proxy', 1);
 
-// Rate Limit API WA
+/* ================================
+   🌐 Routes
+================================== */
+// Route tanpa login (public)
+app.use('/docs', require('./routes/docs'));
+
+// API limiter
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 30,
-  message: { error: 'Terlalu banyak request, coba lagi nanti.' }
+  message: { error: 'Terlalu banyak request, coba lagi nanti.' },
 });
 app.use('/api/wa', apiLimiter, require('./routes/wa'));
 
-// Route lainnya
+// Route dengan login
 app.use(require('./routes/auth'));
 app.use('/', authRequired, require('./routes/dashboard'));
 app.use('/', authRequired, require('./routes/messages'));
@@ -108,15 +138,21 @@ app.use('/', authRequired, require('./routes/contacts'));
 app.use('/groups', authRequired, require('./routes/groups'));
 app.use('/broadcast', authRequired, require('./routes/broadcast'));
 
-// Error Handler
+/* ================================
+   ❗ Error Handler
+================================== */
 app.use((err, req, res, next) => {
   console.error('🔥 Server Error:', err.stack);
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-// Jalankan Server
+/* ================================
+   🚀 Start Server
+================================== */
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 API Gateway berjalan di http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 API Gateway berjalan di http://localhost:${PORT}`)
+);
 
 // WhatsApp Init
 initWhatsApp();
@@ -125,6 +161,8 @@ initWhatsApp();
 process.on('SIGINT', async () => {
   console.log('\n🛑 Shutting down...');
   const { disconnectSock } = require('./controller/whatsapp');
-  await disconnectSock();
+  if (typeof disconnectSock === 'function') {
+    await disconnectSock();
+  }
   process.exit(0);
 });
