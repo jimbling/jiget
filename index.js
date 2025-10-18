@@ -78,6 +78,15 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  console.log('🔍 Session Debug:', {
+    id: req.sessionID,
+    user: req.session.user,
+    cookie: req.headers.cookie
+  });
+  next();
+});
+
 /* ================================
    🕒 Auto Logout Middleware
 ================================== */
