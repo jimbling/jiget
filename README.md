@@ -35,12 +35,6 @@ Dibangun menggunakan **Node.js**, **TailwindCSS**, dan arsitektur yang ringan, J
 Username: admin@example.com
 Password: admin123
 
-Bisa uji coba untuk menautkan perangkat.
-
-> ⚠️ **Catatan:**  
-> - Saat ini server masih berjalan **lokal** menggunakan tunnel.  
-> - Akses mungkin **tidak selalu tersedia**.  
-> - Jika tidak bisa diakses, tunggu beberapa saat atau hubungi pengelola.
 
 
 
