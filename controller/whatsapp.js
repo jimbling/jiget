@@ -13,12 +13,12 @@ const { generateToken } = require('./token');
 let sock = null;
 let isConnected = false;
 let lastQR = null;
-let reconnecting = false; // ⛔ cegah loop reconnect ganda
+let reconnecting = false; 
 
 async function initWhatsApp() {
   try {
     const { state, saveCreds } = await useMultiFileAuthState(
-      path.join(__dirname, '../baileys_auth_info') // pindah ke atas folder agar tidak numpuk
+      path.join(__dirname, '../baileys_auth_info') 
     );
 
     const { version } = await fetchLatestBaileysVersion();
