@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  jgateway:
+    build: .
+    container_name: jgateway-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+
+  mariadb:
+    image: mariadb:11
+    container_name: jgateway-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_jiget
+      MYSQL_USER: jiget_user
+      MYSQL_PASSWORD: jiget_pass
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  db_data:
