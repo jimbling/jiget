@@ -9,17 +9,19 @@ const path = require('path');
 const P = require('pino');
 const db = require('../db');
 const { generateToken } = require('./token');
+const fs = require('fs-extra');
+
+const authFolder = path.join(__dirname, '../baileys_auth_info');
 
 let sock = null;
 let isConnected = false;
 let lastQR = null;
-let reconnecting = false; 
+let reconnecting = false;
 
 async function initWhatsApp() {
   try {
-    const { state, saveCreds } = await useMultiFileAuthState(
-      path.join(__dirname, '../baileys_auth_info') 
-    );
+    // Pastikan folder auth ada atau buat baru
+    const { state, saveCreds } = await useMultiFileAuthState(authFolder);
 
     const { version } = await fetchLatestBaileysVersion();
 
@@ -73,16 +75,33 @@ async function initWhatsApp() {
 
         console.log(`⚠️ WhatsApp disconnected, reason: ${reason}`);
 
+        // Jika session logout, hapus folder auth dan init ulang
         if (reason === DisconnectReason.loggedOut || reason === 'loggedOut' || reason === 401) {
           console.log('❌ Session logout, perlu scan ulang.');
+
+          // Update DB
           if (sock?.user?.id)
             await db.query('UPDATE wa_tokens SET is_active=0 WHERE device_id=?', [sock.user.id]);
+
+          // Hapus folder auth
+          try {
+            await fs.remove(authFolder);
+            console.log('🗑️ Folder auth dihapus, siap scan QR ulang.');
+          } catch (err) {
+            console.error('❌ Gagal hapus folder auth:', err.message);
+          }
+
+          // Reset status
+          isConnected = false;
+          lastQR = null;
+          reconnecting = false;
+
+          // Init ulang WhatsApp agar QR baru muncul
+          initWhatsApp();
         } else if (!reconnecting) {
           reconnecting = true;
           console.log('🔄 Mencoba reconnect dalam 5 detik...');
-          setTimeout(() => {
-            initWhatsApp();
-          }, 5000);
+          setTimeout(() => initWhatsApp(), 5000);
         }
       }
     });
