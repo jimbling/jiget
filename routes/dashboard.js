@@ -34,7 +34,7 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
-/// ===================
+// ===================
 // Devices
 // ===================
 router.get('/devices', async (req, res) => {
@@ -47,28 +47,29 @@ router.get('/devices', async (req, res) => {
 
     const totalDevices = devices.length;
     const connectedCount = devices.filter(d => d.is_active === 1).length;
-
-   
+    const device = devices.length > 0 ? devices[0] : null; // ✅ ambil satu perangkat pertama (terbaru)
     const accountStatus = connectedCount > 0 ? 'Aktif' : 'Tidak Aktif';
 
     res.render('devices', {
       title: 'Perangkat | Jiget',
-      devices,
+      device,            // ✅ kirim ke EJS
       totalDevices,
       connectedCount,
       accountStatus
     });
+
   } catch (err) {
     console.error('❌ Gagal memuat data devices:', err);
     res.render('devices', {
       title: 'Perangkat | Jiget',
-      devices: [],
+      device: null,
       totalDevices: 0,
       connectedCount: 0,
       accountStatus: 'Tidak Aktif'
     });
   }
 });
+
 
 
 
