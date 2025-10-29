@@ -38,27 +38,47 @@ router.get('/dashboard', async (req, res) => {
 // Devices
 // ===================
 router.get('/devices', async (req, res) => {
+  try {
     const sock = getSock();
-    if (!sock) return res.render('devices', { device: null });
 
-    const [tokenRows] = await db.query(
+    // Ambil statistik dari DB
+    const [allDevices] = await db.query('SELECT COUNT(*) AS total FROM wa_tokens');
+    const [connectedDevices] = await db.query('SELECT COUNT(*) AS connected FROM wa_tokens WHERE is_active = 1');
+    const [users] = await db.query('SELECT COUNT(*) AS total_users FROM users');
+
+    let token = null;
+    if (sock) {
+      const [tokenRows] = await db.query(
         'SELECT token FROM wa_tokens WHERE device_id=? AND is_active=1 ORDER BY created_at DESC LIMIT 1',
         [sock.user?.id]
-    );
-    const token = tokenRows.length ? tokenRows[0].token : null;
-
-  res.render('devices', {
-    title: 'Perangkat | Jiget',      
-    device: {
-        id: sock.user?.id || 'main',
-        name: sock.user?.name || 'WhatsApp Device',
-        isConnected: getStatus(),
-        token: token
+      );
+      token = tokenRows.length ? tokenRows[0].token : null;
     }
+
+    res.render('devices', {
+      title: 'Perangkat | Jiget',
+      stats: {
+        total: allDevices[0].total || 0,
+        connected: connectedDevices[0].connected || 0,
+        users: users[0].total_users || 0,
+      },
+      device: sock
+        ? {
+            id: sock.user?.id || 'main',
+            name: sock.user?.name || 'WhatsApp Device',
+            isConnected: getStatus(),
+            token,
+          }
+        : null,
+    });
+  } catch (err) {
+    console.error('Error loading devices page:', err);
+    res.status(500).send('Terjadi kesalahan saat memuat halaman perangkat.');
+  }
 });
+
 
   
-});
 
 // ===================
 // QR Endpoint
