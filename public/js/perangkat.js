@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("📦 perangkat.js berhasil dimuat dan DOM siap!");
+
     const qrContainer = document.querySelector('#qr-container');
     const deviceId = document.body.dataset.deviceId;
     const isConnected = document.body.dataset.isConnected === "true";
