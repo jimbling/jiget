@@ -83,70 +83,65 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ===== Disconnect Device =====
-    window.disconnectDevice = async function (event) {
-        if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
+window.disconnectDevice = async function (event) {
+    if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
 
-        try {
-            const button = event.target.closest('button');
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-            button.disabled = true;
+    try {
+        const button = event.target.closest('button');
+        const deviceId = button.dataset.deviceId; // ✅ ambil langsung dari tombol
 
-            const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
-            const data = await res.json();
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        button.disabled = true;
 
-            if (data.success) {
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'success',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true
-                });
-                setTimeout(() => location.reload(), 3000);
-            } else {
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true
-                });
-                button.innerHTML = originalText;
-                button.disabled = false;
-            }
-        } catch (err) {
-            console.error(err);
+        const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
+        const data = await res.json();
+
+        if (data.success) {
             Swal.fire({
                 toast: true,
                 position: 'top-end',
-                icon: 'error',
-                title: 'Terjadi kesalahan saat memutus perangkat',
+                icon: 'success',
+                title: data.message,
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true
             });
-            const button = event.target.closest('button');
-            button.innerHTML = 'Putuskan';
+            setTimeout(() => location.reload(), 3000);
+        } else {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: data.message,
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
+            button.innerHTML = originalText;
             button.disabled = false;
         }
+    } catch (err) {
+        console.error(err);
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'error',
+            title: 'Terjadi kesalahan saat memutus perangkat',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+        });
+        const button = event.target.closest('button');
+        button.innerHTML = 'Putuskan';
+        button.disabled = false;
     }
+};
 
-    // ===== Event Listener untuk tombol Putuskan =====
-    // Jika hanya ada satu perangkat:
-    const disconnectBtn = document.getElementById('disconnect-btn');
-    if (disconnectBtn) {
-        disconnectBtn.addEventListener('click', disconnectDevice);
+   document.addEventListener('click', function (event) {
+    if (event.target.closest('.disconnect-btn')) {
+        disconnectDevice(event);
     }
+});
 
-    // Jika nanti ada banyak perangkat (optional)
-    document.addEventListener('click', function (event) {
-        if (event.target.closest('.disconnect-btn')) {
-            disconnectDevice(event);
-        }
-    });
 });
