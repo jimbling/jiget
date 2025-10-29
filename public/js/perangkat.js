@@ -138,10 +138,16 @@ window.disconnectDevice = async function (event) {
     }
 };
 
-   document.addEventListener('click', function (event) {
-    if (event.target.closest('.disconnect-btn')) {
+  document.addEventListener('click', function (event) {
+    const btn = event.target.closest('.disconnect-btn');
+
+    if (btn) {
+        console.log('✅ Tombol Putuskan diklik!');
+        console.log('Device ID:', btn.dataset.deviceId);
         disconnectDevice(event);
     }
+
+
 });
 
 });
