@@ -68,11 +68,11 @@
                     <% if (device.isConnected) { %>
                     <!-- ✅ Ganti inline onclick dengan id dan data-device-id -->
                     <button 
-                        id="disconnect-btn" 
-                        data-device-id="<%= device.id %>" 
-                        class="mt-4 md:mt-0 flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
+                        class="disconnect-btn mt-4 md:mt-0 flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                        data-device-id="<%= device.id %>">
                         <i class="fas fa-unlink mr-2"></i> Putuskan
                     </button>
+
                     <% } %>
                 </div>
                 
