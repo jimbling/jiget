@@ -39,22 +39,20 @@ router.get('/dashboard', async (req, res) => {
 // ===================
 router.get('/devices', async (req, res) => {
   try {
-    const sock = getSock();
-    const isConnected = getStatus();
-
-    // Ambil semua perangkat dari tabel wa_tokens
     const [devices] = await db.query(`
-      SELECT id, device_id, is_active, token, expired_at, created_at, updated_at
-      FROM wa_tokens
-      ORDER BY created_at DESC
-    `);
+  SELECT id, device_id, is_active, token, expired_at, created_at, updated_at
+  FROM wa_tokens
+  ORDER BY created_at DESC
+`);
 
-    // Kirim data ke view
-    res.render('devices', {
-      title: 'Perangkat | Jiget',
-      devices, // ← semua device dikirim ke EJS
-      connectedDevices: isConnected ? 1 : 0
-    });
+const connectedCount = devices.filter(d => d.is_active === 1).length;
+
+res.render('devices', {
+  title: 'Perangkat | Jiget',
+  devices,
+  connectedDevices: connectedCount
+});
+
   } catch (err) {
     console.error('❌ Gagal memuat data devices:', err);
     res.render('devices', {
