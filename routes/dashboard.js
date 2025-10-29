@@ -34,34 +34,42 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
-// ===================
+/// ===================
 // Devices
 // ===================
 router.get('/devices', async (req, res) => {
   try {
     const [devices] = await db.query(`
-  SELECT id, device_id, is_active, token, expired_at, created_at, updated_at
-  FROM wa_tokens
-  ORDER BY created_at DESC
-`);
+      SELECT id, device_id, is_active, token, expired_at, created_at, updated_at
+      FROM wa_tokens
+      ORDER BY created_at DESC
+    `);
 
-const connectedCount = devices.filter(d => d.is_active === 1).length;
+    const totalDevices = devices.length;
+    const connectedCount = devices.filter(d => d.is_active === 1).length;
 
-res.render('devices', {
-  title: 'Perangkat | Jiget',
-  devices,
-  connectedDevices: connectedCount
-});
+   
+    const accountStatus = connectedCount > 0 ? 'Aktif' : 'Tidak Aktif';
 
+    res.render('devices', {
+      title: 'Perangkat | Jiget',
+      devices,
+      totalDevices,
+      connectedCount,
+      accountStatus
+    });
   } catch (err) {
     console.error('❌ Gagal memuat data devices:', err);
     res.render('devices', {
       title: 'Perangkat | Jiget',
       devices: [],
-      connectedDevices: 0
+      totalDevices: 0,
+      connectedCount: 0,
+      accountStatus: 'Tidak Aktif'
     });
   }
 });
+
 
 
   
