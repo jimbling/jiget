@@ -1,11 +1,12 @@
 version: "3.9"
 
 services:
+  # Service untuk aplikasi Node.js
   jgateway:
     build: .
     container_name: jgateway-app
     ports:
-      - "3000:3000"
+      - "${APP_PORT}:3000"
     env_file:
       - .env
     depends_on:
@@ -14,6 +15,7 @@ services:
     volumes:
       - ./uploads:/app/uploads
 
+  # Service untuk database MariaDB
   mariadb:
     image: mariadb:11
     container_name: jgateway-db

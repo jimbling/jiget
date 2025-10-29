@@ -14,7 +14,7 @@ Dibangun menggunakan **Node.js**, **TailwindCSS**, dan arsitektur yang ringan, J
 
 - ✅ **Kirim Pesan** – Kirim pesan teks langsung ke nomor WhatsApp.  
 - 📢 **Broadcast** – Kirim pesan massal ke banyak kontak/grup sekaligus.  
-- 🖼 **Pesan Media** – Dukung kirim gambar, dokumen, audio, dan video.  
+- 🖼 **Pesan Media** – Mendukung kirim gambar, dokumen, audio, dan video.  
 - 🤖 **Pesan Balasan Otomatis** – Buat auto-reply sesuai kata kunci.  
 - 🔑 **API Token** – 1 perangkat = 1 token untuk komunikasi API yang aman.  
 - 🖥 **UI Modern** – Menggunakan TailwindCSS untuk tampilan yang bersih dan responsif.  
