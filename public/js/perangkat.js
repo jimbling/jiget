@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
 
         try {
-            const button = event.target;
+            const button = event.target.closest('button');
             const originalText = button.innerHTML;
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             button.disabled = true;
@@ -130,8 +130,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 timer: 2000,
                 timerProgressBar: true
             });
-            button.innerHTML = originalText;
+            const button = event.target.closest('button');
+            button.innerHTML = 'Putuskan';
             button.disabled = false;
         }
     }
+
+    // ===== Event Listener untuk tombol Putuskan =====
+    // Jika hanya ada satu perangkat:
+    const disconnectBtn = document.getElementById('disconnect-btn');
+    if (disconnectBtn) {
+        disconnectBtn.addEventListener('click', disconnectDevice);
+    }
+
+    // Jika nanti ada banyak perangkat (optional)
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('.disconnect-btn')) {
+            disconnectDevice(event);
+        }
+    });
 });
