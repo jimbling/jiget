@@ -38,27 +38,36 @@ router.get('/dashboard', async (req, res) => {
 // Devices
 // ===================
 router.get('/devices', async (req, res) => {
+  try {
     const sock = getSock();
-    if (!sock) return res.render('devices', { device: null });
+    const isConnected = getStatus();
 
-    const [tokenRows] = await db.query(
-        'SELECT token FROM wa_tokens WHERE device_id=? AND is_active=1 ORDER BY created_at DESC LIMIT 1',
-        [sock.user?.id]
-    );
-    const token = tokenRows.length ? tokenRows[0].token : null;
+    // Ambil semua perangkat dari tabel wa_tokens
+    const [devices] = await db.query(`
+      SELECT id, device_id, is_active, token, expired_at, created_at, updated_at
+      FROM wa_tokens
+      ORDER BY created_at DESC
+    `);
 
-  res.render('devices', {
-    title: 'Perangkat | Jiget',      
-    device: {
-        id: sock.user?.id || 'main',
-        name: sock.user?.name || 'WhatsApp Device',
-        isConnected: getStatus(),
-        token: token
-    }
+    // Kirim data ke view
+    res.render('devices', {
+      title: 'Perangkat | Jiget',
+      devices, // ← semua device dikirim ke EJS
+      connectedDevices: isConnected ? 1 : 0
+    });
+  } catch (err) {
+    console.error('❌ Gagal memuat data devices:', err);
+    res.render('devices', {
+      title: 'Perangkat | Jiget',
+      devices: [],
+      connectedDevices: 0
+    });
+  }
 });
+
 
   
-});
+
 
 // ===================
 // QR Endpoint

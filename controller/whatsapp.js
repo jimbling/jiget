@@ -211,4 +211,32 @@ function getLastQR() {
   return lastQR;
 }
 
-module.exports = { initWhatsApp, getSock, getStatus, getLastQR, sendMessage };
+// Ambil daftar device aktif
+async function getActiveDevices() {
+  try {
+    const [rows] = await db.query(`
+      SELECT device_id, token, expired_at, created_at, updated_at
+      FROM wa_tokens
+      WHERE is_active = 1
+      ORDER BY updated_at DESC
+    `);
+
+    if (rows.length === 0) {
+      console.log('⚠️ Tidak ada device WhatsApp yang aktif.');
+    } else {
+      console.log('📱 Daftar device aktif:');
+      rows.forEach((d, i) => {
+        console.log(`${i + 1}. ${d.device_id} | Token: ${d.token} | Exp: ${d.expired_at}`);
+      });
+    }
+
+    return rows;
+  } catch (err) {
+    console.error('❌ Gagal mengambil daftar devices:', err.message);
+    return [];
+  }
+}
+
+
+module.exports = { initWhatsApp, getSock, getStatus, getLastQR, sendMessage, getActiveDevices };
+
