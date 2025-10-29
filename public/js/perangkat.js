@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("📦 perangkat.js berhasil dimuat dan DOM siap!");
-
     const qrContainer = document.querySelector('#qr-container');
     const deviceId = document.body.dataset.deviceId;
     const isConnected = document.body.dataset.isConnected === "true";
@@ -85,37 +83,49 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ===== Disconnect Device =====
-window.disconnectDevice = async function (event) {
-    if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
+    window.disconnectDevice = async function (event) {
+        if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
 
-    try {
-        const button = event.target.closest('button');
-        const deviceId = button.dataset.deviceId; // ✅ ambil langsung dari tombol
+        try {
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            button.disabled = true;
 
-        const originalText = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-        button.disabled = true;
+            const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
+            const data = await res.json();
 
-        const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
-        const data = await res.json();
-
-        if (data.success) {
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: data.message,
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true
-            });
-            setTimeout(() => location.reload(), 3000);
-        } else {
+            if (data.success) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+                setTimeout(() => location.reload(), 3000);
+            } else {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        } catch (err) {
+            console.error(err);
             Swal.fire({
                 toast: true,
                 position: 'top-end',
                 icon: 'error',
-                title: data.message,
+                title: 'Terjadi kesalahan saat memutus perangkat',
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true
@@ -123,46 +133,5 @@ window.disconnectDevice = async function (event) {
             button.innerHTML = originalText;
             button.disabled = false;
         }
-    } catch (err) {
-        console.error(err);
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Terjadi kesalahan saat memutus perangkat',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-        });
-        const button = event.target.closest('button');
-        button.innerHTML = 'Putuskan';
-        button.disabled = false;
     }
-};
-
-  document.addEventListener('click', function (event) {
-    const btn = event.target.closest('.disconnect-btn');
-
-    if (btn) {
-        console.log('✅ Tombol Putuskan diklik!');
-        console.log('Device ID:', btn.dataset.deviceId);
-        disconnectDevice(event);
-    }
-
-
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const testBtn = document.getElementById("test-btn");
-  if (testBtn) {
-    testBtn.addEventListener("click", () => {
-      console.log("✅ Tombol test ditekan!");
-      alert("Tombol test berfungsi 🚀");
-    });
-  } else {
-    console.warn("⚠️ Tombol test tidak ditemukan di halaman!");
-  }
-});
-
-
 });

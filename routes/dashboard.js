@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');         // <<< tambahkan
-const path = require('path');     // <<< tambahkan
+const fs = require('fs');         
+const path = require('path');     
 const db = require('../db');
 const { getStatus, getLastQR, getSock, initWhatsApp } = require('../controller/whatsapp');
 
 // ===================
-// Dashboard stats
+// Dashboard
 // ===================
 router.get('/dashboard', async (req, res) => {
     try {
@@ -38,43 +38,27 @@ router.get('/dashboard', async (req, res) => {
 // Devices
 // ===================
 router.get('/devices', async (req, res) => {
-  try {
-    const [devices] = await db.query(`
-      SELECT id, device_id, is_active, token, expired_at, created_at, updated_at
-      FROM wa_tokens
-      ORDER BY created_at DESC
-    `);
+    const sock = getSock();
+    if (!sock) return res.render('devices', { device: null });
 
-    const totalDevices = devices.length;
-    const connectedCount = devices.filter(d => d.is_active === 1).length;
-    const device = devices.length > 0 ? devices[0] : null; // ✅ ambil satu perangkat pertama (terbaru)
-    const accountStatus = connectedCount > 0 ? 'Aktif' : 'Tidak Aktif';
+    const [tokenRows] = await db.query(
+        'SELECT token FROM wa_tokens WHERE device_id=? AND is_active=1 ORDER BY created_at DESC LIMIT 1',
+        [sock.user?.id]
+    );
+    const token = tokenRows.length ? tokenRows[0].token : null;
 
-    res.render('devices', {
-      title: 'Perangkat | Jiget',
-      device,            // ✅ kirim ke EJS
-      totalDevices,
-      connectedCount,
-      accountStatus
-    });
-
-  } catch (err) {
-    console.error('❌ Gagal memuat data devices:', err);
-    res.render('devices', {
-      title: 'Perangkat | Jiget',
-      device: null,
-      totalDevices: 0,
-      connectedCount: 0,
-      accountStatus: 'Tidak Aktif'
-    });
-  }
+  res.render('devices', {
+    title: 'Perangkat | Jiget',      
+    device: {
+        id: sock.user?.id || 'main',
+        name: sock.user?.name || 'WhatsApp Device',
+        isConnected: getStatus(),
+        token: token
+    }
 });
 
-
-
-
   
-
+});
 
 // ===================
 // QR Endpoint
