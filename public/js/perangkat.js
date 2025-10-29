@@ -152,4 +152,17 @@ window.disconnectDevice = async function (event) {
 
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const testBtn = document.getElementById("test-btn");
+  if (testBtn) {
+    testBtn.addEventListener("click", () => {
+      console.log("✅ Tombol test ditekan!");
+      alert("Tombol test berfungsi 🚀");
+    });
+  } else {
+    console.warn("⚠️ Tombol test tidak ditemukan di halaman!");
+  }
+});
+
+
 });
