@@ -1,23 +1,13 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ perangkat.js dimuat");
 
-    const disconnectBtn = document.querySelector('.disconnect-btn');
-    console.log("Hasil querySelector:", disconnectBtn);
-
-    if (disconnectBtn) {
-        disconnectBtn.addEventListener('click', () => {
-            console.log("✅ Tombol disconnect diklik");
-        });
-    }
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const qrContainer = document.querySelector('#qr-container');
     const deviceId = document.body.dataset.deviceId;
     const isConnected = document.body.dataset.isConnected === "true";
+    const qrContainer = document.querySelector('#qr-container');
 
-    // ===== QR Refresh =====
+    /* ------------------------------
+     * 1️⃣ Refresh QR code otomatis
+     * ------------------------------ */
     if (qrContainer && !isConnected) {
         let retryCount = 0;
         const maxRetries = 30;
@@ -62,98 +52,104 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1000);
     }
 
-    // ===== Copy Token =====
+    /* ------------------------------
+     * 2️⃣ Tombol Salin Token
+     * ------------------------------ */
     const copyBtn = document.getElementById('copy-token-btn');
     const tokenInput = document.getElementById('token-input');
-    if (copyBtn && tokenInput) {
-        copyBtn.addEventListener('click', () => {
-            tokenInput.select();
-            tokenInput.setSelectionRange(0, 99999);
 
-            navigator.clipboard.writeText(tokenInput.value)
-                .then(() => {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Token berhasil disalin!',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        timerProgressBar: true
-                    });
-                })
-                .catch(() => {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Gagal menyalin token!',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        timerProgressBar: true
-                    });
+    if (copyBtn && tokenInput) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(tokenInput.value);
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Token berhasil disalin!',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
                 });
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Gagal menyalin token!',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+            }
         });
     }
 
-    // ===== Disconnect Button (Event Binding) =====
-const disconnectBtn = document.querySelector('.disconnect-btn');
-if (disconnectBtn) {
-    disconnectBtn.addEventListener('click', async (event) => {
-  const result = await Swal.fire({
-    title: 'Yakin ingin memutuskan perangkat ini?',
-    text: 'Tindakan ini akan memutus koneksi WhatsApp dari server.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Ya, putuskan',
-    cancelButtonText: 'Batal'
-  });
+    /* ------------------------------
+     * 3️⃣ Tombol Putuskan Koneksi
+     * ------------------------------ */
+    const disconnectButtons = document.querySelectorAll('.disconnect-btn');
 
-  if (!result.isConfirmed) return;
+    disconnectButtons.forEach((button) => {
+        button.addEventListener('click', async (event) => {
+            const deviceId = button.dataset.deviceId;
+            if (!deviceId) {
+                console.error("❌ device-id tidak ditemukan pada tombol:", button);
+                return;
+            }
 
-  const button = event.currentTarget;
-  const deviceId = button.dataset.deviceId;
-  const originalText = button.innerHTML;
-  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-  button.disabled = true;
+            const result = await Swal.fire({
+                title: 'Yakin ingin memutuskan perangkat ini?',
+                text: 'Tindakan ini akan memutus koneksi WhatsApp dari server.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, putuskan',
+                cancelButtonText: 'Batal'
+            });
 
-  try {
-    const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
-    const data = await res.json();
+            if (!result.isConfirmed) return;
 
-    Swal.fire({
-      toast: true,
-      position: 'top-end',
-      icon: data.success ? 'success' : 'error',
-      title: data.message,
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            button.disabled = true;
+
+            try {
+                const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
+                const data = await res.json();
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: data.success ? 'success' : 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+
+                if (data.success) {
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    button.innerHTML = originalHTML;
+                    button.disabled = false;
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Terjadi kesalahan saat memutus perangkat',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+            }
+        });
     });
-
-    if (data.success) setTimeout(() => location.reload(), 2000);
-    else {
-      button.innerHTML = originalText;
-      button.disabled = false;
-    }
-  } catch (err) {
-    console.error(err);
-    Swal.fire({
-      toast: true,
-      position: 'top-end',
-      icon: 'error',
-      title: 'Terjadi kesalahan saat memutus perangkat',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true
-    });
-    button.innerHTML = originalText;
-    button.disabled = false;
-  }
-});
-
-}
-
 });
