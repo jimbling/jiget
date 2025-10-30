@@ -1,4 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ perangkat.js dimuat");
+
+    const disconnectBtn = document.querySelector('.disconnect-btn');
+    console.log("Hasil querySelector:", disconnectBtn);
+
+    if (disconnectBtn) {
+        disconnectBtn.addEventListener('click', () => {
+            console.log("✅ Tombol disconnect diklik");
+        });
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
     const qrContainer = document.querySelector('#qr-container');
     const deviceId = document.body.dataset.deviceId;
     const isConnected = document.body.dataset.isConnected === "true";
