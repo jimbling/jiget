@@ -3,17 +3,30 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+require('dotenv').config();
+
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+
+// Ambil config langsung dari .env, bukan dari config.json
+const config = {
+  username: process.env.DB_USER || 'root',
+  password: process.env.DB_PASS || '',
+  database: process.env.DB_NAME || 'db_jiget',
+  host: process.env.DB_HOST || '127.0.0.1',
+  dialect: process.env.DB_DIALECT || 'mysql',
+  logging: false
+};
+
 const db = {};
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+// Koneksi Sequelize
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
 // Load semua model
 fs
@@ -30,7 +43,7 @@ fs
     db[model.name] = model;
   });
 
-// Jalankan relasi (kalau ada)
+// Jalankan relasi antar model (jika ada)
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
