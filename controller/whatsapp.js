@@ -56,8 +56,12 @@ async function initWhatsApp() {
     const deviceId = sock.user.id;
     const phone = deviceId.split(':')[0].replace(/\D/g, '');
     const name =
-      sock.user.name ||
-      (sock.user?.pushname ?? 'Unknown Device'); // fallback pushname jika name tidak ada
+  sock.user.name ||
+  sock.user.pushname ||
+  sock.user.verifiedName ||
+  sock.user?.platform ||
+  'Unknown Device';
+
     const token = generateToken();
 
     // Nonaktifkan semua session lama
