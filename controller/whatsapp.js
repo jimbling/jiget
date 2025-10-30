@@ -53,18 +53,21 @@ async function initWhatsApp() {
         // Simpan / perbarui token di DB
         if (sock.user?.id) {
   try {
-    const phone = sock.user.id.split(':')[0].replace(/\D/g, ''); // Ambil nomor dari ID
-    const name = sock.user.name || 'Unknown';
+    const deviceId = sock.user.id;
+    const phone = deviceId.split(':')[0].replace(/\D/g, '');
+    const name =
+      sock.user.name ||
+      (sock.user?.pushname ?? 'Unknown Device'); // fallback pushname jika name tidak ada
     const token = generateToken();
 
-    // Nonaktifkan yang lama
-    await db.query('UPDATE wa_tokens SET is_active=0 WHERE device_id=?', [sock.user.id]);
+    // Nonaktifkan semua session lama
+    await db.query('UPDATE wa_tokens SET is_active=0 WHERE phone=?', [phone]);
 
     // Simpan data baru
     await db.query(
       `INSERT INTO wa_tokens (device_id, phone, device_name, token, is_active, created_at)
        VALUES (?, ?, ?, ?, 1, NOW())`,
-      [sock.user.id, phone, name, token]
+      [deviceId, phone, name, token]
     );
 
     console.log(`✅ WhatsApp ${phone} (${name}) terhubung!`);
@@ -73,6 +76,7 @@ async function initWhatsApp() {
     console.error('❌ Gagal menyimpan token:', err.message);
   }
 }
+
 
       }
 
