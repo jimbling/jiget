@@ -100,48 +100,60 @@ document.addEventListener("DOMContentLoaded", function () {
 const disconnectBtn = document.querySelector('.disconnect-btn');
 if (disconnectBtn) {
     disconnectBtn.addEventListener('click', async (event) => {
-        if (!confirm('Apakah Anda yakin ingin memutuskan perangkat ini?')) return;
+  const result = await Swal.fire({
+    title: 'Yakin ingin memutuskan perangkat ini?',
+    text: 'Tindakan ini akan memutus koneksi WhatsApp dari server.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, putuskan',
+    cancelButtonText: 'Batal'
+  });
 
-        const button = event.currentTarget;
-        const deviceId = button.dataset.deviceId;
-        const originalText = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-        button.disabled = true;
+  if (!result.isConfirmed) return;
 
-        try {
-            const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
-            const data = await res.json();
+  const button = event.currentTarget;
+  const deviceId = button.dataset.deviceId;
+  const originalText = button.innerHTML;
+  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+  button.disabled = true;
 
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: data.success ? 'success' : 'error',
-                title: data.message,
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true
-            });
+  try {
+    const res = await fetch(`/device/${deviceId}/disconnect`, { method: 'POST' });
+    const data = await res.json();
 
-            if (data.success) setTimeout(() => location.reload(), 2000);
-            else {
-                button.innerHTML = originalText;
-                button.disabled = false;
-            }
-        } catch (err) {
-            console.error(err);
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'error',
-                title: 'Terjadi kesalahan saat memutus perangkat',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true
-            });
-            button.innerHTML = originalText;
-            button.disabled = false;
-        }
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: data.success ? 'success' : 'error',
+      title: data.message,
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true
     });
+
+    if (data.success) setTimeout(() => location.reload(), 2000);
+    else {
+      button.innerHTML = originalText;
+      button.disabled = false;
+    }
+  } catch (err) {
+    console.error(err);
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'error',
+      title: 'Terjadi kesalahan saat memutus perangkat',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true
+    });
+    button.innerHTML = originalText;
+    button.disabled = false;
+  }
+});
+
 }
 
 });
