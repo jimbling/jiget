@@ -19,7 +19,13 @@ if (process.env.USE_REDIS === 'true') {
     const { RedisStore } = require('connect-redis');
     const { createClient } = require('redis');
 
-    const redisClient = createClient({ socket: { host: '127.0.0.1', port: 6379 } });
+   const redisClient = createClient({
+  socket: {
+    host: process.env.REDIS_HOST || '127.0.0.1',
+    port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
+  },
+});
+
 
     redisClient.on('error', (err) => console.error('❌ Redis Client Error:', err));
 
