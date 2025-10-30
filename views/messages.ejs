@@ -54,7 +54,7 @@
                   <%= msg.status %>
                 </span>
               </td>
-              <td class="px-4 py-2 text-sm text-gray-500"><td><%= message.created_at_formatted %></td>
+              <td class="px-4 py-2 text-sm text-gray-500"><td><%= msg.created_at_formatted %></td>
 </td>
               <td class="px-4 py-2">
                 <form action="/messages/<%= msg.id %>/delete" method="POST" class="delete-form">
