@@ -34,9 +34,6 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
-// ===================
-// Devices
-// ===================
 router.get('/devices', async (req, res) => {
   try {
     const sock = getSock();
@@ -46,13 +43,34 @@ router.get('/devices', async (req, res) => {
     const [connectedDevices] = await db.query('SELECT COUNT(*) AS connected FROM wa_tokens WHERE is_active = 1');
     const [users] = await db.query('SELECT COUNT(*) AS total_users FROM users');
 
-    let token = null;
+    let deviceData = null;
+
     if (sock) {
-      const [tokenRows] = await db.query(
-        'SELECT token FROM wa_tokens WHERE device_id=? AND is_active=1 ORDER BY created_at DESC LIMIT 1',
+      // Ambil detail device dari DB
+      const [deviceRows] = await db.query(
+        'SELECT device_id, phone, token FROM wa_tokens WHERE device_id=? ORDER BY created_at DESC LIMIT 1',
         [sock.user?.id]
       );
-      token = tokenRows.length ? tokenRows[0].token : null;
+
+      if (deviceRows.length) {
+        const row = deviceRows[0];
+        deviceData = {
+          id: row.device_id,
+          name: sock.user?.name || 'WhatsApp Device',
+          phone: row.phone || '-',
+          isConnected: getStatus(),
+          token: row.token,
+        };
+      } else {
+        // fallback
+        deviceData = {
+          id: sock.user?.id || 'main',
+          name: sock.user?.name || 'WhatsApp Device',
+          phone: '-',
+          isConnected: getStatus(),
+          token: null,
+        };
+      }
     }
 
     res.render('devices', {
@@ -62,20 +80,14 @@ router.get('/devices', async (req, res) => {
         connected: connectedDevices[0].connected || 0,
         users: users[0].total_users || 0,
       },
-      device: sock
-        ? {
-            id: sock.user?.id || 'main',
-            name: sock.user?.name || 'WhatsApp Device',
-            isConnected: getStatus(),
-            token,
-          }
-        : null,
+      device: deviceData,
     });
   } catch (err) {
     console.error('Error loading devices page:', err);
     res.status(500).send('Terjadi kesalahan saat memuat halaman perangkat.');
   }
 });
+
 
 
   
