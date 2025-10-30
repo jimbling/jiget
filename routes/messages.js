@@ -3,6 +3,10 @@ const router = express.Router();
 const db = require('../db');
 const fs = require('fs');
 const path = require('path');
+const dayjs = require('dayjs');
+require('dayjs/locale/id');
+dayjs.locale('id');
+
 
 router.get('/messages', async (req, res) => {
     try {
@@ -15,16 +19,25 @@ router.get('/messages', async (req, res) => {
         const totalPages = Math.ceil(totalMessages / limit);
 
         const [rows] = await db.query(
-            'SELECT * FROM wa_messages ORDER BY created_at DESC LIMIT ? OFFSET ?',
-            [limit, offset]
-        );
+    'SELECT * FROM wa_messages ORDER BY created_at DESC LIMIT ? OFFSET ?',
+    [limit, offset]
+);
 
-        res.render('messages', {
-            title: 'Riwayat Pesan | Jiget',
-            messages: rows,
-            currentPage: page,
-            totalPages
-        });
+// Format tanggal sebelum dikirim ke view
+const formattedMessages = rows.map(msg => ({
+  ...msg,
+  created_at_formatted: msg.created_at
+    ? dayjs(msg.created_at).format('dddd, DD MMMM YYYY HH:mm:ss')
+    : '-',
+}));
+
+res.render('messages', {
+  title: 'Riwayat Pesan | Jiget',
+  messages: formattedMessages,
+  currentPage: page,
+  totalPages
+});
+
         
     } catch (err) {
         console.error(err);
