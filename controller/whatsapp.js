@@ -20,9 +20,7 @@ let reconnecting = false;
 
 async function initWhatsApp() {
   try {
-    // Pastikan folder auth ada atau buat baru
     const { state, saveCreds } = await useMultiFileAuthState(authFolder);
-
     const { version } = await fetchLatestBaileysVersion();
 
     sock = makeWASocket({
@@ -45,78 +43,83 @@ async function initWhatsApp() {
       }
 
       if (connection === 'open') {
-  console.log('✅ WhatsApp terhubung!');
-  isConnected = true;
-  reconnecting = false;
-  lastQR = null;
+        console.log('✅ WhatsApp terhubung!');
+        isConnected = true;
+        reconnecting = false;
+        lastQR = null;
 
-  if (sock.user?.id) {
-    try {
-      const deviceId = sock.user.id;
-      const phone = deviceId.split(':')[0].replace(/\D/g, '');
-      
-      // Ambil nama dengan prioritas: verifiedName > name > pushname > platform > Unknown
-      const name =
-        sock.user.verifiedName ||
-        sock.user.name ||
-        sock.user.pushname ||
-        sock.user?.platform ||
-        'Unknown Device';
+        if (sock.user?.id) {
+          try {
+            console.log('📡 Info sock.user:', JSON.stringify(sock.user, null, 2)); // Debug struktur user
 
-      const token = generateToken();
+            const deviceId = sock.user.id;
+            const phone = deviceId.split(':')[0].replace(/\D/g, '');
 
-      // Nonaktifkan semua session lama
-      await db.query('UPDATE wa_tokens SET is_active=0 WHERE phone=?', [phone]);
+            // Ambil nama dengan prioritas verifiedName > name > pushname > platform
+            const name =
+              sock.user.verifiedName ||
+              sock.user.name ||
+              sock.user.pushname ||
+              sock.user.platform ||
+              'Unknown Device';
 
-      // Cek apakah device sudah pernah terdaftar
-      const [exists] = await db.query('SELECT id FROM wa_tokens WHERE device_id=?', [deviceId]);
+            const token = generateToken();
 
-      if (exists.length > 0) {
-        // Jika sudah ada, update datanya
-        await db.query(
-          `UPDATE wa_tokens
-           SET phone=?, device_name=?, token=?, is_active=1, updated_at=NOW()
-           WHERE device_id=?`,
-          [phone, name, token, deviceId]
-        );
-      } else {
-        // Jika belum ada, buat baru
-        await db.query(
-          `INSERT INTO wa_tokens (device_id, phone, device_name, token, is_active, created_at, updated_at)
-           VALUES (?, ?, ?, ?, 1, NOW(), NOW())`,
-          [deviceId, phone, name, token]
-        );
-      }
+            console.log(`📱 Deteksi Device: ${phone} | Nama: ${name}`);
 
-      console.log(`✅ WhatsApp ${phone} (${name}) terhubung!`);
-      console.log('🔑 Token API aktif:', token);
+            // Nonaktifkan semua session lama untuk nomor ini
+            await db.query('UPDATE wa_tokens SET is_active=0 WHERE phone=?', [phone]);
 
-      // Update nama lagi setelah 5 detik jika awalnya Unknown
-      if (name === 'Unknown Device') {
-        setTimeout(async () => {
-          const refreshedName =
-            sock.user.verifiedName ||
-            sock.user.name ||
-            sock.user.pushname ||
-            'Unknown Device';
-          if (refreshedName !== 'Unknown Device') {
-            await db.query(
-              'UPDATE wa_tokens SET device_name=? WHERE device_id=?',
-              [refreshedName, deviceId]
-            );
-            console.log(`🔄 Nama device diperbarui menjadi: ${refreshedName}`);
+            // Cek apakah device sudah terdaftar
+            const [exists] = await db.query('SELECT id FROM wa_tokens WHERE device_id=?', [deviceId]);
+
+            if (exists.length > 0) {
+              // Jika sudah ada, update
+              await db.query(
+                `UPDATE wa_tokens
+                 SET phone=?, device_name=?, token=?, is_active=1, updated_at=NOW()
+                 WHERE device_id=?`,
+                [phone, name, token, deviceId]
+              );
+              console.log(`🔄 Data device diperbarui di database (${deviceId})`);
+            } else {
+              // Jika belum ada, buat baru
+              await db.query(
+                `INSERT INTO wa_tokens (device_id, phone, device_name, token, is_active, created_at, updated_at)
+                 VALUES (?, ?, ?, ?, 1, NOW(), NOW())`,
+                [deviceId, phone, name, token]
+              );
+              console.log(`🆕 Device baru disimpan ke database (${deviceId})`);
+            }
+
+            console.log(`✅ WhatsApp ${phone} (${name}) terhubung!`);
+            console.log('🔑 Token API aktif:', token);
+
+            // Update nama lagi setelah 5 detik jika awalnya Unknown
+            if (name === 'Unknown Device') {
+              console.log('⏳ Nama device belum diketahui, akan diperiksa ulang dalam 5 detik...');
+              setTimeout(async () => {
+                const refreshedName =
+                  sock.user.verifiedName ||
+                  sock.user.name ||
+                  sock.user.pushname ||
+                  sock.user.platform ||
+                  'Unknown Device';
+                if (refreshedName !== 'Unknown Device') {
+                  await db.query(
+                    'UPDATE wa_tokens SET device_name=? WHERE device_id=?',
+                    [refreshedName, deviceId]
+                  );
+                  console.log(`🔄 Nama device diperbarui menjadi: ${refreshedName}`);
+                } else {
+                  console.log('⚠️ Nama device tetap tidak terdeteksi.');
+                }
+              }, 5000);
+            }
+          } catch (err) {
+            console.error('❌ Gagal menyimpan token:', err.message);
           }
-        }, 5000);
-      }
-
-    } catch (err) {
-      console.error('❌ Gagal menyimpan token:', err.message);
-    }
-  }
-}
-
-
-
+        }
       }
 
       if (connection === 'close') {
@@ -128,15 +131,12 @@ async function initWhatsApp() {
 
         console.log(`⚠️ WhatsApp disconnected, reason: ${reason}`);
 
-        // Jika session logout, hapus folder auth dan init ulang
         if (reason === DisconnectReason.loggedOut || reason === 'loggedOut' || reason === 401) {
           console.log('❌ Session logout, perlu scan ulang.');
 
-          // Update DB
           if (sock?.user?.id)
             await db.query('UPDATE wa_tokens SET is_active=0 WHERE device_id=?', [sock.user.id]);
 
-          // Hapus folder auth
           try {
             await fs.remove(authFolder);
             console.log('🗑️ Folder auth dihapus, siap scan QR ulang.');
@@ -144,12 +144,9 @@ async function initWhatsApp() {
             console.error('❌ Gagal hapus folder auth:', err.message);
           }
 
-          // Reset status
           isConnected = false;
           lastQR = null;
           reconnecting = false;
-
-          // Init ulang WhatsApp agar QR baru muncul
           initWhatsApp();
         } else if (!reconnecting) {
           reconnecting = true;
@@ -172,7 +169,6 @@ async function initWhatsApp() {
 
       console.log(`📩 Pesan dari ${sender}: ${text}`);
 
-      // Simpan pesan ke DB
       try {
         await db.query(
           'INSERT INTO wa_messages (number, message, type, status) VALUES (?, ?, ?, ?)',
@@ -182,7 +178,6 @@ async function initWhatsApp() {
         console.error('❌ Gagal simpan pesan inbound:', err.message);
       }
 
-      // Auto-reply rules
       try {
         const [rules] = await db.query('SELECT * FROM auto_replies WHERE is_active=1');
         for (const rule of rules) {
@@ -215,7 +210,6 @@ async function initWhatsApp() {
         console.error('❌ Gagal cek auto-reply:', err.message);
       }
 
-      // Ping test
       if (text.toLowerCase() === 'ping') {
         try {
           await sock.sendMessage(sender, { text: 'Pong! 🏓' });
@@ -235,7 +229,7 @@ async function initWhatsApp() {
   }
 }
 
-// Fungsi kirim pesan manual
+// Kirim pesan manual
 async function sendMessage(to, message) {
   try {
     if (!sock) throw new Error('Socket WhatsApp belum siap');
@@ -268,7 +262,7 @@ function getLastQR() {
 async function getActiveDevices() {
   try {
     const [rows] = await db.query(`
-      SELECT device_id, token, expired_at, created_at, updated_at
+      SELECT device_id, device_name, token, expired_at, created_at, updated_at
       FROM wa_tokens
       WHERE is_active = 1
       ORDER BY updated_at DESC
@@ -279,7 +273,7 @@ async function getActiveDevices() {
     } else {
       console.log('📱 Daftar device aktif:');
       rows.forEach((d, i) => {
-        console.log(`${i + 1}. ${d.device_id} | Token: ${d.token} | Exp: ${d.expired_at}`);
+        console.log(`${i + 1}. ${d.device_id} (${d.device_name || 'Unknown'}) | Token: ${d.token} | Exp: ${d.expired_at}`);
       });
     }
 
@@ -290,6 +284,4 @@ async function getActiveDevices() {
   }
 }
 
-
 module.exports = { initWhatsApp, getSock, getStatus, getLastQR, sendMessage, getActiveDevices };
-
