@@ -189,7 +189,7 @@ router.get('/send-text', async (req, res) => {
       LIMIT 1
     `);
 
-    if (!rows.length) return res.status(500).send('Token WA belum tersedia');
+    if (!rows.length) return res.render('token-error');
 
     const token = rows[0].token;
     res.render('send-text', { token }); // <-- pastikan ada { token }
@@ -212,7 +212,7 @@ router.get('/send-media', async (req, res) => {
       LIMIT 1
     `);
 
-    if (!rows.length) return res.status(500).send('Token WA belum tersedia');
+    if (!rows.length) return res.render('token-error');
 
     const token = rows[0].token;
 
