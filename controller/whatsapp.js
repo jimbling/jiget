@@ -139,6 +139,7 @@ async function initWhatsApp() {
     console.error('❌ Gagal menyimpan token:', err.message);
   }
 }
+      }
 
 
       if (connection === 'close') {
