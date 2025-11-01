@@ -37,15 +37,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Delete buttons
-    document.querySelectorAll('.btnDeleteRule').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.dataset.id;
-            if (!confirm('Yakin ingin menghapus rule ini?')) return;
-           fetch(`/auto-reply/${id}`, { method: 'DELETE' })
-                .then(() => location.reload())
-                .catch(err => console.error(err));
+  
+document.querySelectorAll('.btnDeleteRule').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+
+        Swal.fire({
+            title: 'Hapus Auto-Reply?',
+            text: "Tindakan ini tidak dapat dibatalkan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/auto-reply/${id}`, { method: 'DELETE' })
+                    .then(() => {
+                        Swal.fire({
+                            title: 'Dihapus!',
+                            text: 'Auto-reply berhasil dihapus.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        setTimeout(() => location.reload(), 1500);
+                    })
+                    .catch(err => console.error(err));
+            }
         });
     });
+});
+
 });
 
 function toggleCollapse() {
