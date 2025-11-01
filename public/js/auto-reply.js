@@ -6,9 +6,11 @@ function openModal() {
     document.getElementById('rule-id').value = '';
 }
 
-function closeModal() {
-    document.getElementById('modal').classList.add('hidden');
-}
+document.getElementById('btnCloseModal').addEventListener('click', (e) => {
+    e.preventDefault();
+    closeModal();
+});
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const autoReplies = JSON.parse(document.getElementById('auto-replies').dataset.json);
