@@ -155,7 +155,7 @@ const loginRoute = require('./routes/auth');
 
 // Landing page dan login publik
 app.use('/', landingRoute);    // '/' -> landing page
-app.use('/login', loginRoute); // '/login' -> login page
+app.use('/', loginRoute); // '/login' -> login page
 
 // Dashboard dan route lain tetap pakai authRequired
 app.use('/dashboard', authRequired, require('./routes/dashboard'));
