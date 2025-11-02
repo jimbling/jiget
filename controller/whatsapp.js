@@ -177,7 +177,7 @@ async function initWhatsApp() {
     });
 
     // Pesan masuk
-    sock.ev.on('messages.upsert', async ({ messages }) => {
+sock.ev.on('messages.upsert', async ({ messages }) => {
   const msg = messages[0];
   if (!msg.message || msg.key.fromMe) return;
 
@@ -201,25 +201,31 @@ async function initWhatsApp() {
   }
 
   try {
-    // 2. Cek apakah kontak baru
+    // 2. Cek apakah kontak baru / ambil info terakhir
     const [contacts] = await db.query(
-      'SELECT id, is_welcome_sent FROM contacts WHERE phone_number=?',
+      'SELECT id, is_welcome_sent, last_active_at FROM contacts WHERE phone_number=?',
       [phoneNumber]
     );
 
     let contact;
     if (!contacts.length) {
+      // Kontak baru
       const [result] = await db.query(
         'INSERT INTO contacts (name, phone_number, is_subscribed, last_active_at) VALUES (?, ?, ?, NOW())',
         ['Unknown', phoneNumber, 1]
       );
-      contact = { id: result.insertId, is_welcome_sent: 0 };
+      contact = { id: result.insertId, is_welcome_sent: 0, last_active_at: null };
     } else {
       contact = contacts[0];
     }
 
-    // 3. Kirim welcome message jika belum dikirim
-    if (!contact.is_welcome_sent) {
+    // 3. Cek selang waktu terakhir
+    const now = new Date();
+    const lastActive = contact.last_active_at ? new Date(contact.last_active_at) : null;
+    const diffHours = lastActive ? (now - lastActive) / 1000 / 60 / 60 : null;
+
+    // 4. Kirim welcome message jika belum pernah dikirim atau >24 jam
+    if (!contact.is_welcome_sent || (diffHours !== null && diffHours >= 24)) {
       const [welcomeRules] = await db.query(
         "SELECT * FROM auto_replies WHERE is_active=1 AND event_type='welcome'"
       );
@@ -229,10 +235,20 @@ async function initWhatsApp() {
         console.log(`✉️ Welcome message ke ${sender}: ${rule.reply_text}`);
       }
 
-      await db.query('UPDATE contacts SET is_welcome_sent=1 WHERE id=?', [contact.id]);
+      // Update last_active_at dan set is_welcome_sent
+      await db.query(
+        'UPDATE contacts SET is_welcome_sent=1, last_active_at=NOW() WHERE id=?',
+        [contact.id]
+      );
+    } else {
+      // Update last_active_at tetap untuk tracking aktivitas
+      await db.query(
+        'UPDATE contacts SET last_active_at=NOW() WHERE id=?',
+        [contact.id]
+      );
     }
 
-    // 4. Auto-reply biasa
+    // 5. Auto-reply biasa
     const [rules] = await db.query('SELECT * FROM auto_replies WHERE is_active=1');
     for (const rule of rules) {
       if (rule.event_type === 'welcome') continue; // skip welcome rules
@@ -262,7 +278,7 @@ async function initWhatsApp() {
       }
     }
 
-    // 5. Pesan khusus "ping"
+    // 6. Pesan khusus "ping"
     if (text.toLowerCase() === 'ping') {
       try {
         await sock.sendMessage(sender, { text: 'Pong! 🏓' });
@@ -275,6 +291,7 @@ async function initWhatsApp() {
     console.error('❌ Gagal proses auto-reply / welcome message:', err.message);
   }
 });
+
 
 
     console.log('🚀 Socket WhatsApp siap! Jalankan scan QR jika diminta.');
