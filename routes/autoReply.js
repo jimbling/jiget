@@ -10,19 +10,21 @@ router.get('/', async (req, res) => {
 
 // Tambah Auto-Reply
 router.post('/', async (req, res) => {
-    const { keyword, type, reply_text } = req.body;
-    await db.query('INSERT INTO auto_replies (keyword, type, reply_text) VALUES (?, ?, ?)',
-        [keyword, type, reply_text]
+    const { keyword, type, event_type, reply_text } = req.body;
+    await db.query(
+        'INSERT INTO auto_replies (keyword, type, event_type, reply_text) VALUES (?, ?, ?, ?)',
+        [keyword, type, event_type, reply_text]
     );
-    res.redirect('/auto-replies');
+    res.redirect('/auto-reply');
 });
 
 // Edit Auto-Reply
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { keyword, type, reply_text } = req.body;
-    await db.query('UPDATE auto_replies SET keyword=?, type=?, reply_text=? WHERE id=?',
-        [keyword, type, reply_text, id]
+    const { keyword, type, event_type, reply_text } = req.body;
+    await db.query(
+        'UPDATE auto_replies SET keyword=?, type=?, event_type=?, reply_text=? WHERE id=?',
+        [keyword, type, event_type, reply_text, id]
     );
     res.json({ success: true });
 });

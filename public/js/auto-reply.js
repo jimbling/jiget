@@ -30,9 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.remove('hidden');
             document.getElementById('modal-title').innerText = 'Edit Auto-Reply';
             document.getElementById('rule-id').value = rule.id;
-            document.getElementById('rule-keyword').value = rule.keyword;
-            document.getElementById('rule-type').value = rule.type;
-            document.getElementById('rule-reply').value = rule.reply_text;
+document.getElementById('rule-keyword').value = rule.keyword;
+document.getElementById('rule-type').value = rule.type;
+document.getElementById('rule-event-type').value = rule.event_type || 'message';
+document.getElementById('rule-reply').value = rule.reply_text;
+
         });
     });
 
@@ -83,10 +85,12 @@ document.getElementById('form-rule').addEventListener('submit', function(e){
     e.preventDefault();
     const id = document.getElementById('rule-id').value;
     const payload = {
-        keyword: document.getElementById('rule-keyword').value,
-        type: document.getElementById('rule-type').value,
-        reply_text: document.getElementById('rule-reply').value
-    };
+    keyword: document.getElementById('rule-keyword').value,
+    type: document.getElementById('rule-type').value,
+    event_type: document.getElementById('rule-event-type').value,
+    reply_text: document.getElementById('rule-reply').value
+};
+
     const url = id ? `/auto-reply/${id}` : '/auto-reply';
     const method = id ? 'PUT' : 'POST';
 
