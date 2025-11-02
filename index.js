@@ -149,11 +149,13 @@ const apiLimiter = rateLimit({
   message: { error: 'Terlalu banyak request, coba lagi nanti.' },
 });
 app.use('/api/wa', apiLimiter, require('./routes/wa'));
+// Import router
 const landingRoute = require('./routes/landing');
 const loginRoute = require('./routes/auth');
-// Landing page publik
-app.use('/login', loginRoute);
-app.use('/', landingRoute);
+
+// Landing page dan login publik
+app.use('/', landingRoute);    // '/' -> landing page
+app.use('/login', loginRoute); // '/login' -> login page
 
 // Dashboard dan route lain tetap pakai authRequired
 app.use('/dashboard', authRequired, require('./routes/dashboard'));
