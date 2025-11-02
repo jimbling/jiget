@@ -201,27 +201,38 @@ async function initWhatsApp() {
   }
 
   try {
-    // 2. Cek apakah kontak baru
-    const [contacts] = await db.query(
-      'SELECT id, is_welcome_sent FROM contacts WHERE phone_number=?',
-      [phoneNumber]
-    );
+    // 2. Cek apakah kontak baru / last welcome
+const [contacts] = await db.query(
+  'SELECT id, last_welcome_at FROM contacts WHERE phone_number=?',
+  [phoneNumber]
+);
 
-    let contact;
-    if (!contacts.length) {
-      const [result] = await db.query(
-        'INSERT INTO contacts (name, phone_number, is_subscribed, last_active_at) VALUES (?, ?, ?, NOW())',
-        ['Unknown', phoneNumber, 1]
-      );
-      contact = { id: result.insertId, is_welcome_sent: 0 };
-    } else {
-      contact = contacts[0];
-    }
+let contact;
+if (!contacts.length) {
+  const [result] = await db.query(
+    'INSERT INTO contacts (name, phone_number, is_subscribed, last_active_at, last_welcome_at) VALUES (?, ?, ?, NOW(), NULL)',
+    ['Unknown', phoneNumber, 1]
+  );
+  contact = { id: result.insertId, last_welcome_at: null };
+} else {
+  contact = contacts[0];
+}
 
-    // 3. Kirim welcome message jika belum dikirim
-if (!contact.is_welcome_sent) {
-  // update flag dulu supaya race condition terhindar
-  await db.query('UPDATE contacts SET is_welcome_sent=1 WHERE id=?', [contact.id]);
+// 3. Kirim welcome jika belum pernah dikirim atau sudah >24 jam
+const now = new Date();
+let shouldSendWelcome = false;
+
+if (!contact.last_welcome_at) {
+  shouldSendWelcome = true; // belum pernah
+} else {
+  const last = new Date(contact.last_welcome_at);
+  const diffHours = (now - last) / 1000 / 60 / 60; // selisih dalam jam
+  if (diffHours >= 24) shouldSendWelcome = true;
+}
+
+if (shouldSendWelcome) {
+  // update timestamp dulu
+  await db.query('UPDATE contacts SET last_welcome_at=NOW() WHERE id=?', [contact.id]);
 
   const [welcomeRules] = await db.query(
     "SELECT * FROM auto_replies WHERE is_active=1 AND event_type='welcome' LIMIT 1"
@@ -232,6 +243,7 @@ if (!contact.is_welcome_sent) {
     console.log(`✉️ Welcome message ke ${sender}: ${welcomeRules[0].reply_text}`);
   }
 }
+
 
     // 4. Auto-reply biasa
     const [rules] = await db.query('SELECT * FROM auto_replies WHERE is_active=1');
