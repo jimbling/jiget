@@ -1,86 +1,66 @@
 <title><%= title %></title>
 
 <body 
-  class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-300"
+  class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300"
   data-device-id="<%= device ? device.id : '' %>" 
   data-is-connected="<%= device ? device.isConnected : false %>"
 >
-  <div class="max-w-6xl mx-auto p-4 md:p-6">
-
-    <!-- Header dengan judul dan aksi -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">Manajemen Perangkat</h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola perangkat WhatsApp yang terhubung dengan akun Anda</p>
-      </div>
-      <div class="mt-4 md:mt-0">
-        <button class="inline-flex items-center justify-center px-4 py-2.5 bg-whatsapp-500 hover:bg-whatsapp-600 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md">
-          <i class="fas fa-plus mr-2"></i> Tambah Perangkat
-        </button>
-      </div>
-    </div>
+  <div class="max-w-6xl mx-auto p-6">
 
     <!-- Stats Overview -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <!-- Total Perangkat -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-5 border-l-4 border-whatsapp-500 hover:shadow-md transition-all duration-300">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 border-l-4 border-whatsapp-500">
         <div class="flex justify-between items-center">
           <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Perangkat</h3>
-          <div class="bg-whatsapp-100 dark:bg-whatsapp-900/40 text-whatsapp-600 dark:text-whatsapp-400 p-2.5 rounded-xl">
+          <div class="bg-whatsapp-100 dark:bg-whatsapp-900 text-whatsapp-600 p-2 rounded-full">
             <i class="fas fa-mobile-alt"></i>
           </div>
         </div>
-        <p class="text-2xl font-bold text-gray-800 dark:text-white mt-3"><%= stats.total %></p>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Perangkat terdaftar</p>
+        <p class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-3"><%= stats.total %></p>
       </div>
 
       <!-- Terhubung -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-5 border-l-4 border-green-500 hover:shadow-md transition-all duration-300">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 border-l-4 border-green-500">
         <div class="flex justify-between items-center">
           <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium">Terhubung</h3>
-          <div class="bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 p-2.5 rounded-xl">
+          <div class="bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 p-2 rounded-full">
             <i class="fas fa-link"></i>
           </div>
         </div>
-        <p class="text-2xl font-bold text-gray-800 dark:text-white mt-3"><%= stats.connected %></p>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Aktif sekarang</p>
+        <p class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-3"><%= stats.connected %></p>
       </div>
 
       <!-- Status Akun -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-5 border-l-4 border-blue-500 hover:shadow-md transition-all duration-300">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 border-l-4 border-blue-500">
         <div class="flex justify-between items-center">
           <h3 class="text-gray-500 dark:text-gray-400 text-sm font-medium">Status Akun</h3>
-          <div class="bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 p-2.5 rounded-xl">
+          <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 p-2 rounded-full">
             <i class="fas fa-user-check"></i>
           </div>
         </div>
-        <p class="text-2xl font-bold text-gray-800 dark:text-white mt-3"><%= stats.users %></p>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Pengguna aktif</p>
+        <p class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-3"><%= stats.users %></p>
       </div>
     </div>
 
     <% if (device) { %>
     <!-- Device Card -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden transition-all duration-300 device-card hover:shadow-lg">
-      <div class="p-6 md:p-8">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden transition-all duration-300 device-card">
+      <div class="p-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between">
           <div class="flex items-center">
-            <div class="mr-4 bg-gradient-to-br from-whatsapp-100 to-whatsapp-50 dark:from-whatsapp-900/40 dark:to-whatsapp-800/20 text-whatsapp-600 dark:text-whatsapp-400 p-3.5 rounded-xl">
+            <div class="mr-4 bg-whatsapp-100 dark:bg-whatsapp-900 text-whatsapp-600 p-3 rounded-full">
               <i class="fas fa-mobile-alt text-xl"></i>
             </div>
             <div>
-              <h2 class="text-xl font-semibold text-gray-800 dark:text-white"><%= device.name %></h2>
+              <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100"><%= device.name %></h2>
               <div class="flex items-center mt-1">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= device.isConnected ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300' %>">
-                  <span class="flex h-2 w-2 mr-1.5 relative">
+                <span class="flex items-center text-sm font-medium <%= device.isConnected ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' %>">
+                  <span class="flex h-2 w-2 relative">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full <%= device.isConnected ? 'bg-green-400' : 'bg-red-400' %> opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 <%= device.isConnected ? 'bg-green-500' : 'bg-red-500' %>"></span>
                   </span>
-                  <%= device.isConnected ? 'Terhubung' : 'Terputus' %>
-                </span>
-                <span class="text-sm text-gray-500 dark:text-gray-400 ml-3">
-                  <i class="far fa-clock mr-1"></i> 
-                  <span class="last-seen">Terakhir aktif: <%= device.lastSeen || 'Belum diketahui' %></span>
+                  <span class="ml-2"><%= device.isConnected ? 'Terhubung' : 'Terputus' %></span>
                 </span>
               </div>
             </div>
@@ -88,128 +68,83 @@
 
           <% if (device.isConnected) { %>
           <button 
-            class="disconnect-btn mt-4 md:mt-0 flex items-center justify-center px-4 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-200 border border-red-200 dark:border-red-800"
+            class="disconnect-btn mt-4 md:mt-0 flex items-center justify-center px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors"
             data-device-id="<%= device.id %>">
             <i class="fas fa-unlink mr-2"></i> Putuskan
-          </button>
-          <% } else { %>
-          <button 
-            class="refresh-qr-btn mt-4 md:mt-0 flex items-center justify-center px-4 py-2.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all duration-200 border border-blue-200 dark:border-blue-800"
-            data-device-id="<%= device.id %>">
-            <i class="fas fa-sync-alt mr-2"></i> Refresh QR
           </button>
           <% } %>
         </div>
 
         <!-- Device Info -->
         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-100 dark:border-gray-600 hover:shadow-sm transition-all duration-200">
-            <div class="flex items-center mb-2">
-              <div class="w-6 h-6 flex items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-lg mr-2">
+          <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-100 dark:border-gray-600 hover:shadow-sm transition">
+            <div class="flex items-center mb-1">
+              <div class="w-6 h-6 flex items-center justify-center bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full mr-2">
                 <i class="fas fa-fingerprint text-sm"></i>
               </div>
               <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Device ID</span>
             </div>
-            <p class="text-sm text-gray-800 dark:text-gray-100 font-mono select-all truncate pl-8"><%= device.id %></p>
+            <p class="text-sm text-gray-800 dark:text-gray-100 font-mono select-all truncate"><%= device.id %></p>
           </div>
 
-          <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-100 dark:border-gray-600 hover:shadow-sm transition-all duration-200">
-            <div class="flex items-center mb-2">
-              <div class="w-6 h-6 flex items-center justify-center bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 rounded-lg mr-2">
+          <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-100 dark:border-gray-600 hover:shadow-sm transition">
+            <div class="flex items-center mb-1">
+              <div class="w-6 h-6 flex items-center justify-center bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 rounded-full mr-2">
                 <i class="fab fa-whatsapp text-sm"></i>
               </div>
               <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Nomor WhatsApp</span>
             </div>
-            <p class="text-sm text-gray-800 dark:text-gray-100 pl-8"><%= device.phone || '-' %></p>
+            <p class="text-sm text-gray-800 dark:text-gray-100"><%= device.phone || '-' %></p>
           </div>
         </div>
 
         <% if (device.token) { %>
         <!-- Token -->
         <div class="mt-6">
-          <div class="flex items-center justify-between mb-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Token Autentikasi</label>
-            <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">Rahasia</span>
-          </div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Token Autentikasi</label>
           <div class="flex items-center">
-            <input type="password" id="token-input"
-              class="flex-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-l-xl py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-whatsapp-500 focus:border-transparent transition-all"
+            <input type="text" id="token-input"
+              class="flex-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-l-lg py-2 px-3 text-sm focus:outline-none"
               value="<%= device.token %>" readonly>
             <button 
-              id="toggle-token-visibility"
-              class="px-3 py-2.5 bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors border-y border-gray-300 dark:border-gray-600">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button 
               id="copy-token-btn"
-              class="rounded-r-xl px-4 py-2.5 bg-whatsapp-500 hover:bg-whatsapp-600 dark:bg-whatsapp-600 dark:hover:bg-whatsapp-700 text-white flex items-center justify-center transition-all duration-200">
-              <i class="fas fa-copy mr-1"></i> Salin
+              class="rounded-r-lg px-3 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white flex items-center justify-center transition">
+              <i class="fas fa-copy"></i>
             </button>
           </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 flex items-center">
-            <i class="fas fa-info-circle mr-1.5"></i> Gunakan token ini untuk autentikasi API
-          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Gunakan token ini untuk autentikasi API</p>
         </div>
         <% } %>
       </div>
 
       <% if (!device.isConnected) { %>
       <!-- QR Section -->
-      <div class="border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800/70 dark:to-gray-900/70 p-6 md:p-8">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4 flex items-center">
-          <i class="fas fa-qrcode mr-2 text-whatsapp-500"></i> Hubungkan Perangkat Baru
-        </h3>
-        <div class="flex flex-col lg:flex-row items-start gap-8">
-          <div class="bg-white dark:bg-gray-700 p-5 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-600 flex flex-col items-center">
-            <div id="qr-container" data-device-id="<%= device.id %>" class="w-56 h-56 flex items-center justify-center bg-white rounded-lg">
+      <div class="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/70 p-6">
+        <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">Hubungkan Perangkat Baru</h3>
+        <div class="flex flex-col md:flex-row items-start gap-6">
+          <div class="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-600">
+            <div id="qr-container" data-device-id="<%= device.id %>" class="w-48 h-48 flex items-center justify-center">
               <div class="text-center">
-                <div class="qr-loading mx-auto mb-3 flex justify-center">
-                  <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-whatsapp-500"></div>
-                </div>
+                <div class="qr-loading mx-auto mb-3"></div>
                 <p class="text-sm text-gray-600 dark:text-gray-400">Memuat QR code...</p>
               </div>
-            </div>
-            <div class="mt-4 text-center">
-              <p class="text-xs text-gray-500 dark:text-gray-400">QR akan diperbarui otomatis setiap 15 detik</p>
             </div>
           </div>
           
           <div class="flex-1">
-            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-4 text-lg">Cara menghubungkan:</h4>
-            <ol class="space-y-4">
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-8 h-8 bg-whatsapp-100 dark:bg-whatsapp-900/40 text-whatsapp-600 dark:text-whatsapp-400 rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">1</span>
-                <div>
-                  <p class="font-medium text-gray-800 dark:text-gray-200">Buka WhatsApp di ponsel Anda</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Pastikan aplikasi WhatsApp sudah terinstall dan terhubung dengan internet</p>
-                </div>
-              </li>
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-8 h-8 bg-whatsapp-100 dark:bg-whatsapp-900/40 text-whatsapp-600 dark:text-whatsapp-400 rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">2</span>
-                <div>
-                  <p class="font-medium text-gray-800 dark:text-gray-200">Akses menu Perangkat Tertaut</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Masuk ke <span class="font-medium">Setelan</span> → <span class="font-medium">Perangkat tertaut</span> → <span class="font-medium">Tautkan perangkat</span></p>
-                </div>
-              </li>
-              <li class="flex items-start">
-                <span class="flex-shrink-0 w-8 h-8 bg-whatsapp-100 dark:bg-whatsapp-900/40 text-whatsapp-600 dark:text-whatsapp-400 rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">3</span>
-                <div>
-                  <p class="font-medium text-gray-800 dark:text-gray-200">Pindai QR Code</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Arahkan kamera ponsel Anda ke QR code di layar untuk memindai</p>
-                </div>
-              </li>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-3">Cara menghubungkan:</h4>
+            <ol class="list-decimal list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
+              <li>Buka WhatsApp di ponsel Anda</li>
+              <li>Masuk ke <span class="font-medium">Setelan</span> → <span class="font-medium">Perangkat tertaut</span> → <span class="font-medium">Tautkan perangkat</span></li>
+              <li>Arahkan ponsel Anda ke QR code untuk memindai</li>
             </ol>
 
-            <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border border-blue-100 dark:border-blue-700">
+            <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-700">
               <div class="flex">
-                <i class="fas fa-info-circle text-blue-500 dark:text-blue-400 mt-0.5 mr-3"></i>
-                <div>
-                  <p class="text-sm font-medium text-blue-800 dark:text-blue-300">Tips Penting</p>
-                  <p class="text-sm text-blue-700 dark:text-blue-400 mt-1">
-                    Pastikan koneksi internet ponsel Anda stabil selama proses penghubungan. 
-                    Proses ini aman dan tidak akan mengganggu akun WhatsApp utama Anda.
-                  </p>
-                </div>
+                <i class="fas fa-info-circle text-blue-500 dark:text-blue-400 mt-1"></i>
+                <p class="ml-3 text-sm text-blue-700 dark:text-blue-300">
+                  Pastikan koneksi internet ponsel Anda stabil selama proses penghubungan.
+                </p>
               </div>
             </div>
           </div>
@@ -220,13 +155,13 @@
 
     <% } else { %>
     <!-- Empty State -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-8 md:p-12 text-center border border-gray-100 dark:border-gray-700">
-      <div class="mx-auto w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-full flex items-center justify-center mb-6">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-8 text-center border border-gray-100 dark:border-gray-700">
+      <div class="mx-auto w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-6">
         <i class="fas fa-mobile-alt text-3xl text-gray-400 dark:text-gray-500"></i>
       </div>
-      <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Belum ada perangkat</h3>
-      <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">Anda belum menambahkan perangkat WhatsApp apapun. Tambahkan perangkat pertama untuk mulai menggunakan layanan.</p>
-      <button class="inline-flex items-center justify-center px-5 py-3 bg-gradient-to-r from-whatsapp-500 to-whatsapp-600 hover:from-whatsapp-600 hover:to-whatsapp-700 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md">
+      <h3 class="text-xl font-medium text-gray-800 dark:text-gray-100 mb-2">Tidak ada perangkat</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">Anda belum menambahkan perangkat WhatsApp apapun</p>
+      <button class="inline-flex items-center justify-center px-5 py-3 bg-whatsapp-500 hover:bg-whatsapp-600 text-white rounded-lg transition">
         <i class="fas fa-plus mr-2"></i> Tambah Perangkat Pertama
       </button>
     </div>
