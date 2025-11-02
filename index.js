@@ -151,7 +151,8 @@ const apiLimiter = rateLimit({
 app.use('/api/wa', apiLimiter, require('./routes/wa'));
 
 // Landing page publik
-app.use('/', require('./routes/landing'));
+app.use('/login', loginRoute);
+app.use('/', landingRoute);
 
 // Dashboard dan route lain tetap pakai authRequired
 app.use('/dashboard', authRequired, require('./routes/dashboard'));
