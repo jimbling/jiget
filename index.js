@@ -154,10 +154,10 @@ const landingRoute = require('./routes/landing');
 const loginRoute = require('./routes/auth');
 
 // Landing page dan login publik
-app.use('/', landingRoute);    // '/' -> landing page
-app.use('/', loginRoute); // '/login' -> login page
+app.use('/', landingRoute);   
+app.use('/', loginRoute); 
 
-// Dashboard dan route lain tetap pakai authRequired
+
 app.use('/', authRequired, require('./routes/dashboard'));
 app.use('/', authRequired, require('./routes/messages'));
 app.use('/auto-reply', authRequired, require('./routes/autoReply'));
