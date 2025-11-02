@@ -3,18 +3,18 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
   <!-- Card: Perangkat Terhubung -->
-  <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex items-center justify-between border border-gray-100">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition p-6 flex items-center justify-between border border-gray-100 dark:border-gray-700">
     <div>
-      <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Perangkat Terhubung</h3>
-      <p class="text-3xl font-bold mt-2 <%= connectedDevices > 0 ? 'text-green-600' : 'text-red-600' %>">
+      <h3 class="text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Perangkat Terhubung</h3>
+      <p class="text-3xl font-bold mt-2 <%= connectedDevices > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' %>">
         <%= connectedDevices %>
       </p>
     </div>
-    <div class="p-3 rounded-full <%= connectedDevices > 0 ? 'bg-green-50' : 'bg-red-50' %> transition transform hover:scale-110">
+    <div class="p-3 rounded-full <%= connectedDevices > 0 ? 'bg-green-50 dark:bg-green-900/30' : 'bg-red-50 dark:bg-red-900/30' %> transition transform hover:scale-110">
       <svg xmlns="http://www.w3.org/2000/svg"
            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
            stroke="currentColor"
-           class="w-8 h-8 <%= connectedDevices > 0 ? 'text-green-600' : 'text-red-600' %>">
+           class="w-8 h-8 <%= connectedDevices > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' %>">
         <path stroke-linecap="round" stroke-linejoin="round"
               d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
       </svg>
@@ -22,15 +22,15 @@
   </div>
 
   <!-- Card: Pesan Terkirim -->
-  <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex items-center justify-between border border-gray-100">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition p-6 flex items-center justify-between border border-gray-100 dark:border-gray-700">
     <div>
-      <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pesan Terkirim</h3>
-      <p class="text-3xl font-bold mt-2 text-blue-600"><%= messagesSent %></p>
+      <h3 class="text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Pesan Terkirim</h3>
+      <p class="text-3xl font-bold mt-2 text-blue-600 dark:text-blue-400"><%= messagesSent %></p>
     </div>
-    <div class="bg-blue-50 p-3 rounded-full transition transform hover:scale-110">
+    <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-full transition transform hover:scale-110">
       <svg xmlns="http://www.w3.org/2000/svg"
            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-           stroke="currentColor" class="w-8 h-8 text-blue-600">
+           stroke="currentColor" class="w-8 h-8 text-blue-600 dark:text-blue-400">
         <path stroke-linecap="round" stroke-linejoin="round"
               d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
       </svg>
@@ -38,15 +38,15 @@
   </div>
 
   <!-- Card: Pesan Diterima -->
-  <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex items-center justify-between border border-gray-100">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition p-6 flex items-center justify-between border border-gray-100 dark:border-gray-700">
     <div>
-      <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Pesan Diterima</h3>
-      <p class="text-3xl font-bold mt-2 text-purple-600"><%= messagesReceived %></p>
+      <h3 class="text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Pesan Diterima</h3>
+      <p class="text-3xl font-bold mt-2 text-purple-600 dark:text-purple-400"><%= messagesReceived %></p>
     </div>
-    <div class="bg-purple-50 p-3 rounded-full transition transform hover:scale-110">
+    <div class="bg-purple-50 dark:bg-purple-900/30 p-3 rounded-full transition transform hover:scale-110">
       <svg xmlns="http://www.w3.org/2000/svg"
            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-           stroke="currentColor" class="w-8 h-8 text-purple-600">
+           stroke="currentColor" class="w-8 h-8 text-purple-600 dark:text-purple-400">
         <path stroke-linecap="round" stroke-linejoin="round"
               d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
       </svg>
@@ -56,22 +56,22 @@
 </div>
 
 <!-- Card: Tentang Jiget -->
-<div class="mt-10 bg-gradient-to-r from-indigo-50 to-pink-50 rounded-2xl shadow-lg p-6 border border-gray-100">
-  <h2 class="text-xl font-bold text-gray-800 mb-4">Tentang Jiget</h2>
+<div class="mt-10 bg-gradient-to-r from-indigo-50 dark:from-gray-900 to-pink-50 dark:to-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+  <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Tentang Jiget</h2>
 
-  <p class="text-gray-700 leading-relaxed mb-4">
-    <span class="font-semibold text-gray-900">Jiget</span> adalah layanan WhatsApp Gateway <span class="italic">unofficial</span> 
+  <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+    <span class="font-semibold text-gray-900 dark:text-white">Jiget</span> adalah layanan WhatsApp Gateway <span class="italic">unofficial</span> 
     yang memungkinkan pengiriman dan penerimaan pesan otomatis melalui API. 
-    Gunakan layanan ini dengan bijak — risiko <span class="font-semibold text-red-600">banned</span> oleh WhatsApp tetap ada.
+    Gunakan layanan ini dengan bijak — risiko <span class="font-semibold text-red-600 dark:text-red-400">banned</span> oleh WhatsApp tetap ada.
   </p>
 
   <div class="mb-4 flex flex-wrap gap-2">
-    <span class="inline-block bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">Node.js</span>
-    <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">Tailwind CSS</span>
-    <span class="inline-block bg-purple-100 text-purple-800 text-sm font-semibold px-3 py-1 rounded-full">Baileys</span>
+    <span class="inline-block bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-sm font-semibold px-3 py-1 rounded-full">Node.js</span>
+    <span class="inline-block bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">Tailwind CSS</span>
+    <span class="inline-block bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-semibold px-3 py-1 rounded-full">Baileys</span>
   </div>
 
-  <p class="text-gray-700 leading-relaxed">
+  <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
     Dengan kombinasi teknologi ini, Jiget dapat mengirim teks, media, dokumen, dan berbagai fitur WhatsApp secara otomatis 
     melalui API yang mudah digunakan. Fokusnya adalah kecepatan, stabilitas, dan kemudahan integrasi.
   </p>
