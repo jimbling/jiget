@@ -1,485 +1,394 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jiget - WhatsApp Gateway API Terdepan</title>
-  <link rel="stylesheet" href="/css/output.css">
-  <link rel="icon" href="/img/jiget.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #4f46e5;
-      --primary-dark: #4338ca;
-      --secondary: #7c3aed;
-      --light: #f8fafc;
-      --dark: #1e293b;
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    
-    .gradient-bg {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    }
-    
-    .feature-card {
-      transition: all 0.3s ease;
-      border-bottom: 4px solid transparent;
-    }
-    
-    .feature-card:hover {
-      transform: translateY(-8px);
-      border-bottom-color: var(--primary);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    .floating-animation {
-      animation: float 6s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    .pulse-animation {
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    .typing-demo {
-      width: 22ch;
-      animation: typing 2s steps(22), blink .5s step-end infinite alternate;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 3px solid;
-      font-family: monospace;
-    }
-    
-    @keyframes typing {
-      from { width: 0 }
-    }
-    
-    @keyframes blink {
-      50% { border-color: transparent }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jiget - WhatsApp Gateway Unofficial</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#25D366',
+                        secondary: '#075E54',
+                        dark: '#1a1a1a',
+                        light: '#f8faac'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #25D366 0%, #075E54 100%);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #25D366;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #128C7E;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #075E54;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #05433a;
+            transform: translateY(-2px);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 15px); }
+            100% { transform: translate(0, -0px); }
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans overflow-x-hidden">
+<body class="font-inter bg-light text-dark">
+    <!-- Header/Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-bold mr-3">
+                    J
+                </div>
+                <span class="text-xl font-bold">Jiget</span>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#features" class="font-medium hover:text-primary transition-colors">Fitur</a>
+                <a href="#installation" class="font-medium hover:text-primary transition-colors">Instalasi</a>
+                <a href="#github" class="font-medium hover:text-primary transition-colors">GitHub</a>
+            </nav>
+            <a href="https://jiget.sinaucms.web.id/login" target="_blank" class="btn-primary px-6 py-2 rounded-lg font-medium">Demo</a>
+        </div>
+    </header>
 
-  <!-- Navbar -->
-  <nav class="bg-white shadow-md fixed w-full z-50 transition-all duration-300">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-          <span class="text-white font-bold">J</span>
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-16 md:py-24">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Jiget - WhatsApp Gateway Unofficial</h1>
+                <p class="text-xl mb-8 opacity-90">Solusi lengkap untuk otomasi WhatsApp menggunakan Baileys dan Node.js. Kirim pesan, broadcast, dan balas otomatis dengan mudah.</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#github" class="btn-secondary px-6 py-3 rounded-lg font-medium text-center">Lihat di GitHub</a>
+                    <a href="#installation" class="bg-red-500 text-secondary px-6 py-3 rounded-lg font-medium text-center hover:bg-red-600 transition-colors">Cara Instalasi</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative w-full max-w-md">
+                    <div class="bg-white rounded-2xl shadow-2xl p-6 floating">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-dark">Jiget Gateway</h3>
+                                <p class="text-gray-500 text-sm">Online</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-100 rounded-lg p-4 mb-4">
+                            <p class="text-gray-900">Halo! Saya adalah Jiget, WhatsApp Gateway yang dapat membantu Anda mengotomasi pesan WhatsApp.</p>
+                        </div>
+                        <div class="bg-primary text-white rounded-lg p-4 ml-8">
+                            <p>Terima kasih telah menghubungi! Pesan Anda telah diterima.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <a href="/" class="text-2xl font-bold text-indigo-600">Jiget</a>
-      </div>
-      <div class="space-x-4">
-        <% if (!user) { %>
-          <a href="/login" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300 shadow hover:shadow-lg">Login</a>
-        <% } else { %>
-          <a href="/dashboard" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300 shadow hover:shadow-lg">Dashboard</a>
-        <% } %>
-      </div>
-    </div>
-  </nav>
+    </section>
 
-  <!-- Hero Section -->
-  <section class="min-h-screen flex items-center justify-center gradient-bg text-white relative overflow-hidden pt-20 md:pt-24">
+    <!-- Warning Section -->
+    <section class="bg-yellow-50 border-l-4 border-yellow-500 py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-yellow-500 text-xl mt-1 mr-3"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium text-yellow-800">Penting: Potensi Pemblokiran Nomor</h3>
+                    <p class="text-yellow-700 mt-1">Karena ini adalah solusi WhatsApp Unofficial, terdapat potensi nomor WhatsApp Anda diblokir oleh WhatsApp. Gunakan dengan bijak dan tanggung jawab.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="absolute top-0 left-0 w-full h-full opacity-10">
-      <div class="absolute top-20 left-10 w-20 h-20 bg-white rounded-full floating-animation"></div>
-      <div class="absolute top-40 right-20 w-16 h-16 bg-white rounded-full floating-animation" style="animation-delay: 1s;"></div>
-      <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-white rounded-full floating-animation" style="animation-delay: 2s;"></div>
-      <div class="absolute bottom-40 right-1/4 w-14 h-14 bg-white rounded-full floating-animation" style="animation-delay: 1.5s;"></div>
-    </div>
-    
-    <div class="text-center px-6 max-w-4xl mx-auto z-10">
-      <h1 class="text-5xl md:text-7xl font-bold mb-8 drop-shadow-lg ">
-        WhatsApp Gateway API
-        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400 mt-4 tracking-wide leading-relaxed">
-  Jiget
-</span>
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Fitur Unggulan Jiget</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Jiget dilengkapi dengan berbagai fitur untuk memudahkan otomasi WhatsApp Anda</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-4">
+                        <i class="fas fa-globe text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Kirim Pesan via Web</h3>
+                    <p class="text-gray-600">Kirim pesan WhatsApp langsung melalui antarmuka web yang mudah digunakan.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-4">
+                        <i class="fas fa-code text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Integrasi API</h3>
+                    <p class="text-gray-600">Integrasikan WhatsApp Gateway dengan aplikasi Anda melalui API yang mudah digunakan.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mb-4">
+                        <i class="fas fa-image text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Kirim Pesan Media</h3>
+                    <p class="text-gray-600">Kirim gambar, video, dokumen, dan file lainnya melalui WhatsApp.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-4">
+                        <i class="fas fa-robot text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Balas Otomatis</h3>
+                    <p class="text-gray-600">Atur balasan otomatis untuk pesan yang masuk dengan mudah.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mb-4">
+                        <i class="fas fa-bullhorn text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Broadcast Pesan</h3>
+                    <p class="text-gray-600">Kirim pesan ke banyak kontak sekaligus dengan fitur broadcast.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mb-4">
+                        <i class="fas fa-history text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Riwayat Pesan</h3>
+                    <p class="text-gray-600">Lihat dan kelola riwayat pesan yang telah dikirim dan diterima.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      </h1>
-      <p class="text-xl md:text-2xl mt-4 mb-10 drop-shadow-md max-w-2xl mx-auto">
-        Tingkatkan komunikasi bisnis Anda dengan API WhatsApp Gateway yang powerful dan mudah diintegrasikan.
-      </p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4 mt-10">
-        <% if (!user) { %>
-          <a href="/login" class="px-8 py-4 bg-white text-indigo-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 pulse-animation">
-            Mulai Sekarang - Gratis
-          </a>
-          <a href="#features" class="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-indigo-600 transition-all duration-300">
-            Pelajari Fitur
-          </a>
-        <% } else { %>
-          <a href="/dashboard" class="px-8 py-4 bg-white text-indigo-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1">
-            Masuk ke Dashboard
-          </a>
-        <% } %>
-      </div>
-      
-      <div class="mt-16 bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-4xl mx-auto">
-        <div class="flex flex-wrap justify-center gap-4">
-          <div class="bg-white/20 rounded-lg px-4 py-2 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            <span>Kirim Pesan via API</span>
-          </div>
-          <div class="bg-white/20 rounded-lg px-4 py-2 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            <span>Auto Reply Cerdas</span>
-          </div>
-          <div class="bg-white/20 rounded-lg px-4 py-2 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            <span>Broadcast Pesan</span>
-          </div>
-          <div class="bg-white/20 rounded-lg px-4 py-2 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            <span>Pesan Media & File</span>
-          </div>
+    <!-- Tech Stack Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Teknologi yang Digunakan</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Jiget dibangun dengan teknologi modern untuk performa terbaik</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center text-white mb-3">
+                        <i class="fab fa-node-js text-3xl"></i>
+                    </div>
+                    <span class="font-medium">Node.js</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center text-white mb-3">
+                        <i class="fab fa-docker text-3xl"></i>
+                    </div>
+                    <span class="font-medium">Docker</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center text-white mb-3">
+                        <i class="fab fa-whatsapp text-3xl"></i>
+                    </div>
+                    <span class="font-medium">Baileys</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-full bg-blue-400 flex items-center justify-center text-white mb-3">
+                        <i class="fab fa-css3-alt text-3xl"></i>
+                    </div>
+                    <span class="font-medium">Tailwind CSS</span>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Features Section -->
-  <section id="features" class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">Fitur Lengkap WhatsApp Gateway</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Jiget menyediakan semua yang Anda butuhkan untuk komunikasi WhatsApp yang efektif dan efisien
-        </p>
-      </div>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
-          <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Kirim Pesan via API</h3>
-          <p class="text-gray-600 mb-4">Integrasikan WhatsApp ke sistem Anda dengan API yang mudah digunakan dan dokumentasi lengkap.</p>
-          <ul class="text-gray-600 space-y-2">
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>REST API yang mudah diintegrasikan</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Dokumentasi API yang lengkap</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Webhook untuk notifikasi real-time</span>
-            </li>
-          </ul>
+    <!-- Installation Section -->
+    <section id="installation" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Cara Instalasi</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Jiget dapat diinstal dengan mudah menggunakan Docker atau tanpa Docker</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- With Docker -->
+                <div class="bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white mr-3">
+                            <i class="fab fa-docker"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Dengan Docker</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Instalasi cepat dan mudah menggunakan Docker.</p>
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                        <p># Clone repository</p>
+                        <p>git clone https://github.com/jimbling/jiget.git</p>
+                        <p>cd jiget</p>
+                        <p># Build dan jalankan dengan Docker</p>
+                        <p>docker-compose up -d</p>
+                    </div>
+                </div>
+                
+                <!-- Without Docker -->
+                <div class="bg-light rounded-xl p-6 shadow-md border border-gray-100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white mr-3">
+                            <i class="fab fa-node-js"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Tanpa Docker</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Instalasi manual menggunakan Node.js.</p>
+                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                        <p># Clone repository</p>
+                        <p>git clone https://github.com/jimbling/jiget.git</p>
+                        <p>cd jiget</p>
+                        <p># Install dependencies</p>
+                        <p>npm install</p>
+                        <p># Jalankan aplikasi</p>
+                        <p>npm start</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
-          <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Auto Reply Cerdas</h3>
-          <p class="text-gray-600 mb-4">Atur balasan otomatis berdasarkan kata kunci atau pola regex untuk meningkatkan respon time.</p>
-          <ul class="text-gray-600 space-y-2">
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Balas otomatis berdasarkan kata kunci</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Dukungan pola regex untuk fleksibilitas</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Jadwal waktu aktif untuk auto-reply</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
-          <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Broadcast Pesan</h3>
-          <p class="text-gray-600 mb-4">Kirim pesan massal ke banyak kontak sekaligus dengan template yang dapat disesuaikan.</p>
-          <ul class="text-gray-600 space-y-2">
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Kirim ke ribuan kontak sekaligus</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Template pesan yang dapat dikustomisasi</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Jadwal pengiriman yang fleksibel</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
-          <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Terhubung 1 Perangkat</h3>
-          <p class="text-gray-600 mb-4">Kelola semua komunikasi WhatsApp dari satu perangkat dengan antarmuka yang intuitif.</p>
-          <ul class="text-gray-600 space-y-2">
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Satu perangkat untuk semua komunikasi</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Antarmuka yang mudah digunakan</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Manajemen kontak terpusat</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
-          <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Pesan Media & File</h3>
-          <p class="text-gray-600 mb-4">Kirim gambar, video, dokumen, dan file lainnya melalui WhatsApp dengan mudah.</p>
-          <ul class="text-gray-600 space-y-2">
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Kirim gambar, video, dan audio</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Dukungan berbagai format dokumen</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Ukuran file hingga 16MB</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
-          <div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Analytics & Reporting</h3>
-          <p class="text-gray-600 mb-4">Pantau performa pesan, respon, dan aktivitas kontak dengan dashboard analitik yang komprehensif.</p>
-          <ul class="text-gray-600 space-y-2">
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Statistik pengiriman pesan</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Laporan respon dan engagement</span>
-            </li>
-            <li class="flex items-start">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span>Ekspor data untuk analisis lanjutan</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- How It Works Section -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-4">Cara Kerja Jiget</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          Hanya dalam 3 langkah sederhana, Anda dapat mengintegrasikan WhatsApp ke sistem Anda
-        </p>
-      </div>
-      
-      <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-        <div class="text-center">
-          <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span class="text-2xl font-bold text-indigo-600">1</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Hubungkan Perangkat</h3>
-          <p class="text-gray-600">Scan QR code untuk menghubungkan WhatsApp Anda dengan Jiget</p>
+    <!-- GitHub Section -->
+    <section id="github" class="py-16 bg-gray-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h2 class="text-3xl font-bold mb-4">Kode Sumber Tersedia di GitHub</h2>
+                    <p class="text-gray-300 mb-6">Jiget adalah proyek open source yang dapat Anda gunakan, modifikasi, dan kembangkan sesuai kebutuhan.</p>
+                    <p class="text-gray-300 mb-6">Silakan gunakan dengan bijak dan bertanggung jawab.</p>
+                    <a href="https://github.com/jimbling/jiget.git" target="_blank" class="btn-primary inline-flex items-center px-6 py-3 rounded-lg font-medium">
+                        <i class="fab fa-github mr-2"></i> Kunjungi GitHub
+                    </a>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white mr-3">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">jimbling/jiget</h3>
+                                <p class="text-gray-400 text-sm">WhatsApp Gateway Unofficial</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700 pt-4">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-400">Bahasa:</span>
+                                <span>JavaScript</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-400">Framework:</span>
+                                <span>Node.js</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Lisensi:</span>
+                                <span>MIT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="text-center">
-          <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span class="text-2xl font-bold text-indigo-600">2</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Konfigurasi Fitur</h3>
-          <p class="text-gray-600">Atur auto-reply, broadcast, dan integrasikan dengan API</p>
-        </div>
-        
-        <div class="text-center">
-          <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span class="text-2xl font-bold text-indigo-600">3</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Mulai Berkomunikasi</h3>
-          <p class="text-gray-600">Gunakan dashboard atau API untuk mengelola komunikasi WhatsApp</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Call To Action Section -->
-  <section class="py-20 gradient-bg text-white text-center relative overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-full opacity-10">
-      <div class="absolute top-10 right-10 w-16 h-16 bg-white rounded-full floating-animation"></div>
-      <div class="absolute bottom-10 left-10 w-20 h-20 bg-white rounded-full floating-animation" style="animation-delay: 1s;"></div>
-    </div>
-    
-    <div class="container mx-auto px-6 relative z-10">
-      <h2 class="text-4xl font-bold mb-6">Siap Meningkatkan Komunikasi WhatsApp Bisnis Anda?</h2>
-      <p class="text-xl mb-10 max-w-2xl mx-auto">
-        Bergabunglah dengan ratusan bisnis yang telah menggunakan Jiget untuk komunikasi WhatsApp yang lebih efisien
-      </p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <% if (!user) { %>
-          <a href="/login" class="px-10 py-4 bg-white text-indigo-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1">
-            Mulai Sekarang - Gratis
-          </a>
-          <a href="#features" class="px-10 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-indigo-600 transition-all duration-300">
-            Pelajari Lebih Lanjut
-          </a>
-        <% } else { %>
-          <a href="/dashboard" class="px-10 py-4 bg-white text-indigo-600 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1">
-            Dashboard
-          </a>
-        <% } %>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-<!-- Footer -->
-<footer class="bg-gray-800 text-gray-300 py-12">
-  <div class="container mx-auto px-6">
-    <div class="grid md:grid-cols-4 gap-8">
-      <!-- Logo & Deskripsi -->
-      <div>
-        <div class="flex items-center space-x-2 mb-4">
-          <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-            <span class="text-white font-bold">J</span>
-          </div>
-          <span class="text-xl font-bold text-white">Jiget</span>
+    <!-- Demo Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Coba Demo Jiget</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto mb-8">Lihat langsung bagaimana Jiget bekerja dengan mengunjungi demo online kami.</p>
+            <a href="https://jiget.sinaucms.web.id/login" target="_blank" class="btn-primary px-8 py-3 rounded-lg font-medium text-lg">Kunjungi Demo</a>
         </div>
-        <p class="mb-4">WhatsApp Gateway API terdepan untuk komunikasi bisnis yang efisien.</p>
-        <p class="text-sm">Made with ❤️ by Sinaucms</p>
-      </div>
-      
-      <!-- Fitur -->
-      <div>
-        <h3 class="text-lg font-semibold text-white mb-4">Fitur</h3>
-        <ul class="space-y-2">
-          <li><a href="#" class="hover:text-white transition">Kirim Pesan via API</a></li>
-          <li><a href="#" class="hover:text-white transition">Auto Reply</a></li>
-          <li><a href="#" class="hover:text-white transition">Broadcast</a></li>
-          <li><a href="#" class="hover:text-white transition">Pesan Media</a></li>
-        </ul>
-      </div>
-      
-      <!-- Bantuan -->
-      <div>
-        <h3 class="text-lg font-semibold text-white mb-4">Bantuan</h3>
-        <ul class="space-y-2">
-          <li><a href="#" class="hover:text-white transition">Dokumentasi</a></li>
-          <li><a href="#" class="hover:text-white transition">Panduan</a></li>
-          <li><a href="#" class="hover:text-white transition">FAQ</a></li>
-          <li><a href="#" class="hover:text-white transition">Kontak</a></li>
-        </ul>
-      </div>
+    </section>
 
-      <!-- Kontak -->
-      <div>
-        <h3 class="text-lg font-semibold text-white mb-4">Kontak</h3>
-        <ul class="space-y-2 text-sm">
-          <li>Alamat: Pengasih, Kulon Progo, D.I. Yogyakarta</li>
-          <li>WA: <a href="https://wa.me/6283130500748" target="_blank" class="hover:text-white transition">0831-3050-0748</a></li>
-        </ul>
-      </div>
+   <footer class="bg-secondary text-white py-16">
+    <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- About / Branding -->
+        <div>
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-bold mr-3">
+                    J
+                </div>
+                <span class="text-2xl font-bold">Jiget</span>
+            </div>
+            <p class="text-gray-800 mb-4">WhatsApp Gateway Unofficial yang membantu Anda mengotomasi pesan, broadcast, dan balasan otomatis dengan mudah.</p>
+            <div class="flex gap-4">
+                <a href="https://github.com/jimbling/jiget" target="_blank" class="text-white hover:text-primary transition-colors">
+                    <i class="fab fa-github fa-lg"></i>
+                </a>
+                <a href="https://wa.me/628123456789" target="_blank" class="text-white hover:text-primary transition-colors">
+                    <i class="fab fa-whatsapp fa-lg"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+            <h3 class="text-xl font-semibold mb-4">Link Cepat</h3>
+            <ul class="space-y-2">
+                <li><a href="#features" class="hover:text-primary transition-colors">Fitur</a></li>
+                <li><a href="#installation" class="hover:text-primary transition-colors">Instalasi</a></li>
+                <li><a href="#github" class="hover:text-primary transition-colors">GitHub</a></li>
+                <li><a href="https://jiget.sinaucms.web.id/login" target="_blank" class="hover:text-primary transition-colors">Demo</a></li>
+            </ul>
+        </div>
+
+        <!-- Contact / Info -->
+        <div>
+            <h3 class="text-xl font-semibold mb-4">Kontak & Info</h3>
+            <p class="text-gray-500 mb-2"><i class="fas fa-envelope mr-2"></i> info@jiget.com</p>
+            <p class="text-gray-500 mb-2"><i class="fas fa-phone mr-2"></i> +62 812-3456-789</p>
+            <p class="text-gray-500 mb-2"><i class="fas fa-map-marker-alt mr-2"></i> Jakarta, Indonesia</p>
+            <p class="text-gray-500 mt-4 text-sm">Gunakan dengan bijak dan bertanggung jawab. Dibangun dengan Baileys, Node.js, dan Tailwind CSS.</p>
+        </div>
     </div>
-    
-    <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-      <p>&copy; <%= new Date().getFullYear() %> Jiget. Semua hak cipta dilindungi.</p>
+
+    <div class="border-t border-gray-700 mt-12 pt-6 text-center text-gray-400 text-sm">
+        &copy; 2023 Jiget. All rights reserved.
     </div>
-  </div>
 </footer>
 
 
-
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
