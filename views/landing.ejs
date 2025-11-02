@@ -1,12 +1,91 @@
-<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jiget - Landing Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="/img/jiget.ico" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-<h1>Selamat Datang di Jiget</h1>
-<p>Ini adalah halaman landing page publik.</p>
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md fixed w-full z-50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" class="text-2xl font-bold text-indigo-600">Jiget</a>
+      <div class="space-x-4">
+        <% if (!user) { %>
+          <a href="/login" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Login</a>
+        <% } else { %>
+          <a href="/dashboard" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Dashboard</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
 
-<% if (!user) { %>
-  <a href="/login">Login</a>
-<% } else { %>
-  <a href="/dashboard">Dashboard</a>
-<% } %>
+  <!-- Hero Section -->
+  <section class="h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+    <div class="text-center px-6">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Selamat Datang di Jiget</h1>
+      <p class="text-lg md:text-xl mb-8 drop-shadow-md">
+        Kirim WhatsApp otomatis, kelola kontak, auto-reply, broadcast, dan banyak lagi.
+      </p>
+      <% if (!user) { %>
+        <a href="/login" class="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition">
+          Login Sekarang
+        </a>
+      <% } else { %>
+        <a href="/dashboard" class="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition">
+          Masuk ke Dashboard
+        </a>
+      <% } %>
+    </div>
+  </section>
 
-<%- include('partials/footer') %>
+  <!-- Features Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-12">Fitur Utama Jiget</h2>
+      <div class="grid md:grid-cols-3 gap-12">
+        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+          <h3 class="text-xl font-semibold mb-2">Auto Reply</h3>
+          <p class="text-gray-600">Balas pesan otomatis sesuai keyword atau regex.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+          <h3 class="text-xl font-semibold mb-2">Broadcast</h3>
+          <p class="text-gray-600">Kirim pesan massal ke banyak kontak sekaligus.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+          <h3 class="text-xl font-semibold mb-2">Analytics</h3>
+          <p class="text-gray-600">Pantau performa pesan, respon, dan aktivitas kontak.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call To Action Section -->
+  <section class="py-20 bg-indigo-600 text-white text-center">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-6">Siap meningkatkan komunikasi WhatsApp Anda?</h2>
+      <% if (!user) { %>
+        <a href="/login" class="px-10 py-4 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition">
+          Mulai Sekarang
+        </a>
+      <% } else { %>
+        <a href="/dashboard" class="px-10 py-4 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition">
+          Dashboard
+        </a>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 py-8">
+    <div class="container mx-auto px-6 text-center">
+      <p>&copy; <%= new Date().getFullYear() %> Jiget. Semua hak cipta dilindungi.</p>
+      <p class="mt-2">Made with ❤️ by Sinaucms</p>
+    </div>
+  </footer>
+
+</body>
+</html>
