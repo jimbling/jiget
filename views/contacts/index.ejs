@@ -6,8 +6,8 @@
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
   <!-- Judul dan deskripsi -->
   <div>
-    <h1 class="text-3xl font-bold text-gray-900">Daftar Kontak</h1>
-    <p class="text-gray-600 mt-1">Kelola informasi kontak Anda dengan mudah</p>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Daftar Kontak</h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola informasi kontak Anda dengan mudah</p>
   </div>
 
   <!-- Tombol aksi -->
@@ -15,7 +15,7 @@
     <!-- Tambah Kontak -->
     <button 
       id="btnTambah"
-      class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 md:py-2.5 md:px-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+      class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 md:py-2.5 md:px-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
     >
       <svg xmlns="http://www.w3.org/2000/svg" 
            class="h-5 w-5 md:h-5 md:w-5" 
@@ -29,7 +29,7 @@
     <!-- Import Kontak -->
     <button 
       id="btnOpenImportModal"
-      class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 md:py-2.5 md:px-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+      class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white font-medium py-2 px-4 md:py-2.5 md:px-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
     >
       <svg xmlns="http://www.w3.org/2000/svg" 
            class="h-5 w-5 md:h-5 md:w-5"
@@ -45,12 +45,12 @@
 
   <!-- ============== MODAL IMPORT KONTAK ============== -->
 <div id="importModal"
-     class="fixed inset-0 hidden items-center justify-center z-50 bg-black/70 backdrop-blur-sm transition-opacity duration-300">
+     class="fixed inset-0 hidden items-center justify-center z-50 bg-black/70 dark:bg-black/80 backdrop-blur-sm transition-opacity duration-300">
   <div
-    class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 relative transform scale-95 opacity-0 transition-all duration-300">
+    class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg p-6 relative transform scale-95 opacity-0 transition-all duration-300">
     <!-- Tombol Close -->
     <button id="btnCloseModalImport"
-            class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors duration-200">
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
            stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -58,15 +58,15 @@
     </button>
 
     <!-- Header -->
-    <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center">📥 Import Kontak</h2>
-    <p class="text-sm text-gray-600 mb-6 text-center leading-relaxed">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center">📥 Import Kontak</h2>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 text-center leading-relaxed">
       Pilih file Excel yang berisi daftar kontak Anda.<br>
       Anda juga dapat mengunduh template terlebih dahulu.
     </p>
 
     <!-- Download Template -->
     <a href="/contacts/template"
-       class="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto mx-auto">
+       class="inline-flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto mx-auto">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
            viewBox="0 0 24 24" fill="none" stroke="currentColor"
            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -81,14 +81,14 @@
 
     <!-- Divider -->
     <div class="my-6 flex items-center">
-      <div class="flex-grow border-t border-gray-200"></div>
-      <span class="mx-3 text-gray-400 text-sm">atau</span>
-      <div class="flex-grow border-t border-gray-200"></div>
+      <div class="flex-grow border-t border-gray-200 dark:border-gray-600"></div>
+      <span class="mx-3 text-gray-400 dark:text-gray-500 text-sm">atau</span>
+      <div class="flex-grow border-t border-gray-200 dark:border-gray-600"></div>
     </div>
 
     <!-- Area Upload -->
     <label for="fileImport"
-           class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+           class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mb-2 text-blue-500" fill="none" viewBox="0 0 24 24"
            stroke="currentColor" stroke-width="2">
         <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -99,18 +99,18 @@
           d="M17 20.25c0 .414 .336 .75 .75 .75h1.25a1 1 0 0 0 1 -1v-1a1 1 0 0 0 -1 -1h-1a1 1 0 0 1 -1 -1v-1a1 1 0 0 1 1 -1h1.25a.75 .75 0 0 1 .75 .75" />
         <path d="M11 15v6h3" />
       </svg>
-      <span class="text-gray-700 font-medium">Klik untuk pilih file</span>
-      <span class="text-gray-400 text-xs mt-1">.xls / .xlsx (maks 5MB)</span>
+      <span class="text-gray-700 dark:text-gray-300 font-medium">Klik untuk pilih file</span>
+      <span class="text-gray-400 dark:text-gray-500 text-xs mt-1">.xls / .xlsx (maks 5MB)</span>
       <input type="file" id="fileImport" name="file" hidden>
     </label>
 
     <!-- File Preview -->
     <p id="fileNamePreview"
-       class="text-sm text-blue-600 mt-3 font-medium hidden text-center break-words"></p>
+       class="text-sm text-blue-600 dark:text-blue-400 mt-3 font-medium hidden text-center break-words"></p>
 
     <!-- Tombol Kirim -->
    <button id="btnSubmitImport"
-        class="mt-6 w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 
+        class="mt-6 w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600
                text-white font-medium py-3 px-5 rounded-xl shadow-md hover:shadow-lg 
                transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         disabled>
@@ -130,13 +130,13 @@
 
 
   <!-- Bulk Actions -->
-  <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 mb-6">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <button 
         type="submit"
         form="bulk-delete-form"
         id="btnHapusTerpilih"
-        class="flex items-center bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-lg shadow-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+        class="flex items-center bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 px-4 py-2 rounded-lg shadow-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -150,17 +150,17 @@
 
   <!-- Contacts Table -->
   <form id="bulk-delete-form" method="POST" action="/contacts/bulk-delete">
-    <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
         <table id="contactsTable" class="w-full">
-          <thead class="bg-gray-50">
+          <thead class="bg-gray-50 dark:bg-gray-700">
             <tr>
               <th class="py-4 px-6">
                 <div class="flex items-center">
-                  <input type="checkbox" id="select-all" class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                  <input type="checkbox" id="select-all" class="h-4 w-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:bg-gray-800">
                 </div>
               </th>
-              <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700">
+              <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
                 <div class="flex items-center">
                   <span>Nama</span>
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,7 +168,7 @@
                   </svg>
                 </div>
               </th>
-              <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-700">
+              <th class="py-4 px-6 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
                 <div class="flex items-center">
                   <span>Nomor Telepon</span>
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -176,29 +176,29 @@
                   </svg>
                 </div>
               </th>
-              <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="py-4 px-6 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-100">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
             <% contacts.forEach(contact => { %>
-              <tr class="hover:bg-gray-50 transition-colors duration-150">
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150">
                 <td class="py-4 px-6 whitespace-nowrap">
-                  <input type="checkbox" name="ids[]" value="<%= contact.id %>" class="row-checkbox h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                  <input type="checkbox" name="ids[]" value="<%= contact.id %>" class="row-checkbox h-4 w-4 text-blue-600 rounded border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:bg-gray-800">
                 </td>
                 <td class="py-4 px-6 whitespace-nowrap">
                   <div class="flex items-center">
-                    <div class="h-10 w-10 flex-shrink-0 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                      <span class="font-medium text-blue-800"><%= contact.name ? contact.name.charAt(0).toUpperCase() : '?' %></span>
+                    <div class="h-10 w-10 flex-shrink-0 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mr-3">
+                      <span class="font-medium text-blue-800 dark:text-blue-200"><%= contact.name ? contact.name.charAt(0).toUpperCase() : '?' %></span>
                     </div>
-                    <div class="text-sm font-medium text-gray-900"><%= contact.name || '-' %></div>
+                    <div class="text-sm font-medium text-gray-900 dark:text-white"><%= contact.name || '-' %></div>
                   </div>
                 </td>
                 <td class="py-4 px-6 whitespace-nowrap">
-                  <div class="text-sm text-gray-900"><%= contact.phone_number %></div>
+                  <div class="text-sm text-gray-900 dark:text-gray-100"><%= contact.phone_number %></div>
                 </td>
                 <td class="py-4 px-6 whitespace-nowrap text-center">
                   <div class="flex justify-center space-x-2">
-                    <a href="#" class="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200 btnEdit" 
+                    <a href="#" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors duration-200 btnEdit" 
                       data-id="<%= contact.id %>" 
                       data-name="<%= contact.name %>" 
                       data-phone="<%= contact.phone_number %>">
@@ -228,10 +228,10 @@
   <div id="paginationContainer" class="flex justify-center mt-6 space-x-2">
     <!-- Tombol First & Prev -->
     <% if (currentPage > 1) { %>
-      <a href="?page=1" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+      <a href="?page=1" class="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
         «
       </a>
-      <a href="?page=<%= currentPage - 1 %>" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+      <a href="?page=<%= currentPage - 1 %>" class="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
         ‹
       </a>
     <% } %>
@@ -244,27 +244,27 @@
     %>
 
     <% if (startPage > 1) { %>
-      <span class="px-3 py-2 text-gray-500">...</span>
+      <span class="px-3 py-2 text-gray-500 dark:text-gray-400">...</span>
     <% } %>
 
     <% for (let i = startPage; i <= endPage; i++) { %>
       <a href="?page=<%= i %>"
          class="px-4 py-2 border rounded-lg transition 
-                <%= i === currentPage ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-700 hover:bg-gray-100' %>">
+                <%= i === currentPage ? 'bg-blue-600 text-white shadow-md' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' %>">
         <%= i %>
       </a>
     <% } %>
 
     <% if (endPage < totalPages) { %>
-      <span class="px-3 py-2 text-gray-500">...</span>
+      <span class="px-3 py-2 text-gray-500 dark:text-gray-400">...</span>
     <% } %>
 
     <!-- Tombol Next & Last -->
     <% if (currentPage < totalPages) { %>
-      <a href="?page=<%= currentPage + 1 %>" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+      <a href="?page=<%= currentPage + 1 %>" class="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
         ›
       </a>
-      <a href="?page=<%= totalPages %>" class="px-3 py-2 border rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition">
+      <a href="?page=<%= totalPages %>" class="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
         »
       </a>
     <% } %>
@@ -274,27 +274,27 @@
 </div>
 
 <!-- Modal Tambah Kontak -->
-<div id="modalTambah" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 items-center justify-center p-4">
-  <div class="bg-white rounded-2xl shadow-xl w-full max-w-md transform transition-all">
-    <div class="p-6 border-b border-gray-100">
-      <h2 class="text-xl font-semibold text-gray-900">Tambah Kontak Baru</h2>
+<div id="modalTambah" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 hidden z-50 items-center justify-center p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md transform transition-all">
+    <div class="p-6 border-b border-gray-100 dark:border-gray-700">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Tambah Kontak Baru</h2>
     </div>
     <form id="formTambah" method="POST" action="/contacts" class="p-6 space-y-5">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama</label>
         <input type="text" name="name" required 
-               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+               class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
                placeholder="Masukkan nama">
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1.5">Nomor Telepon</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nomor Telepon</label>
         <input type="text" name="phone_number" required 
-               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+               class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
                placeholder="Masukkan nomor telepon">
       </div>
       <div class="flex justify-end gap-3 pt-2">
         <button type="button" id="btnCloseModal" 
-                class="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors font-medium">
+                class="px-5 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium">
           Batal
         </button>
         <button type="submit" 
@@ -307,28 +307,28 @@
 </div>
 
 <!-- Modal Edit Kontak -->
-<div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 items-center justify-center p-4">
-  <div class="bg-white rounded-2xl shadow-xl w-full max-w-md transform transition-all">
-    <div class="p-6 border-b border-gray-100">
-      <h2 class="text-xl font-semibold text-gray-900">Edit Kontak</h2>
+<div id="modalEdit" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 hidden z-50 items-center justify-center p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md transform transition-all">
+    <div class="p-6 border-b border-gray-100 dark:border-gray-700">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Kontak</h2>
     </div>
     <form id="formEdit" method="POST" class="p-6 space-y-2">
       <input type="hidden" name="id" id="edit_id">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nama</label>
         <input type="text" name="name" id="edit_name" required 
-               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+               class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
                placeholder="Masukkan nama">
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1.5">Nomor Telepon</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Nomor Telepon</label>
         <input type="text" name="phone_number" id="edit_phone_number" required 
-               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+               class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
                placeholder="Masukkan nomor telepon">
       </div>
       <div class="flex justify-end gap-3 pt-2">
         <button type="button" id="btnCloseEditModal" 
-                class="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors font-medium">
+                class="px-5 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium">
           Batal
         </button>
         <button type="submit" 
