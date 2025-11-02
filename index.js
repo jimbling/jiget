@@ -149,7 +149,8 @@ const apiLimiter = rateLimit({
   message: { error: 'Terlalu banyak request, coba lagi nanti.' },
 });
 app.use('/api/wa', apiLimiter, require('./routes/wa'));
-
+const landingRoute = require('./routes/landing');
+const loginRoute = require('./routes/auth');
 // Landing page publik
 app.use('/login', loginRoute);
 app.use('/', landingRoute);
