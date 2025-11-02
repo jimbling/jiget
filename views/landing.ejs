@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+
+<h1>Selamat Datang di Jiget</h1>
+<p>Ini adalah halaman landing page publik.</p>
+
+<% if (!user) { %>
+  <a href="/login">Login</a>
+<% } else { %>
+  <a href="/dashboard">Dashboard</a>
+<% } %>
+
+<%- include('partials/footer') %>

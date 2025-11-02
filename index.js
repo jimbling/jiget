@@ -150,16 +150,17 @@ const apiLimiter = rateLimit({
 });
 app.use('/api/wa', apiLimiter, require('./routes/wa'));
 
-app.use(require('./routes/auth'));
-app.use('/', authRequired, require('./routes/dashboard'));
-app.use('/', authRequired, require('./routes/messages'));
-app.use('/auto-reply', authRequired, require('./routes/autoReply'));
-app.use('/', authRequired, require('./routes/profile'));
-app.use('/', authRequired, require('./routes/wa'));
-app.use('/', authRequired, require('./routes/contacts'));
+// Landing page publik
+app.use('/', require('./routes/landing'));
+
+// Dashboard dan route lain tetap pakai authRequired
+app.use('/dashboard', authRequired, require('./routes/dashboard'));
+app.use('/messages', authRequired, require('./routes/messages'));
+app.use('/profile', authRequired, require('./routes/profile'));
+app.use('/wa', authRequired, require('./routes/wa'));
+app.use('/contacts', authRequired, require('./routes/contacts'));
 app.use('/groups', authRequired, require('./routes/groups'));
 app.use('/broadcast', authRequired, require('./routes/broadcast'));
-
 /* ================================
    Error Handler
 ================================== */
