@@ -1,23 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("✅ theme-toggle.js loaded");
+  
   const themeToggle = document.getElementById('themeToggle');
   const themeIcon = document.getElementById('themeIcon');
   const root = document.documentElement;
 
   if (!themeToggle || !themeIcon) return;
 
-  // Cek tema tersimpan di localStorage
-  if (localStorage.getItem('theme') === 'dark') {
-    root.classList.add('dark');
-    themeIcon.classList.replace('fa-moon', 'fa-sun');
-  }
+  // Set icon awal sesuai tema tersimpan
+  const isDark = root.classList.contains('dark');
+  themeIcon.classList.toggle('fa-sun', isDark);
+  themeIcon.classList.toggle('fa-moon', !isDark);
 
-  // Event toggle
+  // Event toggle klik
   themeToggle.addEventListener('click', () => {
     root.classList.toggle('dark');
-    const isDark = root.classList.contains('dark');
-    themeIcon.classList.toggle('fa-sun', isDark);
-    themeIcon.classList.toggle('fa-moon', !isDark);
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const nowDark = root.classList.contains('dark');
+    themeIcon.classList.toggle('fa-sun', nowDark);
+    themeIcon.classList.toggle('fa-moon', !nowDark);
+    localStorage.setItem('theme', nowDark ? 'dark' : 'light');
   });
 });
