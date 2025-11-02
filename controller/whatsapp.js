@@ -177,122 +177,67 @@ async function initWhatsApp() {
     });
 
     // Pesan masuk
-sock.ev.on('messages.upsert', async ({ messages }) => {
-  const msg = messages[0];
-  if (!msg.message || msg.key.fromMe) return;
+    sock.ev.on('messages.upsert', async ({ messages }) => {
+      const msg = messages[0];
+      if (!msg.message || msg.key.fromMe) return;
 
-  const sender = msg.key.remoteJid;
-  const phoneNumber = sender.replace(/\D/g, ''); // Hanya angka
-  const text =
-    msg.message?.conversation ||
-    msg.message?.extendedTextMessage?.text ||
-    '';
+      const sender = msg.key.remoteJid;
+      const text =
+        msg.message?.conversation ||
+        msg.message?.extendedTextMessage?.text ||
+        '';
 
-  console.log(`📩 Pesan dari ${sender}: ${text}`);
+      console.log(`📩 Pesan dari ${sender}: ${text}`);
 
-  try {
-    // 1. Simpan pesan inbound
-    await db.query(
-      'INSERT INTO wa_messages (number, message, type, status) VALUES (?, ?, ?, ?)',
-      [sender, text, 'inbound', 'received']
-    );
-  } catch (err) {
-    console.error('❌ Gagal simpan pesan inbound:', err.message);
-  }
-
-  try {
-    // 2. Cek apakah kontak baru / ambil info terakhir
-    const [contacts] = await db.query(
-      'SELECT id, is_welcome_sent, last_active_at FROM contacts WHERE phone_number=?',
-      [phoneNumber]
-    );
-
-    let contact;
-    if (!contacts.length) {
-      // Kontak baru
-      const [result] = await db.query(
-        'INSERT INTO contacts (name, phone_number, is_subscribed, last_active_at) VALUES (?, ?, ?, NOW())',
-        ['Unknown', phoneNumber, 1]
-      );
-      contact = { id: result.insertId, is_welcome_sent: 0, last_active_at: null };
-    } else {
-      contact = contacts[0];
-    }
-
-    // 3. Cek selang waktu terakhir
-    const now = new Date();
-    const lastActive = contact.last_active_at ? new Date(contact.last_active_at) : null;
-    const diffHours = lastActive ? (now - lastActive) / 1000 / 60 / 60 : null;
-
-    // 4. Kirim welcome message jika belum pernah dikirim atau >24 jam
-    if (!contact.is_welcome_sent || (diffHours !== null && diffHours >= 24)) {
-      const [welcomeRules] = await db.query(
-        "SELECT * FROM auto_replies WHERE is_active=1 AND event_type='welcome'"
-      );
-
-      for (const rule of welcomeRules) {
-        await sock.sendMessage(sender, { text: rule.reply_text });
-        console.log(`✉️ Welcome message ke ${sender}: ${rule.reply_text}`);
-      }
-
-      // Update last_active_at dan set is_welcome_sent
-      await db.query(
-        'UPDATE contacts SET is_welcome_sent=1, last_active_at=NOW() WHERE id=?',
-        [contact.id]
-      );
-    } else {
-      // Update last_active_at tetap untuk tracking aktivitas
-      await db.query(
-        'UPDATE contacts SET last_active_at=NOW() WHERE id=?',
-        [contact.id]
-      );
-    }
-
-    // 5. Auto-reply biasa
-    const [rules] = await db.query('SELECT * FROM auto_replies WHERE is_active=1');
-    for (const rule of rules) {
-      if (rule.event_type === 'welcome') continue; // skip welcome rules
-      let matched = false;
-
-      switch (rule.type) {
-        case 'exact':
-          matched = text.toLowerCase() === rule.keyword.toLowerCase();
-          break;
-        case 'contains':
-          matched = text.toLowerCase().includes(rule.keyword.toLowerCase());
-          break;
-        case 'regex':
-          try {
-            const regex = new RegExp(rule.keyword, 'i');
-            matched = regex.test(text);
-          } catch (err) {
-            console.error('Regex error:', err.message);
-          }
-          break;
-      }
-
-      if (matched) {
-        await sock.sendMessage(sender, { text: rule.reply_text });
-        console.log(`✉️ Auto-reply ke ${sender}: ${rule.reply_text}`);
-        break;
-      }
-    }
-
-    // 6. Pesan khusus "ping"
-    if (text.toLowerCase() === 'ping') {
       try {
-        await sock.sendMessage(sender, { text: 'Pong! 🏓' });
+        await db.query(
+          'INSERT INTO wa_messages (number, message, type, status) VALUES (?, ?, ?, ?)',
+          [sender, text, 'inbound', 'received']
+        );
       } catch (err) {
-        console.error('❌ Gagal membalas ping:', err.message);
+        console.error('❌ Gagal simpan pesan inbound:', err.message);
       }
-    }
 
-  } catch (err) {
-    console.error('❌ Gagal proses auto-reply / welcome message:', err.message);
-  }
-});
+      try {
+        const [rules] = await db.query('SELECT * FROM auto_replies WHERE is_active=1');
+        for (const rule of rules) {
+          let matched = false;
 
+          switch (rule.type) {
+            case 'exact':
+              matched = text.toLowerCase() === rule.keyword.toLowerCase();
+              break;
+            case 'contains':
+              matched = text.toLowerCase().includes(rule.keyword.toLowerCase());
+              break;
+            case 'regex':
+              try {
+                const regex = new RegExp(rule.keyword, 'i');
+                matched = regex.test(text);
+              } catch (err) {
+                console.error('Regex error:', err.message);
+              }
+              break;
+          }
 
+          if (matched) {
+            await sock.sendMessage(sender, { text: rule.reply_text });
+            console.log(`✉️ Auto-reply ke ${sender}: ${rule.reply_text}`);
+            break;
+          }
+        }
+      } catch (err) {
+        console.error('❌ Gagal cek auto-reply:', err.message);
+      }
+
+      if (text.toLowerCase() === 'ping') {
+        try {
+          await sock.sendMessage(sender, { text: 'Pong! 🏓' });
+        } catch (err) {
+          console.error('❌ Gagal membalas ping:', err.message);
+        }
+      }
+    });
 
     console.log('🚀 Socket WhatsApp siap! Jalankan scan QR jika diminta.');
   } catch (err) {
