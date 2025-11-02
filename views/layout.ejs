@@ -1,90 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="transition-colors duration-300">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
+
+  <!-- Tailwind output -->
   <link rel="stylesheet" href="/css/output.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papapapapapap..." crossorigin="anonymous" referrerpolicy="no-referrer" />
- <link rel="icon" href="/img/jiget.ico" type="image/x-icon">
- <!-- Load SweetAlert2 lokal -->
-<script src="/js/sweetalert2.all.min.js"></script>
-<!-- Load script custom untuk hapus pesan -->
-<script src="/js/messages.js" defer></script>
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="icon" href="/img/jiget.ico" type="image/x-icon">
+
+  <!-- SweetAlert & Custom Script -->
+  <script src="/js/sweetalert2.all.min.js"></script>
+  <script src="/js/messages.js" defer></script>
+
   <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-        }
-        body.swal2-shown {
-  padding-right: 0 !important;
-}
-        .device-card {
-            transition: all 0.3s ease;
-        }
-        .device-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .qr-loading {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(37, 211, 102, 0.3);
-            border-radius: 50%;
-            border-top-color: #25D366;
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .token-field {
-            transition: all 0.3s ease;
-        }
-        .token-field:focus {
-            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.3);
-        }
-        #importModal {
-  background-color: rgba(0, 0, 0, 0.6); /* <- lebih gelap, bisa ubah 0.7 untuk lebih pekat */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
-  transition: opacity 0.3s ease;
-}
-    </style>
-    
-
-    
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+    }
+    body.swal2-shown {
+      padding-right: 0 !important;
+    }
+    .device-card {
+      transition: all 0.3s ease;
+    }
+    .device-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                  0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .qr-loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(37, 211, 102, 0.3);
+      border-radius: 50%;
+      border-top-color: #25D366;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .token-field {
+      transition: all 0.3s ease;
+    }
+    .token-field:focus {
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.3);
+    }
+    #importModal {
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity 0.3s ease;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
-   <div class="flex min-h-screen">
 
-  <!-- Sidebar & Overlay -->
-  <div>
-    <!-- Overlay untuk mobile -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30"></div>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+  <div class="flex min-h-screen">
 
-<%- include('partials/sidebar') %>
-   
+    <!-- Sidebar & Overlay -->
+    <div>
+      <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30"></div>
+      <%- include('partials/sidebar') %>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col overflow-hidden ml-0 md:ml-64 transition-all duration-300">
+      <!-- Topbar -->
+      <%- include('partials/top-bar') %>
+
+      <!-- Page content -->
+      <main class="flex-1 overflow-auto p-6">
+        <%- body %>
+      </main>
+
+      <!-- Footer -->
+      <%- include('partials/footer') %>
+    </div>
   </div>
 
-  <!-- Main content -->
-  <div class="flex-1 flex flex-col overflow-hidden ml-0 md:ml-64 transition-all duration-300">
-    <!-- Topbar -->
-    <%- include('partials/top-bar') %>
-
-    <!-- Page content -->
-    <main class="flex-1 overflow-auto p-6">
-      <%- body %>
-    </main>
-
-    <!-- Footer -->
-    <%- include('partials/footer') %>
-  </div>
-
-
-</div>
-
+  
 </body>
-
 </html>
