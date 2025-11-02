@@ -34,7 +34,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
-      last_active_at: DataTypes.DATE
+      last_active_at: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
+      is_welcome_sent: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
     },
     {
       sequelize,
