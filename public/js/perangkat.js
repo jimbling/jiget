@@ -6,19 +6,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const qrContainer = document.querySelector('#qr-container');
 
     /* ------------------------------
-     * 1️⃣ Refresh QR code otomatis
+     * 1️⃣ Toggle Token Visibility
+     * ------------------------------ */
+    const toggleTokenBtn = document.getElementById('toggle-token-visibility');
+    const tokenInput = document.getElementById('token-input');
+    
+    if (toggleTokenBtn && tokenInput) {
+        toggleTokenBtn.addEventListener('click', () => {
+            const isPassword = tokenInput.type === 'password';
+            tokenInput.type = isPassword ? 'text' : 'password';
+            toggleTokenBtn.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+            toggleTokenBtn.setAttribute('title', isPassword ? 'Sembunyikan token' : 'Tampilkan token');
+        });
+    }
+
+    /* ------------------------------
+     * 2️⃣ Refresh QR code otomatis
      * ------------------------------ */
     if (qrContainer && !isConnected) {
         let retryCount = 0;
         const maxRetries = 30;
+        let qrInterval;
 
-        const qrInterval = setInterval(async () => {
+        const fetchQRCode = async () => {
             if (retryCount >= maxRetries) {
                 clearInterval(qrInterval);
                 qrContainer.innerHTML = `
-                    <div class="text-center text-gray-600">
+                    <div class="text-center text-gray-600 p-4">
                         <i class="fas fa-exclamation-triangle text-2xl text-yellow-500 mb-2"></i>
-                        <p>Timeout. Silakan refresh halaman untuk mencoba lagi.</p>
+                        <p class="font-medium">Timeout</p>
+                        <p class="text-sm mt-1">Silakan refresh halaman untuk mencoba lagi.</p>
                     </div>
                 `;
                 return;
@@ -30,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (data.connected) {
                     qrContainer.innerHTML = `
-                        <div class="text-center">
+                        <div class="text-center p-4">
                             <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                                 <i class="fas fa-check text-2xl text-green-600"></i>
                             </div>
@@ -41,7 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     clearInterval(qrInterval);
                     setTimeout(() => location.reload(), 2000);
                 } else if (data.qr) {
-                    qrContainer.innerHTML = `<img class="w-full h-full" src="${data.qr}" alt="QR Code WhatsApp" />`;
+                    qrContainer.innerHTML = `<img class="w-full h-full rounded-lg" src="${data.qr}" alt="QR Code WhatsApp" />`;
+                    retryCount = 0; // Reset counter jika QR berhasil dimuat
                 }
 
                 retryCount++;
@@ -49,19 +67,51 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error('Error fetching QR:', error);
                 retryCount++;
             }
-        }, 1000);
+        };
+
+        // Jalankan pertama kali
+        fetchQRCode();
+        
+        // Set interval untuk refresh QR
+        qrInterval = setInterval(fetchQRCode, 15000);
+
+        // Tombol refresh QR manual
+        const refreshQrBtn = document.querySelector('.refresh-qr-btn');
+        if (refreshQrBtn) {
+            refreshQrBtn.addEventListener('click', () => {
+                retryCount = 0;
+                fetchQRCode();
+                
+                // Tampilkan feedback
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'QR Code diperbarui',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
+                });
+            });
+        }
     }
 
     /* ------------------------------
-     * 2️⃣ Tombol Salin Token
+     * 3️⃣ Tombol Salin Token
      * ------------------------------ */
     const copyBtn = document.getElementById('copy-token-btn');
-    const tokenInput = document.getElementById('token-input');
 
     if (copyBtn && tokenInput) {
         copyBtn.addEventListener('click', async () => {
             try {
                 await navigator.clipboard.writeText(tokenInput.value);
+                
+                // Ubah sementara tampilan tombol
+                const originalHTML = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Tersalin!';
+                copyBtn.classList.remove('bg-whatsapp-500', 'hover:bg-whatsapp-600');
+                copyBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+                
                 Swal.fire({
                     toast: true,
                     position: 'top-end',
@@ -71,6 +121,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     timer: 2000,
                     timerProgressBar: true
                 });
+                
+                // Kembalikan tampilan tombol setelah 2 detik
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalHTML;
+                    copyBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    copyBtn.classList.add('bg-whatsapp-500', 'hover:bg-whatsapp-600');
+                }, 2000);
+                
             } catch (err) {
                 console.error(err);
                 Swal.fire({
@@ -87,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ------------------------------
-     * 3️⃣ Tombol Putuskan Koneksi
+     * 4️⃣ Tombol Putuskan Koneksi
      * ------------------------------ */
     const disconnectButtons = document.querySelectorAll('.disconnect-btn');
 
@@ -104,10 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 text: 'Tindakan ini akan memutus koneksi WhatsApp dari server.',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6B7280',
                 confirmButtonText: 'Ya, putuskan',
-                cancelButtonText: 'Batal'
+                cancelButtonText: 'Batal',
+                reverseButtons: true
             });
 
             if (!result.isConfirmed) return;
