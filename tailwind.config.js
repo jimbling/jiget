@@ -1,6 +1,6 @@
 module.exports = {
-  purge: ['./resources/**/*.blade.php', './resources/**/*.js'],
-  darkMode: false,
+  content: ['./views/**/*.ejs', './public/js/**/*.js'], 
+  darkMode: 'class', 
   theme: {
     extend: {
       rotate: {
@@ -8,7 +8,7 @@ module.exports = {
       },
       maxHeight: {
         '0': '0',
-        '96': '24rem', // untuk slide-down menu
+        '96': '24rem',
       },
     },
   },
@@ -19,4 +19,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

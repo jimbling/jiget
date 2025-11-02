@@ -11,7 +11,7 @@ const { initWhatsApp } = require('./controller/whatsapp');
 const app = express();
 
 /* ================================
-   🛠️ Redis + Fallback MemoryStore
+   Redis + Fallback MemoryStore
 ================================== */
 let sessionStore;
 if (process.env.USE_REDIS === 'true') {
@@ -50,7 +50,7 @@ if (!sessionStore) {
 }
 
 /* ================================
-   🔒 Security & Performance
+   Security & Performance
 ================================== */
 app.use(
   helmet({
@@ -69,7 +69,7 @@ app.use(compression());
 app.use(morgan('dev'));
 
 /* ================================
-   🔑 Session
+   Session
 ================================== */
 app.use(
   session({
@@ -94,7 +94,7 @@ app.use((req, res, next) => {
 });
 
 /* ================================
-   🕒 Auto Logout Middleware
+   Auto Logout Middleware
 ================================== */
 app.use((req, res, next) => {
   if (req.path.startsWith('/docs')) return next();
@@ -115,7 +115,7 @@ app.use((req, res, next) => {
 });
 
 /* ================================
-   🏗️ Middleware & View Engine
+   Middleware & View Engine
 ================================== */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -127,7 +127,7 @@ app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.set('layout', 'layout');
 
-// ✅ Auth Middleware
+// Auth Middleware
 const authRequired = require('./middlewares/auth');
 
 // Inject data ke view
@@ -139,7 +139,7 @@ app.use((req, res, next) => {
 app.set('trust proxy', 1);
 
 /* ================================
-   🌐 Routes
+   Routes
 ================================== */
 app.use('/docs', require('./routes/docs'));
 
@@ -161,7 +161,7 @@ app.use('/groups', authRequired, require('./routes/groups'));
 app.use('/broadcast', authRequired, require('./routes/broadcast'));
 
 /* ================================
-   ❗ Error Handler
+   Error Handler
 ================================== */
 app.use((err, req, res, next) => {
   console.error('🔥 Server Error:', err.stack);
@@ -169,11 +169,11 @@ app.use((err, req, res, next) => {
 });
 
 /* ================================
-   🚀 Start Server
+   Start Server
 ================================== */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
-  console.log(`🚀 API Gateway berjalan di http://localhost:${PORT}`)
+  console.log(`API Gateway berjalan di http://localhost:${PORT}`)
 );
 
 // WhatsApp Init
