@@ -6,23 +6,70 @@
     menggunakan <strong>Docker</strong> atau dengan cara <strong>clone dari GitHub</strong>.
   </p>
 
-  <!-- Docker Installation -->
-  <div class="bg-white shadow rounded-xl p-6 mb-8">
-    <h3 class="text-2xl font-semibold text-gray-800 mb-4">1. Instalasi menggunakan Docker</h3>
-    <ol class="list-decimal ml-6 space-y-3 text-gray-700">
-      <li>Pastikan <code>Docker</code> dan <code>Docker Compose</code> sudah terinstal di komputer Anda.</li>
-      <li>Clone repository Jiget:
-        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>git clone https://github.com/jimbling/jiget.git
+ <!-- Docker Installation -->
+<div class="bg-white shadow rounded-xl p-6 mb-8">
+  <h3 class="text-2xl font-semibold text-gray-800 mb-4">1. Instalasi menggunakan Docker</h3>
+  <ol class="list-decimal ml-6 space-y-3 text-gray-700">
+
+    <li>
+      Pastikan <code>Docker</code> dan <code>Docker Compose</code> sudah terinstal di komputer Anda.
+    </li>
+
+    <li>
+      Clone repository Jiget:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>git clone https://github.com/jimbling/jiget.git
 cd jiget</code></pre>
-      </li>
-      <li>Jalankan container menggunakan Docker Compose:
-        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>docker compose up -d</code></pre>
-      </li>
-      <li>Akses aplikasi di browser:
-        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>http://localhost:3000</code></pre>
-      </li>
-    </ol>
-  </div>
+    </li>
+
+    <li>
+      Buat file <code>.env</code> dari template:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>cp .env.local .env</code></pre>
+    </li>
+
+    <li>
+      Buka file <code>.env</code> dan sesuaikan dengan konfigurasi berikut:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>DB_HOST=mariadb
+DB_USER=jiget_user
+DB_PASS=jiget_pass
+DB_NAME=db_jgateway</code></pre>
+    </li>
+
+    <li>
+      Build image Docker terlebih dahulu (wajib dilakukan pertama kali atau setelah ada perubahan kode):
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>docker compose build</code></pre>
+    </li>
+
+    <li>
+      Jalankan semua container (aplikasi, database, dan redis):
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>docker compose up -d</code></pre>
+    </li>
+
+    <li>
+      Tunggu beberapa saat hingga proses <em>migrasi</em> dan <em>seeder</em> selesai otomatis.
+    </li>
+
+    <li>
+      Untuk memastikan tidak ada error selama inisialisasi, periksa log container aplikasi:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>docker logs -f jgateway-app</code></pre>
+      Tekan <code>Ctrl + C</code> untuk keluar dari tampilan log.
+    </li>
+
+    <li>
+      Setelah semua berjalan lancar, akses aplikasi di browser:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>http://localhost:3100</code></pre>
+    </li>
+
+    <li>
+      Akun default login:
+      <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2">
+        <code>Username: admin@sinaucms.web.id<br>Pass: sinau_cms</code>
+      </div>
+    </li>
+
+  </ol>
+</div>
+
+
 
   <!-- Manual Installation -->
 <div class="bg-white shadow rounded-xl p-6">
