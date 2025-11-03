@@ -231,53 +231,83 @@
     </section>
 
     <!-- Installation Section -->
-    <section id="installation" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">Cara Instalasi</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Jiget dapat diinstal dengan mudah menggunakan Docker atau tanpa Docker</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- With Docker -->
-                <div class="bg-light rounded-xl p-6 shadow-md border border-gray-100">
-                    <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white mr-3">
-                            <i class="fab fa-docker"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">Dengan Docker</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Instalasi cepat dan mudah menggunakan Docker.</p>
-                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-                        <p># Clone repository</p>
-                        <p>git clone https://github.com/jimbling/jiget.git</p>
-                        <p>cd jiget</p>
-                        <p># Build dan jalankan dengan Docker</p>
-                        <p>docker-compose up -d</p>
-                    </div>
-                </div>
-                
-                <!-- Without Docker -->
-                <div class="bg-light rounded-xl p-6 shadow-md border border-gray-100">
-                    <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white mr-3">
-                            <i class="fab fa-node-js"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">Tanpa Docker</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Instalasi manual menggunakan Node.js.</p>
-                    <div class="bg-gray-800 text-gray-200 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-                        <p># Clone repository</p>
-                        <p>git clone https://github.com/jimbling/jiget.git</p>
-                        <p>cd jiget</p>
-                        <p># Install dependencies</p>
-                        <p>npm install</p>
-                        <p># Jalankan aplikasi</p>
-                        <p>npm start</p>
-                    </div>
-                </div>
-            </div>
+<section id="installation" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold mb-4">Cara Instalasi</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        Jiget dapat diinstal dengan mudah menggunakan Docker atau tanpa Docker
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <!-- With Docker -->
+      <div class="bg-light rounded-xl p-6 shadow-md border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white mr-3"
+          >
+            <i class="fab fa-docker"></i>
+          </div>
+          <h3 class="text-xl font-bold">Dengan Docker</h3>
         </div>
-    </section>
+        <p class="text-gray-600 mb-4">
+          Instalasi cepat dan mudah menggunakan Docker.
+        </p>
+        <div
+          class="bg-gray-800 text-gray-200 rounded-lg p-4 font-mono text-sm overflow-x-auto"
+        >
+          <p># Clone repository</p>
+          <p>git clone https://github.com/jimbling/jiget.git</p>
+          <p>cd jiget</p>
+          <p># Build dan jalankan dengan Docker</p>
+          <p>docker-compose up -d</p>
+        </div>
+      </div>
+
+      <!-- Without Docker -->
+      <div class="bg-light rounded-xl p-6 shadow-md border border-gray-100">
+        <div class="flex items-center mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white mr-3"
+          >
+            <i class="fab fa-node-js"></i>
+          </div>
+          <h3 class="text-xl font-bold">Tanpa Docker</h3>
+        </div>
+        <p class="text-gray-600 mb-4">
+          Instalasi manual menggunakan Node.js.
+        </p>
+        <div
+          class="bg-gray-800 text-gray-200 rounded-lg p-4 font-mono text-sm overflow-x-auto"
+        >
+          <p># Clone repository</p>
+          <p>git clone https://github.com/jimbling/jiget.git</p>
+          <p>cd jiget</p>
+          <p># Install dependencies</p>
+          <p>npm install</p>
+          <p># Jalankan aplikasi</p>
+          <p>npm start</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center mt-12">
+      <a
+        href="https://jiget.sinaucms.web.id/docs"
+        target="_blank"
+        class="inline-block bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-200"
+      >
+        Baca Dokumentasi Lengkap
+      </a>
+      <p class="text-gray-500 text-sm mt-2">
+        Panduan instalasi, konfigurasi, dan penggunaan Jiget selengkapnya.
+      </p>
+    </div>
+  </div>
+</section>
+
 
     <!-- GitHub Section -->
     <section id="github" class="py-16 bg-gray-900 text-white">
@@ -331,52 +361,68 @@
         </div>
     </section>
 
-   <footer class="bg-secondary text-white py-16">
-    <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
-        <!-- About / Branding -->
-        <div>
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-bold mr-3">
-                    J
-                </div>
-                <span class="text-2xl font-bold">Jiget</span>
-            </div>
-            <p class="text-gray-800 mb-4">WhatsApp Gateway Unofficial yang membantu Anda mengotomasi pesan, broadcast, dan balasan otomatis dengan mudah.</p>
-            <div class="flex gap-4">
-                <a href="https://github.com/jimbling/jiget" target="_blank" class="text-white hover:text-primary transition-colors">
-                    <i class="fab fa-github fa-lg"></i>
-                </a>
-                <a href="https://wa.me/628123456789" target="_blank" class="text-white hover:text-primary transition-colors">
-                    <i class="fab fa-whatsapp fa-lg"></i>
-                </a>
-            </div>
+   <footer class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-300 py-16 relative overflow-hidden">
+  <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+    
+    <!-- Branding -->
+    <div>
+      <div class="flex items-center mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-green-400 to-blue-500 flex items-center justify-center text-white text-2xl font-bold shadow-md mr-3">
+          J
         </div>
-
-        <!-- Quick Links -->
-        <div>
-            <h3 class="text-xl font-semibold mb-4">Link Cepat</h3>
-            <ul class="space-y-2">
-                <li><a href="#features" class="hover:text-primary transition-colors">Fitur</a></li>
-                <li><a href="#installation" class="hover:text-primary transition-colors">Instalasi</a></li>
-                <li><a href="#github" class="hover:text-primary transition-colors">GitHub</a></li>
-                <li><a href="https://jiget.sinaucms.web.id/login" target="_blank" class="hover:text-primary transition-colors">Demo</a></li>
-            </ul>
-        </div>
-
-        <!-- Contact / Info -->
-        <div>
-            <h3 class="text-xl font-semibold mb-4">Kontak & Info</h3>
-            <p class="text-gray-500 mb-2"><i class="fas fa-envelope mr-2"></i> info@jiget.com</p>
-            <p class="text-gray-500 mb-2"><i class="fas fa-phone mr-2"></i> +62 812-3456-789</p>
-            <p class="text-gray-500 mb-2"><i class="fas fa-map-marker-alt mr-2"></i> Jakarta, Indonesia</p>
-            <p class="text-gray-500 mt-4 text-sm">Gunakan dengan bijak dan bertanggung jawab. Dibangun dengan Baileys, Node.js, dan Tailwind CSS.</p>
-        </div>
+        <span class="text-3xl font-extrabold text-white tracking-tight">Jiget</span>
+      </div>
+      <p class="text-gray-400 leading-relaxed mb-6">
+        WhatsApp Gateway Unofficial yang membantu Anda mengotomasi pesan, broadcast, dan balasan otomatis dengan mudah dan cepat.
+      </p>
+      <div class="flex space-x-4">
+        <a href="https://github.com/jimbling/jiget" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+          <i class="fab fa-github fa-lg"></i>
+        </a>
+        <a href="https://wa.me/628123456789" target="_blank" class="text-gray-400 hover:text-green-400 transition-colors">
+          <i class="fab fa-whatsapp fa-lg"></i>
+        </a>
+      </div>
     </div>
 
-    <div class="border-t border-gray-700 mt-12 pt-6 text-center text-gray-400 text-sm">
-        &copy; 2023 Jiget. All rights reserved.
+    <!-- Quick Links -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-5">Navigasi Cepat</h3>
+      <ul class="space-y-3">
+        <li><a href="#features" class="hover:text-green-400 transition-colors">Fitur</a></li>
+        <li><a href="#installation" class="hover:text-green-400 transition-colors">Instalasi</a></li>
+        <li><a href="https://github.com/jimbling/jiget" target="_blank" class="hover:text-green-400 transition-colors">GitHub</a></li>
+        <li><a href="https://jiget.sinaucms.web.id/login" target="_blank" class="hover:text-green-400 transition-colors">Demo</a></li>
+        <li><a href="https://jiget.sinaucms.web.id/docs" target="_blank" class="hover:text-green-400 transition-colors">Dokumentasi</a></li>
+      </ul>
     </div>
+
+    <!-- Contact -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-5">Kontak & Informasi</h3>
+      <ul class="space-y-3 text-gray-400">
+        <li><i class="fas fa-envelope mr-2 text-green-400"></i> info@sinaucms.web.id</li>
+        <li><i class="fas fa-phone mr-2 text-green-400"></i> +62 831-3050-0748</li>
+        <li><i class="fas fa-map-marker-alt mr-2 text-green-400"></i> Pengasih, Kulon Progo, D.I. Yogyakarta</li>
+      </ul>
+      <p class="text-sm text-gray-500 mt-6 leading-relaxed">
+        Gunakan dengan bijak dan bertanggung jawab.<br>
+        Dibangun dengan ❤️ menggunakan Baileys, Node.js, dan Tailwind CSS.
+      </p>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="border-t border-gray-700 mt-16 pt-6 text-center text-gray-500 text-sm">
+    © <span id="year"></span> Jiget. Semua hak dilindungi.
+  </div>
+
+  <!-- Subtle background glow -->
+  <div class="absolute inset-0 opacity-10 bg-gradient-to-tr from-green-500 via-blue-500 to-indigo-500 blur-3xl"></div>
 </footer>
+
+
+
 
 
     <script>
@@ -390,5 +436,8 @@
             });
         });
     </script>
+    <script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>

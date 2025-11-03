@@ -7,16 +7,31 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   User.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'User',
     tableName: 'users',
-    timestamps: true, // <- pakai timestamps
-    createdAt: 'created_at', // <- sesuaikan dengan nama kolom di DB
-    updatedAt: false        // <- kalau memang tidak ada kolom updated_at
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: false
   });
 
   return User;
