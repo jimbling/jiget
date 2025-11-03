@@ -1,0 +1,56 @@
+<section id="instalasi">
+  <h2 class="text-3xl font-bold text-gray-900 mb-6">Instalasi Jiget</h2>
+
+  <p class="text-gray-700 mb-6">
+    Ada dua cara untuk menginstal dan menjalankan <strong>Jiget</strong> — WhatsApp Gateway berbasis Node.js:
+    menggunakan <strong>Docker</strong> atau dengan cara <strong>clone dari GitHub</strong>.
+  </p>
+
+  <!-- Docker Installation -->
+  <div class="bg-white shadow rounded-xl p-6 mb-8">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-4">1. Instalasi menggunakan Docker</h3>
+    <ol class="list-decimal ml-6 space-y-3 text-gray-700">
+      <li>Pastikan <code>Docker</code> dan <code>Docker Compose</code> sudah terinstal di komputer Anda.</li>
+      <li>Clone repository Jiget:
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>git clone https://github.com/jimbling/jiget.git
+cd jiget</code></pre>
+      </li>
+      <li>Jalankan container menggunakan Docker Compose:
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>docker compose up -d</code></pre>
+      </li>
+      <li>Akses aplikasi di browser:
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>http://localhost:3000</code></pre>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Manual Installation -->
+  <div class="bg-white shadow rounded-xl p-6">
+    <h3 class="text-2xl font-semibold text-gray-800 mb-4">2. Clone dari GitHub (Manual)</h3>
+    <ol class="list-decimal ml-6 space-y-3 text-gray-700">
+      <li>Clone repository:
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>git clone https://github.com/jimbling/jiget.git
+cd jiget</code></pre>
+      </li>
+      <li>Instal dependensi:
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>npm install</code></pre>
+      </li>
+      <li>Buat file <code>.env</code> di root proyek dan isi dengan konfigurasi database:</li>
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>DB_HOST=127.0.0.1
+DB_USER=root
+DB_PASS=
+DB_NAME=db_jgateway</code></pre>
+
+      <li>Jalankan migrasi dan seeder untuk membuat struktur database:</li>
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>npx sequelize db:migrate
+npx sequelize db:seed:all</code></pre>
+
+      <li>Terakhir, jalankan aplikasi:</li>
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>node index.js</code></pre>
+
+      <li>Aplikasi siap digunakan di:
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>http://localhost:3000</code></pre>
+      </li>
+    </ol>
+  </div>
+</section>
