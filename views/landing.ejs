@@ -1,64 +1,111 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jiget - WhatsApp Gateway Unofficial</title>
-    <link rel="stylesheet" href="/css/output.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#25D366',
-                        secondary: '#075E54',
-                        dark: '#1a1a1a',
-                        light: '#f8faac'
-                    },
-                    fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Jiget - WhatsApp Gateway Unofficial | Kirim Pesan Otomatis & API WhatsApp</title>
+  <meta name="description" content="Jiget adalah WhatsApp Gateway Unofficial berbasis Baileys & Node.js untuk mengirim pesan otomatis, broadcast, dan integrasi API dengan mudah.">
+  <meta name="keywords" content="WhatsApp Gateway, Jiget, API WhatsApp, kirim pesan otomatis, broadcast WhatsApp, Baileys, Node.js">
+  <meta name="author" content="Jiget Team">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="Jiget - WhatsApp Gateway Unofficial">
+  <meta property="og:description" content="Kirim pesan WhatsApp otomatis, broadcast, dan API integrasi mudah dengan Jiget.">
+  <meta property="og:image" content="/images/preview-jiget.png">
+  <meta property="og:url" content="https://jiget.sinaucms.web.id">
+  <meta property="og:type" content="website">
+
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jiget - WhatsApp Gateway Unofficial">
+  <meta name="twitter:description" content="Kirim pesan WhatsApp otomatis, broadcast, dan API integrasi mudah dengan Jiget.">
+  <meta name="twitter:image" content="/images/preview-jiget.png">
+
+
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#25D366',
+            secondary: '#075E54',
+            dark: '#1a1a1a',
+            light: '#f8faac'
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          }
         }
-    </script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #25D366 0%, #075E54 100%);
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            transition: all 0.3s ease;
-        }
-        .btn-primary {
-            background-color: #25D366;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #128C7E;
-            transform: translateY(-2px);
-        }
-        .btn-secondary {
-            background-color: #075E54;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .btn-secondary:hover {
-            background-color: #05433a;
-            transform: translateY(-2px);
-        }
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        @keyframes floating {
-            0% { transform: translate(0, 0px); }
-            50% { transform: translate(0, 15px); }
-            100% { transform: translate(0, -0px); }
-        }
-    </style>
+      }
+    }
+  </script>
+
+  <!-- ✅ Structured Data (Google Rich Result) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Jiget",
+    "operatingSystem": "Web",
+    "applicationCategory": "CommunicationApplication",
+    "description": "WhatsApp Gateway Unofficial untuk mengirim pesan otomatis, broadcast, dan integrasi API berbasis Node.js & Baileys.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "IDR"
+    },
+    "url": "https://jiget.sinaucms.web.id",
+    "creator": {
+      "@type": "Organization",
+      "name": "Jiget Team"
+    }
+  }
+  </script>
+
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #25D366 0%, #075E54 100%);
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      transition: all 0.3s ease;
+    }
+    .btn-primary {
+      background-color: #25D366;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #128C7E;
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background-color: #075E54;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover {
+      background-color: #05433a;
+      transform: translateY(-2px);
+    }
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    @keyframes floating {
+      0% { transform: translate(0, 0px); }
+      50% { transform: translate(0, 15px); }
+      100% { transform: translate(0, -0px); }
+    }
+  </style>
 </head>
 <body class="font-inter bg-light text-dark">
     <!-- Header/Navbar -->

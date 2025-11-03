@@ -25,32 +25,51 @@ cd jiget</code></pre>
   </div>
 
   <!-- Manual Installation -->
-  <div class="bg-white shadow rounded-xl p-6">
-    <h3 class="text-2xl font-semibold text-gray-800 mb-4">2. Clone dari GitHub (Manual)</h3>
-    <ol class="list-decimal ml-6 space-y-3 text-gray-700">
-      <li>Clone repository:
-        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>git clone https://github.com/jimbling/jiget.git
+<div class="bg-white shadow rounded-xl p-6">
+  <h3 class="text-2xl font-semibold text-gray-800 mb-4">2. Clone dari GitHub (Manual)</h3>
+  <ol class="list-decimal ml-6 space-y-3 text-gray-700">
+    
+    <li>Clone repository:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>git clone https://github.com/jimbling/jiget.git
 cd jiget</code></pre>
-      </li>
-      <li>Instal dependensi:
-        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>npm install</code></pre>
-      </li>
-      <li>Buat file <code>.env</code> di root proyek dan isi dengan konfigurasi database:</li>
-      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>DB_HOST=127.0.0.1
+    </li>
+
+    <li>Instal dependensi:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>npm install</code></pre>
+    </li>
+
+    <li>Buat file <code>.env</code> dari template yang sudah disediakan:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>cp .env.local .env</code></pre>
+    </li>
+
+    <li>Buka file <code>.env</code> dan sesuaikan konfigurasi database sesuai dengan lingkungan lokal Anda:</li>
+    <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>DB_HOST=127.0.0.1
 DB_USER=root
 DB_PASS=
 DB_NAME=db_jgateway</code></pre>
 
-      <li>Jalankan migrasi dan seeder untuk membuat struktur database:</li>
-      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>npx sequelize db:migrate
+    <li>Buat database baru di MySQL (misalnya menggunakan phpMyAdmin atau command line):</li>
+    <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>CREATE DATABASE db_jgateway;</code></pre>
+
+    <li>Jalankan migrasi dan seeder untuk membuat struktur serta data awal aplikasi:</li>
+    <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>npx sequelize db:migrate
 npx sequelize db:seed:all</code></pre>
 
-      <li>Terakhir, jalankan aplikasi:</li>
-      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>node index.js</code></pre>
+    <li>Terakhir, jalankan aplikasi:</li>
+    <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>node index.js</code></pre>
 
-      <li>Aplikasi siap digunakan di:
-        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>http://localhost:3000</code></pre>
-      </li>
-    </ol>
-  </div>
+    <li>Aplikasi siap digunakan di:
+      <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2"><code>http://localhost:3000</code></pre>
+    </li>
+
+    <li class="mt-4">
+      Akun default yang bisa digunakan untuk login ke dashboard:
+      <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2">
+        <code>Username: admin@sinaucms.web.id<br>Pass: sinau_cms</code>
+      </div>
+    </li>
+
+  </ol>
+</div>
+
 </section>
