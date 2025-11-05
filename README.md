@@ -31,7 +31,7 @@ Dibangun menggunakan **Node.js**, **TailwindCSS**, dan arsitektur yang ringan, J
 
 ## 🌐 Demo / Akses
 
-🔗 **URL (Tunnel):** [https://jiget.sinaucms.web.id/](https://jiget.sinaucms.web.id/login)
+🔗 **DEMO URL :** [https://jiget.sinaucms.web.id/](https://jiget.sinaucms.web.id/)
 Username: admin@sinaucms.web.id
 Password: sinau_cms
 
