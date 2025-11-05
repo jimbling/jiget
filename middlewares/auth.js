@@ -1,6 +1,6 @@
 function authRequired(req, res, next) {
   if (!req.session.user) {
-    console.log("⛔ Tidak ada sesi, blokir akses ke:", req.originalUrl);
+    console.log("Tidak ada sesi, blokir akses ke:", req.originalUrl);
 
     // Jika request dari fetch / AJAX, balas JSON
     if (req.xhr || (req.headers.accept && req.headers.accept.includes('application/json'))) {

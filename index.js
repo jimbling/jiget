@@ -27,26 +27,26 @@ if (process.env.USE_REDIS === 'true') {
 });
 
 
-    redisClient.on('error', (err) => console.error('❌ Redis Client Error:', err));
+    redisClient.on('error', (err) => console.error('Redis Client Error:', err));
 
     (async () => {
       try {
         await redisClient.connect();
-        console.log('✅ Redis Client Connected');
+        console.log('Redis Client Connected');
       } catch (err) {
-        console.error('❌ Gagal konek Redis, fallback ke MemoryStore:', err);
+        console.error('Gagal konek Redis, fallback ke MemoryStore:', err);
       }
     })();
 
     sessionStore = new RedisStore({ client: redisClient });
   } catch (err) {
-    console.error('⚠️ Redis tidak tersedia, fallback ke MemoryStore:', err);
+    console.error('Redis tidak tersedia, fallback ke MemoryStore:', err);
   }
 }
 
 if (!sessionStore) {
   // fallback ke MemoryStore
-  console.log('⚠️ Menggunakan MemoryStore (session hilang saat restart)');
+  console.log('Menggunakan MemoryStore (session hilang saat restart)');
 }
 
 /* ================================
@@ -85,7 +85,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  console.log('🔍 Session Debug:', {
+  console.log('Session Debug:', {
     id: req.sessionID,
     user: req.session.user,
     cookie: req.headers.cookie

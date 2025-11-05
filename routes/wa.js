@@ -64,32 +64,32 @@ router.post('/send', async (req, res) => {
 
 // ==================== ROUTE: KIRIM MEDIA ====================
 router.post('/send-media', upload.single('file'), async (req, res) => {
-  console.log("📥 /send-media dipanggil");
+  console.log("/send-media dipanggil");
 
   try {
     const authHeader = req.headers['authorization'];
-    console.log("🔑 Authorization Header:", authHeader);
+    console.log("Authorization Header:", authHeader);
 
     if (!authHeader) return res.status(401).json({ error: 'Unauthorized, token required' });
 
     const token = authHeader.replace('Bearer ', '');
     const valid = await validateToken(token);
-    console.log("✅ Token valid?", valid);
+    console.log("Token valid?", valid);
 
     if (!valid) return res.status(401).json({ error: 'Unauthorized, invalid token' });
 
-    console.log("📦 req.body:", req.body);
-    console.log("📂 req.file:", req.file);
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
 
     const { number, caption } = req.body;
     if (!number || !req.file) {
-      console.log("❌ number atau file tidak ada");
+      console.log("number atau file tidak ada");
       return res.status(400).json({ error: 'number & file required' });
     }
 
     const sock = getSock();
     const isConnected = getStatus();
-    console.log("📡 isConnected:", isConnected);
+    console.log("isConnected:", isConnected);
 
     if (!sock || !isConnected)
       return res.status(503).json({ error: 'WhatsApp client not ready' });
@@ -105,10 +105,10 @@ router.post('/send-media', upload.single('file'), async (req, res) => {
 
     const newPath = path.join(publicUploads, newFilename);
     fs.renameSync(oldPath, newPath);
-    console.log("📦 File dipindahkan ke:", newPath);
+    console.log("File dipindahkan ke:", newPath);
 
     const fileBuffer = fs.readFileSync(newPath);
-    console.log("📄 File berhasil dibaca, size:", fileBuffer.length);
+    console.log("File berhasil dibaca, size:", fileBuffer.length);
 
     // Tentukan tipe media berdasarkan ekstensi
     let messageOptions = { caption: caption || '' };
@@ -127,7 +127,7 @@ router.post('/send-media', upload.single('file'), async (req, res) => {
       mediaType = 'document';
     }
 
-    console.log(`📤 Mengirim ${mediaType} ke:`, number);
+    console.log(`Mengirim ${mediaType} ke:`, number);
     await sock.sendMessage(`${number}@s.whatsapp.net`, messageOptions);
 
     // Simpan log ke database
@@ -155,7 +155,7 @@ router.post('/send-media', upload.single('file'), async (req, res) => {
     });
 
   } catch (err) {
-    console.error("❌ ERROR SEND-MEDIA:", err);
+    console.error("ERROR SEND-MEDIA:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -192,7 +192,7 @@ router.get('/send-text', async (req, res) => {
     if (!rows.length) return res.render('token-error');
 
     const token = rows[0].token;
-    res.render('send-text', { token }); // <-- pastikan ada { token }
+    res.render('send-text', { token }); 
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');

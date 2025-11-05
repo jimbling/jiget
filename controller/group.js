@@ -22,7 +22,7 @@ exports.index = async (req, res) => {
 // Controller saveGroup
 exports.saveGroup = async (req, res) => {
   try {
-    console.log('📩 saveGroup req.body:', req.body); 
+    console.log('saveGroup req.body:', req.body); 
 
     const { group_id, name, contact_ids } = req.body;
     if (!name) {
@@ -67,7 +67,7 @@ exports.saveGroup = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('🔥 saveGroup Error:', error);
+    console.error('saveGroup Error:', error);
     return res.status(500).json({
       success: false,
       message: 'Terjadi kesalahan saat menyimpan grup'

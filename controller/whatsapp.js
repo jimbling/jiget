@@ -38,19 +38,19 @@ async function initWhatsApp() {
 
       if (qr) {
         lastQR = qr;
-        console.log('📱 Scan QR berikut untuk login WhatsApp:');
+        console.log('Scan QR berikut untuk login WhatsApp:');
         qrcode.generate(qr, { small: true });
       }
 
       if (connection === 'open') {
-        console.log('✅ WhatsApp terhubung!');
+        console.log('WhatsApp terhubung!');
         isConnected = true;
         reconnecting = false;
         lastQR = null;
 
         if (sock.user?.id) {
   try {
-    console.log('📡 Info sock.user:', JSON.stringify(sock.user, null, 2));
+    console.log('Info sock.user:', JSON.stringify(sock.user, null, 2));
 
     const deviceId = sock.user.id;
     const phone = deviceId.split(':')[0].replace(/\D/g, '');
@@ -62,7 +62,7 @@ async function initWhatsApp() {
       sock.user.platform ||
       'Unknown Device';
 
-    console.log(`📱 Deteksi Device: ${phone} | Nama: ${name}`);
+    console.log(`Deteksi Device: ${phone} | Nama: ${name}`);
 
     // === CEK DEVICE DI DATABASE ===
     const [rows] = await db.query(
@@ -73,9 +73,9 @@ async function initWhatsApp() {
     let token;
 
     if (rows.length > 0 && rows[0].is_active === 1) {
-      // ✅ Device sudah aktif → gunakan token lama
+      // Device sudah aktif → gunakan token lama
       token = rows[0].token;
-      console.log('✅ Device masih aktif — memakai token lama:', token);
+      console.log('Device masih aktif — memakai token lama:', token);
 
       // update info dasar, jangan ubah token
       await db.query(
@@ -85,9 +85,9 @@ async function initWhatsApp() {
       );
 
     } else {
-      // ✅ Device baru / tidak aktif → generate token baru
+      // Device baru / tidak aktif → generate token baru
       token = generateToken();
-      console.log('🆕 Generate token baru:', token);
+      console.log('Generate token baru:', token);
 
       if (rows.length > 0) {
         // device sudah ada tapi non-aktif → update
@@ -109,12 +109,12 @@ async function initWhatsApp() {
       }
     }
 
-    console.log(`✅ WhatsApp ${phone} (${name}) terhubung!`);
-    console.log('🔑 Token API aktif:', token);
+    console.log(`WhatsApp ${phone} (${name}) terhubung!`);
+    console.log('Token API aktif:', token);
 
     // === UPDATE NAMA SETELAH 5 DETIK JIKA MASIH UNKNOWN ===
     if (name === 'Unknown Device') {
-      console.log('⏳ Nama device belum diketahui, cek ulang 5 detik lagi...');
+      console.log('Nama device belum diketahui, cek ulang 5 detik lagi...');
       setTimeout(async () => {
         const refreshedName =
           sock.user.verifiedName ||
@@ -128,15 +128,15 @@ async function initWhatsApp() {
             'UPDATE wa_tokens SET device_name=? WHERE device_id=?',
             [refreshedName, deviceId]
           );
-          console.log(`🔄 Nama device diperbarui menjadi: ${refreshedName}`);
+          console.log(`Nama device diperbarui menjadi: ${refreshedName}`);
         } else {
-          console.log('⚠️ Nama device tetap tidak terdeteksi.');
+          console.log('Nama device tetap tidak terdeteksi.');
         }
       }, 5000);
     }
 
   } catch (err) {
-    console.error('❌ Gagal menyimpan token:', err.message);
+    console.error('Gagal menyimpan token:', err.message);
   }
 }
       }
@@ -149,19 +149,19 @@ async function initWhatsApp() {
           lastDisconnect?.error?.code ||
           'unknown';
 
-        console.log(`⚠️ WhatsApp disconnected, reason: ${reason}`);
+        console.log(`WhatsApp disconnected, reason: ${reason}`);
 
         if (reason === DisconnectReason.loggedOut || reason === 'loggedOut' || reason === 401) {
-          console.log('❌ Session logout, perlu scan ulang.');
+          console.log('Session logout, perlu scan ulang.');
 
           if (sock?.user?.id)
             await db.query('UPDATE wa_tokens SET is_active=0 WHERE device_id=?', [sock.user.id]);
 
           try {
             await fs.remove(authFolder);
-            console.log('🗑️ Folder auth dihapus, siap scan QR ulang.');
+            console.log('Folder auth dihapus, siap scan QR ulang.');
           } catch (err) {
-            console.error('❌ Gagal hapus folder auth:', err.message);
+            console.error('Gagal hapus folder auth:', err.message);
           }
 
           isConnected = false;
@@ -170,7 +170,7 @@ async function initWhatsApp() {
           initWhatsApp();
         } else if (!reconnecting) {
           reconnecting = true;
-          console.log('🔄 Mencoba reconnect dalam 5 detik...');
+          console.log('Mencoba reconnect dalam 5 detik...');
           setTimeout(() => initWhatsApp(), 5000);
         }
       }
@@ -188,7 +188,7 @@ async function initWhatsApp() {
     msg.message?.extendedTextMessage?.text ||
     '';
 
-  console.log(`📩 Pesan dari ${sender}: ${text}`);
+  console.log(`Pesan dari ${sender}: ${text}`);
 
   try {
     // 1. Simpan pesan inbound
@@ -197,7 +197,7 @@ async function initWhatsApp() {
       [sender, text, 'inbound', 'received']
     );
   } catch (err) {
-    console.error('❌ Gagal simpan pesan inbound:', err.message);
+    console.error('Gagal simpan pesan inbound:', err.message);
   }
 
   try {
@@ -240,7 +240,7 @@ if (shouldSendWelcome) {
 
   if (welcomeRules.length) {
     await sock.sendMessage(sender, { text: welcomeRules[0].reply_text });
-    console.log(`✉️ Welcome message ke ${sender}: ${welcomeRules[0].reply_text}`);
+    console.log(`Welcome message ke ${sender}: ${welcomeRules[0].reply_text}`);
   }
 }
 
@@ -270,7 +270,7 @@ if (shouldSendWelcome) {
 
       if (matched) {
         await sock.sendMessage(sender, { text: rule.reply_text });
-        console.log(`✉️ Auto-reply ke ${sender}: ${rule.reply_text}`);
+        console.log(`Auto-reply ke ${sender}: ${rule.reply_text}`);
         break;
       }
     }
@@ -280,19 +280,19 @@ if (shouldSendWelcome) {
       try {
         await sock.sendMessage(sender, { text: 'Pong! 🏓' });
       } catch (err) {
-        console.error('❌ Gagal membalas ping:', err.message);
+        console.error('Gagal membalas ping:', err.message);
       }
     }
 
   } catch (err) {
-    console.error('❌ Gagal proses auto-reply / welcome message:', err.message);
+    console.error('Gagal proses auto-reply / welcome message:', err.message);
   }
 });
 
 
-    console.log('🚀 Socket WhatsApp siap! Jalankan scan QR jika diminta.');
+    console.log('Socket WhatsApp siap! Jalankan scan QR jika diminta.');
   } catch (err) {
-    console.error('❌ Gagal konek ke WhatsApp:', err.message);
+    console.error('Gagal konek ke WhatsApp:', err.message);
     if (!reconnecting) {
       reconnecting = true;
       setTimeout(initWhatsApp, 5000);
@@ -311,10 +311,10 @@ async function sendMessage(to, message) {
       : to.replace(/\D/g, '') + '@s.whatsapp.net';
     await sock.sendMessage(jid, { text: message });
 
-    console.log(`✅ Pesan terkirim ke ${to}`);
+    console.log(`Pesan terkirim ke ${to}`);
     return { success: true };
   } catch (err) {
-    console.error(`❌ Gagal kirim ke ${to}:`, err.message);
+    console.error(`Gagal kirim ke ${to}:`, err.message);
     return { success: false, error: err.message };
   }
 }
@@ -340,9 +340,9 @@ async function getActiveDevices() {
     `);
 
     if (rows.length === 0) {
-      console.log('⚠️ Tidak ada device WhatsApp yang aktif.');
+      console.log('Tidak ada device WhatsApp yang aktif.');
     } else {
-      console.log('📱 Daftar device aktif:');
+      console.log('Daftar device aktif:');
       rows.forEach((d, i) => {
         console.log(`${i + 1}. ${d.device_id} (${d.device_name || 'Unknown'}) | Token: ${d.token} | Exp: ${d.expired_at}`);
       });
@@ -350,7 +350,7 @@ async function getActiveDevices() {
 
     return rows;
   } catch (err) {
-    console.error('❌ Gagal mengambil daftar devices:', err.message);
+    console.error('Gagal mengambil daftar devices:', err.message);
     return [];
   }
 }

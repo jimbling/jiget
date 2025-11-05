@@ -136,7 +136,7 @@ router.post('/device/:id/disconnect', async (req, res) => {
         const filePath = path.join(uploadsDir, msg.media_url);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
-          console.log(`🗑️ Media dihapus: ${filePath}`);
+          console.log(`Media dihapus: ${filePath}`);
         }
       }
     }
@@ -144,19 +144,19 @@ router.post('/device/:id/disconnect', async (req, res) => {
     await db.query('DELETE FROM wa_messages');
     console.log('🧹 Semua pesan dihapus dari database');
 
-    // ===== 🗑️ Hapus folder auth lama supaya QR baru bisa muncul =====
+    // ===== Hapus folder auth lama supaya QR baru bisa muncul =====
     const authDir = path.join(__dirname, '../baileys_auth_info');
     if (fs.existsSync(authDir)) {
       fs.rmSync(authDir, { recursive: true, force: true });
-      console.log('🗑️ Folder auth lama dihapus');
+      console.log('Folder auth lama dihapus');
     }
 
-    // ===== 🔁 Trigger koneksi baru → QR baru =====
+    // ===== Trigger koneksi baru → QR baru =====
     initWhatsApp();
 
     res.json({ success: true, message: 'Device berhasil logout, data pesan dihapus, dan QR baru siap' });
   } catch (err) {
-    console.error('❌ Gagal memutus device:', err);
+    console.error('Gagal memutus device:', err);
     res.json({ success: false, message: 'Terjadi kesalahan saat memutus device' });
   }
 });

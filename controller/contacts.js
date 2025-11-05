@@ -6,7 +6,7 @@ module.exports = {
 index: async (req, res) => {
     try {
       const page = parseInt(req.query.page) || 1;
-      const limit = 10; // jumlah data per halaman
+      const limit = 10; 
       const offset = (page - 1) * limit;
 
       // Ambil data sekaligus total count
@@ -105,20 +105,20 @@ module.exports.import = async (req, res) => {
       return res.status(400).json({ success: false, message: 'File tidak ditemukan' });
     }
 
-    console.log(`📂 Membaca file: ${req.file.path}`);
+    console.log(`Membaca file: ${req.file.path}`);
 
     const workbook = XLSX.readFile(req.file.path);
     const sheetName = workbook.SheetNames[0];
-    console.log('📑 Sheet ditemukan:', sheetName);
+    console.log('Sheet ditemukan:', sheetName);
 
     const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-    console.log(`📊 Jumlah baris terbaca: ${sheet.length}`);
+    console.log(`Jumlah baris terbaca: ${sheet.length}`);
 
     let contacts = [];
     for (let row of sheet) {
-      console.log('➡️ Row:', row);
+      console.log('Row:', row);
       if (!row.Nama || !row.Nomor) {
-        console.warn('⚠️ Baris dilewati karena tidak ada Nama/Nomor:', row);
+        console.warn('Baris dilewati karena tidak ada Nama/Nomor:', row);
         continue;
       }
       contacts.push({
@@ -127,7 +127,7 @@ module.exports.import = async (req, res) => {
       });
     }
 
-    console.log(`✅ Total kontak yang akan disimpan: ${contacts.length}`);
+    console.log(`Total kontak yang akan disimpan: ${contacts.length}`);
 
     await Contact.bulkCreate(contacts);
     fs.unlinkSync(req.file.path);
@@ -135,7 +135,7 @@ module.exports.import = async (req, res) => {
     return res.json({ success: true, count: contacts.length });
 
   } catch (err) {
-    console.error('💥 ERROR saat import:', err);
+    console.error('ERROR saat import:', err);
     return res.status(500).json({ success: false, message: 'Gagal import kontak', error: err.message });
   }
 };
