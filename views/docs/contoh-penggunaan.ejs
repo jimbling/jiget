@@ -1,0 +1,164 @@
+<section class="bg-white rounded-xl shadow p-6">
+  <h2 class="text-xl font-semibold mb-2">Contoh Penggunaan di Laravel</h2>
+  <p class="text-gray-700 mb-4">
+    Berikut adalah panduan untuk mengirim pesan otomatis menggunakan <strong>Jiget WhatsApp Gateway</strong> di aplikasi Laravel Anda.
+  </p>
+
+  <h3 class="text-lg font-semibold mb-2">1. Tambahkan Konfigurasi di <code>.env</code></h3>
+  <pre class="bg-gray-100 text-sm p-4 rounded mb-4 overflow-x-auto"><code>WAGATEWAY_URL=https://wapi.sinaucms.web.id
+WAGATEWAY_TOKEN=d4e6d7ff53f9e0906b22d9abe3ed8855a92050e230bd1ad0621e19df761ab89d
+</code></pre>
+  <p class="text-gray-700 mb-6">
+    Nilai <code class="bg-gray-100 px-1 rounded">WAGATEWAY_URL</code> dan <code class="bg-gray-100 px-1 rounded">WAGATEWAY_TOKEN</code> bisa Anda dapatkan dari dashboard Jiget Anda.
+  </p>
+
+  <h3 class="text-lg font-semibold mb-2">2. Buat Service Baru</h3>
+  <p class="text-gray-700 mb-2">Buat file baru di: <code class="bg-gray-100 px-1 rounded">app/Services/Jimpitan/WhatsappService.php</code></p>
+
+  <pre class="bg-gray-100 text-sm p-4 rounded mb-6 overflow-x-auto"><code class="language-php">&lt;?php
+
+namespace App\Services\Jimpitan;
+
+use App\Models\Warga;
+use App\Models\TransaksiJimpitan;
+use Carbon\Carbon;
+
+class WhatsappService
+{
+    public function generateMessage(TransaksiJimpitan $transaksi): array
+    {
+        $warga = $transaksi->warga;
+        $petugas = $transaksi->user->name;
+        $jumlahFormatted = number_format($transaksi->jumlah, 0, ',', '.');
+        $tanggalFormatted = $transaksi->tanggal->translatedFormat('d F Y');
+
+        $message = "Halo Bapak/Ibu *{$warga->nama_kk}*,\n\n"
+            . "Jimpitan Bapak/Ibu sebesar *Rp {$jumlahFormatted}* pada tanggal *{$tanggalFormatted}* "
+            . "telah diambil oleh petugas *{$petugas}*.\n\n"
+            . "Terima kasih atas kontribusinya.\n\n"
+            . "Cek riwayat di: https://jimpitan.remaked.web.id\n\n"
+            . "> Pesan otomatis, mohon tidak dibalas.";
+
+        $nomor = preg_replace('/^0/', '62', $warga->no_telp);
+        $waUrl = "https://wa.me/{$nomor}?text=" . urlencode($message);
+
+        return [
+            'message' => $message,
+            'wa_url' => $waUrl,
+            'warga' => $warga->nama_kk,
+            'tanggal' => $tanggalFormatted,
+            'jumlah' => $jumlahFormatted,
+        ];
+    }
+}
+</code></pre>
+
+  <h3 class="text-lg font-semibold mb-2">3. Kirim Pesan ke API Gateway</h3>
+  <p class="text-gray-700 mb-2">
+    Setelah pesan dibuat, kirimkan ke endpoint API Jiget menggunakan <code>GuzzleHttp\Client</code>:
+  </p>
+
+  <pre class="bg-gray-100 text-sm p-4 rounded mb-6 overflow-x-auto"><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client->post(env('WAGATEWAY_URL') . '/api/send-text', [
+    'headers' => [
+        'Authorization' => 'Bearer ' . env('WAGATEWAY_TOKEN'),
+    ],
+    'json' => [
+        'number' => $nomor,
+        'message' => $message,
+    ],
+]);
+
+$result = json_decode($response->getBody(), true);
+</code></pre>
+
+  <h3 class="text-lg font-semibold mb-2">4. Hasil</h3>
+  <p class="text-gray-700 mb-4">
+    Pesan otomatis akan terkirim ke nomor WhatsApp penerima melalui Gateway Jiget:
+  </p>
+
+  <img src="/img/wa-example.png" alt="Contoh pesan WhatsApp" class="rounded-lg shadow-md w-full max-w-md mx-auto">
+</section>
+
+<section class="bg-white rounded-xl shadow p-6">
+  <h2 class="text-xl font-semibold mb-2">5. Menggunakan Queue untuk Pengiriman Otomatis</h2>
+  <p class="text-gray-700 mb-4">
+    Agar sistem tetap responsif dan tidak menunggu proses kirim pesan yang bisa memakan waktu, 
+    Anda dapat memanfaatkan fitur <strong>Job Queue</strong> di Laravel. 
+    Dengan cara ini, pesan akan diproses di latar belakang.
+  </p>
+
+  <h3 class="text-lg font-semibold mb-2">📦 Alur Pengiriman dengan Queue</h3>
+  <ol class="list-decimal ml-6 space-y-2 text-gray-700 mb-6">
+    <li>Data pesan disimpan di tabel <code class="bg-gray-100 px-1 rounded">wa_queues</code> dengan status <code>pending</code>.</li>
+    <li>Saat ada data baru, sistem men-dispatch job <code>ProcessWaQueue</code>.</li>
+    <li>Job ini memanggil API Gateway Jiget untuk mengirim pesan WhatsApp.</li>
+    <li>Setelah berhasil, status pesan diubah menjadi <code>sent</code>, jika gagal menjadi <code>failed</code>.</li>
+  </ol>
+
+  <h3 class="text-lg font-semibold mb-2">📜 Contoh Job: <code>ProcessWaQueue</code></h3>
+
+  <pre class="bg-gray-100 text-sm p-4 rounded mb-6 overflow-x-auto"><code class="language-php">&lt;?php
+
+namespace App\Jobs;
+
+use App\Models\WaQueue;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+
+class ProcessWaQueue implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $waQueue;
+
+    public function __construct(WaQueue $waQueue)
+    {
+        $this->waQueue = $waQueue;
+    }
+
+    public function handle()
+    {
+        if ($this->waQueue->status !== 'pending') return;
+
+        // Kirim pesan ke Gateway
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('services.wagateway.token'),
+        ])->post(config('services.wagateway.url') . '/api/wa/send', [
+            'number' => preg_replace('/^0/', '62', $this->waQueue->warga->no_telp),
+            'message' => $this->waQueue->message,
+        ]);
+
+        $res = $response->json();
+
+        // Update status
+        $this->waQueue->update([
+            'status' => $res['success'] ? 'sent' : 'failed',
+        ]);
+    }
+}
+</code></pre>
+
+  <h3 class="text-lg font-semibold mb-2">⚙️ Menjalankan Worker</h3>
+  <p class="text-gray-700 mb-4">
+    Pastikan Anda sudah mengaktifkan queue worker agar job dapat dieksekusi secara otomatis:
+  </p>
+  <pre class="bg-gray-100 text-sm p-4 rounded mb-6 overflow-x-auto"><code class="language-bash">php artisan queue:work
+</code></pre>
+
+  <h3 class="text-lg font-semibold mb-2">🧠 Penjelasan Singkat</h3>
+  <ul class="list-disc ml-6 space-y-2 text-gray-700">
+    <li><code>ShouldQueue</code> → Memberitahu Laravel bahwa job ini diproses oleh queue worker.</li>
+    <li><code>WaQueue</code> → Model database yang menyimpan antrean pesan.</li>
+    <li><code>Http::post()</code> → Mengirim request ke API Gateway Jiget.</li>
+    <li><code>queue:work</code> → Menjalankan job secara background.</li>
+  </ul>
+
+  <p class="text-gray-700 mt-4">
+    Dengan cara ini, sistem Anda tetap cepat dan stabil, bahkan ketika harus mengirim ratusan pesan sekaligus 🚀
+  </p>
+</section>

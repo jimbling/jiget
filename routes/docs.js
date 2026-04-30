@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Daftar halaman dokumentasi
-const pages = ['pendahuluan','send-text','send-media','disconnect-device','tips','instalasi'];
+const pages = ['pendahuluan','send-text','send-media','disconnect-device','tips','instalasi','contoh-penggunaan'];
 
 // Halaman /docs → tampilkan langsung Pendahuluan
 router.get('/', (req, res) => {
