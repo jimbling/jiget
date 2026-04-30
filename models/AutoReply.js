@@ -4,7 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class AutoReply extends Model {
     static associate(models) {
-      // bisa nanti ditambah relasi ke log, dsb
+      
     }
   }
 

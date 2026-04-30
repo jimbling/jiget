@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// Halaman docs spesifik, misal /docs/send-text
+
 router.get('/:page', (req, res) => {
   const page = req.params.page;
 

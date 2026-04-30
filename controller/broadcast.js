@@ -6,14 +6,14 @@ const { sendMessage } = require('../controller/waSend');
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function runPendingBroadcasts() {
-  console.log("🔄 Mengecek broadcast yang pending...");
+  console.log("Mengecek broadcast yang pending...");
 
   const [broadcasts] = await db.execute(
     `SELECT * FROM broadcasts WHERE status = 'pending' ORDER BY created_at ASC`
   );
 
   for (const bc of broadcasts) {
-    console.log(`📢 Menjalankan broadcast: ${bc.title}`);
+    console.log(`Menjalankan broadcast: ${bc.title}`);
 
     // Parse target_ids menjadi array
     let ids = [];
@@ -27,8 +27,8 @@ async function runPendingBroadcasts() {
         .map(id => id.trim());
     }
 
-    console.log("📌 Target Type:", bc.target_type);
-    console.log("📌 Target IDs:", ids);
+    console.log("Target Type:", bc.target_type);
+    console.log("Target IDs:", ids);
 
     let targetContacts = [];
 
@@ -60,7 +60,7 @@ async function runPendingBroadcasts() {
     console.log("📌 Hasil query contacts:", targetContacts);
 
     if (!targetContacts.length) {
-      console.warn(`⚠️ Broadcast ${bc.id} tidak menemukan kontak. Skip.`);
+      console.warn(`Broadcast ${bc.id} tidak menemukan kontak. Skip.`);
       continue;
     }
 
@@ -75,7 +75,7 @@ async function runPendingBroadcasts() {
           [bc.id, contact.id, 'sent']
         );
 
-        console.log(`✅ Pesan terkirim ke ${contact.phone}`);
+        console.log(`Pesan terkirim ke ${contact.phone}`);
 
         // Delay 2-4 detik sebelum kontak berikutnya
         if (index < targetContacts.length - 1) {
@@ -85,7 +85,7 @@ async function runPendingBroadcasts() {
         }
 
       } catch (err) {
-        console.error(`❌ Gagal kirim ke ${contact.phone}:`, err.message || err);
+        console.error(`Gagal kirim ke ${contact.phone}:`, err.message || err);
 
         await db.execute(
           `INSERT INTO broadcast_logs (broadcast_id, contact_id, status, error_message)
@@ -101,7 +101,7 @@ async function runPendingBroadcasts() {
       [bc.id]
     );
 
-    console.log(`✅ Broadcast ${bc.id} selesai dijalankan.\n`);
+    console.log(`Broadcast ${bc.id} selesai dijalankan.\n`);
   }
 }
 

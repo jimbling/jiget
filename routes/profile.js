@@ -3,7 +3,7 @@ const router = express.Router();
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 
-// 🔹 Halaman Edit Profile
+// Halaman Edit Profile
 router.get('/profile/edit', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
 
@@ -23,7 +23,7 @@ router.get('/profile/edit', async (req, res) => {
   }
 });
 
-// 🔹 Proses Update Profile
+// Proses Update Profile
 router.post('/profile/edit', async (req, res) => {
   try {
     const { name, email, password } = req.body;
